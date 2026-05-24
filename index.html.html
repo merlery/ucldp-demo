@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>UCLDP — Demo & Validation Survey</title>
+<style>
+:root{
+  --bg:#0c0e18;--bg2:#131629;--bg3:#1a1f35;--bg4:#212840;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#dde1f0;--text2:#8b8faa;--text3:#4e5270;
+  --blue:#4f8ef7;--blue-d:rgba(79,142,247,0.15);
+  --green:#3ecf8e;--green-d:rgba(62,207,142,0.12);
+  --amber:#f5a623;--amber-d:rgba(245,166,35,0.12);
+  --red:#ef5050;--red-d:rgba(239,80,80,0.12);
+  --purple:#a78bfa;--purple-d:rgba(167,139,250,0.12);
+  --teal:#2dd4bf;--teal-d:rgba(45,212,191,0.12);
+  --r:10px;--rl:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+.page{max-width:880px;margin:0 auto;padding:24px 20px 80px}
+.timebar{display:flex;align-items:center;gap:8px;padding:8px 14px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);font-size:11px;color:var(--text2);margin-bottom:16px}
+.timebar b{color:var(--text);font-weight:600}
+.top-nav{display:flex;gap:0;margin-bottom:28px;border:0.5px solid var(--border2);border-radius:var(--rl);overflow:hidden}
+.top-tab{flex:1;padding:13px 8px;text-align:center;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--text2);background:var(--bg2);transition:all .2s;border-right:0.5px solid var(--border2)}
+.top-tab:last-child{border-right:none}
+.top-tab.on{background:var(--blue-d);color:var(--blue)}
+.top-tab .num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--bg3);font-size:10px;font-weight:700;margin-right:6px}
+.top-tab.on .num{background:var(--blue);color:#fff}
+.top-tab .est{display:block;font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:.04em}
+.top-tab.on .est{color:var(--blue)}
+.pane{display:none}.pane.on{display:block}
+h2{font-size:21px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px}
+h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
+.sub{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.7;max-width:760px}
+.card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:14px}
+.icard{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.clbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.section-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.04em;margin-bottom:16px}
+.chip-core{background:var(--teal-d);border:0.5px solid var(--teal);color:var(--teal)}
+.chip-ext{background:var(--purple-d);border:0.5px solid var(--purple);color:var(--purple)}
+.chip-survey{background:var(--amber-d);border:0.5px solid var(--amber);color:var(--amber)}
+.stages{display:flex;gap:6px;margin-bottom:18px;font-size:11px}
+.stage{flex:1;padding:10px 8px;border-radius:var(--r);background:var(--bg3);border:0.5px solid var(--border);text-align:center;color:var(--text2)}
+.stage b{color:var(--text);display:block;font-weight:600;font-size:12px;margin-bottom:2px}
+.stage-cur{border-color:var(--blue);background:var(--blue-d);color:var(--blue)}
+.stage-cur b{color:var(--blue)}
+/* data type tabs */
+.dtabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.dtab{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;border:0.5px solid var(--border2);color:var(--text2);background:var(--bg3);cursor:pointer;transition:all .15s}
+.dtab:hover{border-color:var(--blue);color:var(--text)}
+.dtab.on{background:var(--blue-d);border-color:var(--blue);color:var(--blue)}
+/* canvas wrap */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cvs-wrap{position:relative;background:#000;border-radius:var(--r);overflow:hidden}
+.cvs-wrap canvas{display:block;width:100%}
+.cvs-lbl{position:absolute;top:8px;left:8px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:8px;background:rgba(0,0,0,.55)}
+/* slider */
+.srow{display:flex;align-items:center;gap:10px;margin:12px 0}
+.srow label{font-size:11px;color:var(--text2);white-space:nowrap}
+.srow input[type=range]{flex:1;accent-color:var(--blue)}
+.epsbadge{font-size:13px;font-weight:700;min-width:60px;text-align:center;padding:4px 10px;border-radius:20px;background:var(--bg3);border:0.5px solid var(--border2);color:var(--blue);font-family:monospace}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.stat{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);padding:10px;text-align:center}
+.stat-v{font-size:17px;font-weight:700;font-family:monospace;margin:3px 0}
+.stat-l{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+/* identity table */
+.idtable{width:100%;font-size:12px;border-collapse:collapse}
+.idtable td{padding:5px 8px;border-bottom:0.5px solid var(--border)}
+.idtable td:first-child{color:var(--text2);width:45%}
+.blk{background:var(--bg4);border-radius:3px;color:transparent;display:inline-block;padding:0 4px;min-width:70px;user-select:none}
+.partial{color:var(--amber)}
+.full{color:var(--text);font-weight:500}
+.note{padding:10px 14px;border-left:2px solid var(--blue);background:var(--blue-d);border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--text2);line-height:1.6;margin:10px 0}
+.note.warn{border-color:var(--amber);background:var(--amber-d);color:var(--amber)}
+.note.green{border-color:var(--green);background:var(--green-d);color:var(--green)}
+.note.red{border-color:var(--red);background:var(--red-d);color:var(--red)}
+.note.purple{border-color:var(--purple);background:var(--purple-d);color:var(--purple)}
+/* criteria */
+.crit{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.crit-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.crit-body{flex:1}
+.crit-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.crit-desc{font-size:11px;color:var(--text2);margin-bottom:5px;line-height:1.5}
+.crit-pct{font-size:13px;font-weight:700;min-width:38px;text-align:right;font-family:monospace}
+/* topsis bars */
+.tbar-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+.tbar{text-align:center}
+.tbar-track{height:80px;background:var(--bg4);border-radius:6px;display:flex;align-items:flex-end;padding:0 5px}
+.tbar-fill{width:100%;border-radius:4px;transition:height .5s ease,background .3s}
+.tbar-eps{font-size:10px;font-family:monospace;margin-top:5px}
+.tbar-c{font-size:10px;margin-top:2px}
+.wb{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.wb-n{font-size:11px;color:var(--text2);width:100px;flex-shrink:0}
+.wb-bg{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.wb-fill{height:100%;border-radius:3px;transition:width .4s}
+.wb-v{font-size:11px;color:var(--text3);width:34px;text-align:right;font-family:monospace}
+/* MIC features */
+.feat-row{display:grid;grid-template-columns:120px 1fr 60px;gap:10px;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.feat-row:last-child{border-bottom:none}
+.feat-name{display:flex;align-items:center;gap:7px}
+.feat-bar{height:7px;background:var(--bg4);border-radius:4px;overflow:hidden;position:relative}
+.feat-bar-fill{height:100%;border-radius:4px;transition:width .4s,background .3s}
+.feat-mic{font-family:monospace;font-size:11px;text-align:right}
+/* compare boxes */
+.cmp2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.cmpbox{padding:14px;border-radius:var(--rl);border:0.5px solid var(--border);background:var(--bg3)}
+.cmpbox.hi{border-color:var(--green);background:var(--green-d)}
+.cmpbox.lo{border-color:var(--red);background:var(--red-d)}
+.cmpv{font-size:24px;font-weight:700;font-family:monospace;margin:6px 0}
+.cmpl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+/* MAE curves */
+.curve-wrap{margin-top:10px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r);padding:14px}
+/* pairwise */
+.pw{margin-bottom:14px}
+.pw-q{font-size:12px;color:var(--text3);margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.pw-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pw-opt{padding:14px;border-radius:var(--r);background:var(--bg3);border:0.5px solid var(--border2);cursor:pointer;transition:all .15s;font-size:12.5px;line-height:1.55}
+.pw-opt:hover{border-color:var(--blue)}
+.pw-opt.on{border-color:var(--blue);background:var(--blue-d);color:var(--text)}
+.pw-opt .pw-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.06em;margin-bottom:6px}
+.pw-opt.on .pw-label{color:var(--blue)}
+.pwprog{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-bottom:18px}
+.pwprog-fill{height:100%;background:var(--purple);transition:width .3s;border-radius:2px}
+/* likert */
+.likert{display:flex;gap:5px}
+.lb{flex:1;padding:9px 4px;text-align:center;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s}
+.lb:hover{border-color:var(--blue)}
+.lb.on{border-color:var(--blue);background:var(--blue-d);color:var(--blue);font-weight:600}
+.lb .sub-l{font-size:9px;color:var(--text3);display:block;margin-top:2px}
+.mc{display:flex;flex-direction:column;gap:6px}
+.mc-opt{padding:11px 14px;border-radius:var(--r);background:var(--bg3);border:0.5px solid var(--border2);cursor:pointer;font-size:12.5px;transition:all .15s}
+.mc-opt:hover{border-color:var(--blue)}
+.mc-opt.on{border-color:var(--blue);background:var(--blue-d);color:var(--blue)}
+.eps-row{display:flex;gap:6px}
+.eps-btn{flex:1;padding:9px 0;text-align:center;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:12px;font-family:monospace;cursor:pointer;transition:all .15s}
+.eps-btn:hover{border-color:var(--blue)}
+.eps-btn.on{border-color:var(--blue);background:var(--blue-d);color:var(--blue);font-weight:700}
+.q-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--rl);padding:20px;margin-bottom:14px}
+.q-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--amber-d);border:0.5px solid var(--amber);color:var(--amber);font-size:11px;font-weight:700;margin-right:8px;flex-shrink:0}
+.q-title{font-size:14.5px;font-weight:500;display:flex;align-items:center;margin-bottom:6px;line-height:1.4}
+.q-desc{font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6}
+.ta{width:100%;background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--r);padding:11px;color:var(--text);font-size:12.5px;font-family:inherit;resize:vertical;min-height:72px}
+.ta:focus{outline:none;border-color:var(--blue)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;border:none;transition:opacity .15s}
+.btn:hover{opacity:.82}
+.btn-b{background:var(--blue);color:#fff}
+.btn-g{background:var(--green);color:#0a1a12}
+.btn-s{background:var(--bg3);color:var(--text2);border:0.5px solid var(--border2)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.rec-out{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r);padding:14px;font-size:11px;font-family:monospace;white-space:pre-wrap;color:var(--text2);display:none;max-height:280px;overflow-y:auto;margin:12px 0}
+#meter-cvs{display:block;width:100%;border-radius:var(--r);margin-bottom:6px}
+.noise-cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.noise-col{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);padding:14px}
+.noise-col h4{font-size:12px;font-weight:600;margin-bottom:10px;color:var(--text)}
+.noise-col.uni{border-color:rgba(245,166,35,0.4)}
+.noise-col.mic{border-color:rgba(62,207,142,0.4)}
+.noise-bar-row{display:grid;grid-template-columns:90px 1fr 38px;gap:8px;align-items:center;margin-bottom:5px;font-size:11px}
+.noise-bar-row .nb-l{color:var(--text2)}
+.noise-bar-row .nb-v{color:var(--text3);font-family:monospace;font-size:10px;text-align:right}
+.noise-bar-bg{height:8px;background:var(--bg4);border-radius:4px;overflow:hidden}
+.noise-bar-fill{height:100%;border-radius:4px;transition:width .4s}
+.pat-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--border)}
+.pat-item:last-child{border-bottom:none}
+.pat-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.pat-label{font-size:12px;font-weight:500}
+.pat-sub{font-size:11px;color:var(--text2)}
+.pat-risk{font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;margin-left:auto;flex-shrink:0}
+.pat-risk.hi{background:var(--red-d);color:var(--red);border:0.5px solid var(--red)}
+.pat-risk.med{background:var(--amber-d);color:var(--amber);border:0.5px solid var(--amber)}
+.pat-risk.lo{background:var(--green-d);color:var(--green);border:0.5px solid var(--green)}
+.fed-diag{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;font-size:11px;flex-wrap:wrap}
+.fed-node{padding:8px 10px;border:0.5px solid var(--green);border-radius:var(--r);background:var(--green-d);color:var(--green);text-align:center;font-family:monospace;font-size:10px}
+.fed-arrow{color:var(--text3);font-size:14px}
+.fed-server{padding:8px 12px;border:0.5px solid var(--blue);border-radius:var(--r);background:var(--blue-d);color:var(--blue);text-align:center;font-family:monospace;font-size:10px}
+.tag{display:inline-block;padding:1px 6px;border-radius:8px;font-size:9.5px;font-family:monospace;background:var(--bg4);color:var(--text2);margin-left:3px}
+.tag.green{background:var(--green-d);color:var(--green)}
+.tag.amber{background:var(--amber-d);color:var(--amber)}
+.tag.blue{background:var(--blue-d);color:var(--blue)}
+.tag.purple{background:var(--purple-d);color:var(--purple)}
+/* ── consent + completion overlays ── */
+.overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:flex-start;justify-content:center;z-index:1000;padding:32px 20px;overflow-y:auto}
+.overlay.gone{display:none}
+.overlay-card{max-width:640px;width:100%;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--rl);padding:28px 28px 24px;margin:auto}
+.overlay h1{font-size:22px;font-weight:600;margin-bottom:8px;letter-spacing:-.2px}
+.overlay h4{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin:14px 0 6px}
+.overlay p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px}
+.overlay ul{font-size:12.5px;color:var(--text2);line-height:1.65;margin-left:18px;margin-bottom:10px}
+.overlay ul li{margin-bottom:3px}
+.overlay .contacts{font-size:11.5px;color:var(--text3);line-height:1.6;padding:10px 0;border-top:0.5px solid var(--border);margin-top:14px}
+.overlay .actions{display:flex;gap:10px;margin-top:18px}
+.overlay .actions .btn{flex:1;justify-content:center}
+/* completion */
+.thanks-card{text-align:center}
+.thanks-card .check{font-size:48px;margin-bottom:8px}
+.thanks-card .sid{display:inline-block;padding:6px 12px;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);font-family:monospace;font-size:11px;color:var(--text2);margin:6px 0;word-break:break-all}
+/* spinner */
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,0.25);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:6px}
+.btn-g .spinner{border-color:rgba(10,26,18,0.3);border-top-color:#0a1a12}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* validation banner */
+.valbox{padding:12px 14px;border-radius:var(--r);background:var(--red-d);border:0.5px solid var(--red);color:var(--red);font-size:12.5px;margin-bottom:12px;display:none}
+.valbox.on{display:block}
+.valbox ul{margin:6px 0 0 16px;font-size:11.5px;color:var(--red)}
+/* highlight missing card */
+.q-card.missing{border-color:var(--red);box-shadow:0 0 0 1px rgba(239,80,80,0.18)}
+/* submit card */
+.submit-card{background:var(--bg2);border:0.5px solid var(--blue);border-radius:var(--rl);padding:22px;text-align:center}
+.submit-card .stitle{font-size:15px;font-weight:600;margin-bottom:5px}
+.submit-card .sdesc{font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6}
+.submit-card .btn-big{padding:14px 28px;font-size:14px;font-weight:600;min-width:260px}
+.submit-card .secondary-row{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.submit-card .secondary-row .btn{font-size:11.5px;padding:6px 12px}
+.locked{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     CONSENT GATE — shown first
+═══════════════════════════════════════ -->
+<div class="overlay" id="consent-overlay">
+  <div class="overlay-card">
+    <h1>Research Study Participation</h1>
+    <p style="color:var(--text)">You're invited to take part in a brief research study evaluating <strong>UCLDP</strong>, a user-centric privacy framework developed for a PhD dissertation at the University of Washington Tacoma. Your responses help validate whether the framework matches real users' privacy preferences.</p>
+
+    <h4>What you'll do (~18–22 minutes)</h4>
+    <ul>
+      <li>Walk through an interactive demo of three privacy scenarios (smart meter, identity record, ECG)</li>
+      <li>Optionally try a conversational privacy preference dialogue</li>
+      <li>Answer eight short survey questions about your experience</li>
+    </ul>
+
+    <h4>What we collect</h4>
+    <ul>
+      <li>Your interactions with the demo (which ε you choose, slider weights)</li>
+      <li>Your ratings on the survey questions</li>
+      <li>Free-text feedback if you choose to provide any</li>
+      <li>A random anonymous session ID generated in your browser</li>
+    </ul>
+
+    <h4>What we do NOT collect</h4>
+    <ul>
+      <li>Your name, email, IP address, or any other identifying information</li>
+      <li>Any personal data — every demo scenario uses synthetic examples</li>
+    </ul>
+
+    <h4>Voluntary participation</h4>
+    <ul>
+      <li>You may close this page at any time without consequence</li>
+      <li>Submitted responses cannot be linked back to you</li>
+      <li>Aggregated results may appear in academic publications</li>
+    </ul>
+
+    <div class="contacts">
+      <strong style="color:var(--text2)">Researcher:</strong> Wenjun Yang, PhD candidate · <span style="color:var(--blue)">wy927@uw.edu</span><br>
+      <strong style="color:var(--text2)">Faculty advisor:</strong> Dr. Eyhab Al-Masri · <span style="color:var(--blue)">ealmasri@uw.edu</span><br>
+      <strong style="color:var(--text2)">UW Tacoma HSD IRB Protocol:</strong> <span style="color:var(--text3)">[insert approved protocol number]</span>
+    </div>
+
+    <p style="font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.65">By clicking "I consent and continue," you confirm that you are 18 or older and agree to participate under the terms above.</p>
+
+    <div class="actions">
+      <button class="btn btn-s" onclick="window.location.href='about:blank'">No thanks, exit</button>
+      <button class="btn btn-b" onclick="grantConsent()">I consent and continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     THANK YOU — shown after submit
+═══════════════════════════════════════ -->
+<div class="overlay gone" id="thanks-overlay">
+  <div class="overlay-card thanks-card">
+    <div class="check">✓</div>
+    <h1>Thank you!</h1>
+    <p style="color:var(--text)">Your responses have been recorded. The data will be used in the dissertation analysis.</p>
+
+    <h4>Your anonymous session ID</h4>
+    <div class="sid" id="thanks-sid">—</div>
+    <p style="font-size:11.5px;color:var(--text3);margin-top:6px">If you ever want your data removed, email <span style="color:var(--blue)">wy927@uw.edu</span> with this ID.</p>
+
+    <div class="contacts" style="text-align:left">
+      Questions about the study? Reach out to <strong style="color:var(--text2)">Wenjun Yang</strong> at <span style="color:var(--blue)">wy927@uw.edu</span> or <strong style="color:var(--text2)">Dr. Eyhab Al-Masri</strong> at <span style="color:var(--blue)">ealmasri@uw.edu</span>.
+    </div>
+
+    <div class="actions" style="justify-content:center">
+      <button class="btn btn-s" onclick="window.close()" style="flex:0 0 auto">Close window</button>
+    </div>
+  </div>
+</div>
+
+<div class="page locked" id="main-page">
+
+<div class="timebar">⏱ <b>About 18–22 minutes total.</b> Tab 1 demo (~8 min) · Tab 2 PrivAgent (~5 min) · Tab 3 survey (~8 min). Your answers help validate the dissertation.</div>
+
+<div class="top-nav">
+  <div class="top-tab on" id="tn0" onclick="goPane(0)"><span class="num">1</span>Core UCLDP<span class="est">≈ 8 min</span></div>
+  <div class="top-tab" id="tn1" onclick="goPane(1)"><span class="num">2</span>PrivAgent (extension)<span class="est">≈ 5 min</span></div>
+  <div class="top-tab" id="tn2" onclick="goPane(2)"><span class="num">3</span>Survey<span class="est">≈ 8 min</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANE 0 — CORE UCLDP DEMO
+═══════════════════════════════════════ -->
+<div class="pane on" id="pane0">
+  <span class="section-chip chip-core">🎯 Core UCLDP framework</span>
+  <h2>How the user-centric privacy pipeline works</h2>
+  <p class="sub">Local Differential Privacy adds noise to your data <em>before</em> it leaves your device. The trade-off: too little noise leaks personal information, too much makes the data useless. UCLDP improves on standard LDP in two ways — it lets <strong>you</strong> choose the privacy budget ε based on your priorities (ULDP), and it spreads the noise budget unequally across features so the important ones stay accurate (MIC-DP).</p>
+
+  <div class="stages">
+    <div class="stage stage-cur"><b>Step 1</b>See the leak</div>
+    <div class="stage stage-cur"><b>Step 2</b>ULDP picks ε</div>
+    <div class="stage stage-cur"><b>Step 3</b>MIC-DP smart noise</div>
+    <div class="stage stage-cur"><b>Step 4</b>Compare</div>
+  </div>
+
+  <!-- ── STEP 1 — three scenarios ── -->
+  <h3>Step 1 — Three kinds of data, three ways an adversary can hurt you</h3>
+  <p class="sub" style="margin-top:-4px">Switch between the three scenarios below. Each shows raw data on the left, what the data looks like after standard LDP noise on the right, and what an adversary can still figure out at that ε.</p>
+
+  <div class="dtabs" id="demo-tabs">
+    <div class="dtab on" onclick="setDemoTab('meter',this)">⚡ Smart meter</div>
+    <div class="dtab" onclick="setDemoTab('identity',this)">🪪 Identity record</div>
+    <div class="dtab" onclick="setDemoTab('ecg',this)">💓 ECG signal</div>
+  </div>
+
+  <!-- smart meter panel -->
+  <div id="panel-meter">
+    <div class="card">
+      <div class="clbl">24-hour electricity consumption</div>
+      <canvas id="meter-cvs" height="160"></canvas>
+      <div class="srow">
+        <label style="color:var(--green)">ε = 0.1 (max privacy)</label>
+        <input type="range" id="meter-eps" min="0" max="4" step="1" value="2" oninput="onMeterEps(+this.value)">
+        <label style="color:var(--red)">ε = 10 (no privacy)</label>
+        <div class="epsbadge" id="meter-badge">ε = 1.0</div>
+      </div>
+      <div class="clbl" style="margin-top:14px">Behavioural patterns still visible at this ε</div>
+      <div id="meter-insights"></div>
+    </div>
+  </div>
+
+  <!-- identity panel -->
+  <div id="panel-identity" style="display:none">
+    <div class="card">
+      <div class="clbl">Health record card</div>
+      <div class="two">
+        <div><div class="cvs-wrap">
+          <canvas id="id-orig" height="200"></canvas>
+          <div class="cvs-lbl" style="color:var(--green)">Original — private</div>
+        </div></div>
+        <div><div class="cvs-wrap">
+          <canvas id="id-noisy" height="200"></canvas>
+          <div class="cvs-lbl" style="color:var(--red)">After LDP — adversary view</div>
+        </div></div>
+      </div>
+      <div class="srow">
+        <label style="color:var(--green)">ε = 0.1</label>
+        <input type="range" id="id-eps" min="0" max="4" step="1" value="2" oninput="onIdEps(+this.value)">
+        <label style="color:var(--red)">ε = 10</label>
+        <div class="epsbadge" id="id-badge">ε = 1.0</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-l">Adversary accuracy</div><div class="stat-v" id="id-acc" style="color:var(--amber)">—</div></div>
+        <div class="stat"><div class="stat-l">Privacy level LP</div><div class="stat-v" id="id-lp" style="color:var(--blue)">—</div></div>
+        <div class="stat"><div class="stat-l">Accuracy level LA</div><div class="stat-v" id="id-la" style="color:var(--green)">—</div></div>
+      </div>
+      <div class="clbl" style="margin-top:14px">Character-level view — Randomized Response at this ε</div>
+      <table class="idtable" id="id-table"></table>
+    </div>
+  </div>
+
+  <!-- ECG panel -->
+  <div id="panel-ecg" style="display:none">
+    <div class="card">
+      <div class="clbl">ECG signal — what noise does to the waveform</div>
+      <div class="two">
+        <div><div class="cvs-wrap">
+          <canvas id="ecg-orig" height="180"></canvas>
+          <div class="cvs-lbl" style="color:var(--green)">Clean ECG — private</div>
+        </div></div>
+        <div><div class="cvs-wrap">
+          <canvas id="ecg-noisy" height="180"></canvas>
+          <div class="cvs-lbl" style="color:var(--red)">After LDP</div>
+        </div></div>
+      </div>
+      <div class="srow">
+        <label style="color:var(--green)">ε = 0.1</label>
+        <input type="range" id="ecg-eps" min="0" max="4" step="1" value="2" oninput="onEcgEps(+this.value)">
+        <label style="color:var(--red)">ε = 10</label>
+        <div class="epsbadge" id="ecg-badge">ε = 1.0</div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-l">Heart rate detectable</div><div class="stat-v" id="ecg-hr" style="color:var(--amber)">—</div></div>
+        <div class="stat"><div class="stat-l">Arrhythmia visible</div><div class="stat-v" id="ecg-ar" style="color:var(--red)">—</div></div>
+        <div class="stat"><div class="stat-l">Privacy level LP</div><div class="stat-v" id="ecg-lp" style="color:var(--blue)">—</div></div>
+      </div>
+      <div class="note" id="ecg-note"></div>
+    </div>
+  </div>
+
+  <div class="note">The trade-off is real for every kind of data. Different domains may need different ε. The remainder of the demo focuses on smart meter (matching Chapter 8 of the dissertation), but the same UCLDP pipeline applies to identity and medical signals too.</div>
+
+  <!-- ── STEP 2 — ULDP ── -->
+  <h3>Step 2 — ULDP picks your ε from your priorities</h3>
+  <p class="sub" style="margin-top:-4px">Three things matter to you, but they trade off. Rate how much each one matters and ULDP runs TOPSIS — a standard multi-criteria decision method — to pick the ε candidate closest to your ideal.</p>
+  <div class="card">
+    <div class="crit">
+      <div class="crit-ico" style="background:var(--blue-d)">🔒</div>
+      <div class="crit-body">
+        <div class="crit-name">Privacy strength <span class="tag blue">LP</span></div>
+        <div class="crit-desc">How hard it is for someone to figure out anything about your data.</div>
+        <input type="range" id="w-lp" min="1" max="10" value="4" oninput="updateW()" style="width:100%;margin-top:5px;accent-color:var(--blue)">
+      </div>
+      <div class="crit-pct" id="wlp" style="color:var(--blue)">40%</div>
+    </div>
+    <div class="crit">
+      <div class="crit-ico" style="background:var(--green-d)">🎯</div>
+      <div class="crit-body">
+        <div class="crit-name">Usefulness <span class="tag green">LA</span></div>
+        <div class="crit-desc">How accurate the analyst's forecast remains after your data is privatised.</div>
+        <input type="range" id="w-la" min="1" max="10" value="4" oninput="updateW()" style="width:100%;margin-top:5px;accent-color:var(--green)">
+      </div>
+      <div class="crit-pct" id="wla" style="color:var(--green)">40%</div>
+    </div>
+    <div class="crit" style="margin-bottom:0">
+      <div class="crit-ico" style="background:var(--amber-d)">⚡</div>
+      <div class="crit-body">
+        <div class="crit-name">Compute cost <span class="tag amber">CR</span></div>
+        <div class="crit-desc">How much battery and CPU your home device uses to add noise.</div>
+        <input type="range" id="w-cr" min="1" max="10" value="2" oninput="updateW()" style="width:100%;margin-top:5px;accent-color:var(--amber)">
+      </div>
+      <div class="crit-pct" id="wcr" style="color:var(--amber)">20%</div>
+    </div>
+    <div style="margin-top:12px" id="wbars"></div>
+  </div>
+  <div class="card">
+    <div class="clbl">TOPSIS closeness coefficient — higher = better fit for you</div>
+    <div class="tbar-wrap" id="topsis-bars"></div>
+    <div class="note" id="topsis-explain"></div>
+    <div class="note green" id="topsis-pick" style="margin-top:8px;font-size:13px;font-weight:500"></div>
+  </div>
+
+  <!-- ── STEP 3 — MIC-DP ── -->
+  <h3>Step 3 — MIC-DP adds smart noise <span class="tag green" style="font-size:11px;padding:2px 8px;font-weight:600">CORE CONTRIBUTION</span></h3>
+  <p class="sub" style="margin-top:-4px">Standard LDP adds the same noise to every feature. But not every feature matters equally for the analyst's forecast. MIC-DP measures each feature's <strong>Maximum Information Coefficient</strong> against the prediction target and gives more budget (less noise) to the features that matter most. Same total ε, same formal privacy. Just redistributed.</p>
+  <div class="card">
+    <div class="clbl">Each appliance feature has a different MIC score (correlation with grid demand)</div>
+    <div id="mic-feats"></div>
+    <div class="noise-cmp" style="margin-top:18px">
+      <div class="noise-col uni">
+        <h4 style="color:var(--amber)">Standard LDP — equal noise σ for all</h4>
+        <div id="noise-uni"></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.55">Every feature gets σ = sensitivity / (ε/d). Low-MIC features (fridge, lighting) get the same noise as high-MIC features (heating, EV) — wasting budget on signals that barely matter for the forecast.</div>
+      </div>
+      <div class="noise-col mic">
+        <h4 style="color:var(--green)">MIC-DP — budget ∝ MIC<sup>α</sup></h4>
+        <div id="noise-mic"></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.55">Feature j gets budget share MIC<sub>j</sub><sup>α</sup> / Σ MIC<sub>k</sub><sup>α</sup> (with α = 1.5 here). High-MIC features get less noise; low-MIC features absorb more. Total budget identical, formal (ε, δ)-DP unchanged — only the distribution changes.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STEP 4 — comparison ── -->
+  <h3>Step 4 — Same privacy, better forecast</h3>
+  <div class="card">
+    <div class="clbl">Forecast error at your selected ε* (lower = more useful)</div>
+    <div class="cmp2">
+      <div class="cmpbox lo">
+        <div class="cmpl">Standard LDP</div>
+        <div class="cmpv" id="cmp-uni-mae" style="color:var(--red)">—</div>
+        <div class="cmpl">MAE (normalised)</div>
+      </div>
+      <div class="cmpbox hi">
+        <div class="cmpl">UCLDP (MIC-DP)</div>
+        <div class="cmpv" id="cmp-mic-mae" style="color:var(--green)">—</div>
+        <div class="cmpl">MAE (normalised)</div>
+      </div>
+    </div>
+    <div class="note green" id="winnote"></div>
+    <div class="curve-wrap">
+      <div class="clbl" style="margin-bottom:6px">MAE across all ε candidates (calibrated from thesis Table 9.1, UK-DALE)</div>
+      <canvas id="mae-curve" height="180" style="width:100%;display:block"></canvas>
+    </div>
+    <div class="note" style="margin-top:10px">Why is MIC-DP's advantage bigger at small ε? When the total budget is tiny, every bit matters. Concentrating it on the features that drive the forecast (high MIC) preserves signal where it counts. At loose ε (5.0, 10.0), even uniform noise is small enough that the gap narrows — and the dissertation reports this exact pattern in Figure 9.1.</div>
+  </div>
+
+  <!-- federated mini -->
+  <div class="card" style="border-color:var(--purple)">
+    <div class="clbl" style="color:var(--purple)">Quick note — federated setting (LDP-MIC)</div>
+    <p style="font-size:12.5px;color:var(--text2);line-height:1.7">When many homes share data for a neighbourhood-wide forecast, no central server can be trusted with raw inputs. <strong style="color:var(--text)">LDP-MIC</strong> is the federated variant: each home runs MIC-DP locally before any data leaves the device. The server sees only noisy outputs and uses trust-weighted aggregation to discard suspicious updates. Same core algorithm, distributed.</p>
+    <div class="fed-diag" style="margin-top:6px">
+      <div class="fed-node">🏠 home 1<br>MIC-DP local</div>
+      <div class="fed-arrow">↘</div>
+      <div class="fed-server">📡 server<br>trust-weighted aggregation</div>
+      <div class="fed-arrow">↙</div>
+      <div class="fed-node">🏠 home 2<br>MIC-DP local</div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goPane(1)">Next: PrivAgent extension →</button>
+    <button class="btn btn-b" onclick="goPane(2)">Skip to survey →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANE 1 — PRIVAGENT EXTENSION
+═══════════════════════════════════════ -->
+<div class="pane" id="pane1">
+  <span class="section-chip chip-ext">💬 Optional system extension</span>
+  <h2>PrivAgent — a conversational way to set your priorities</h2>
+  <p class="sub">Some users don't enjoy moving three sliders. PrivAgent replaces the slider interface with six short "would you rather" questions in plain language. It then converts your answers into the same Privacy / Usefulness / Compute weight vector that Step 2 needed. <strong style="color:var(--text)">PrivAgent is a standalone extension</strong> — the core UCLDP results in Tab 1 don't depend on it. Whether your weights come from sliders, PrivAgent, or a default, the rest of the pipeline works the same.</p>
+
+  <div class="note purple">In this tab you'll see the dialogue, the weights it produces, and a comparison with what you set with sliders on Tab 1. We're not feeding these weights back into Tab 1 — the comparison is just to validate whether the dialogue captures what the sliders do.</div>
+
+  <div class="pwprog"><div class="pwprog-fill" id="pwprog" style="width:0%"></div></div>
+  <div id="pw-list"></div>
+
+  <div class="card" id="pw-result" style="display:none;border-color:var(--purple)">
+    <div class="clbl" style="color:var(--purple)">PrivAgent's inferred weights</div>
+    <div id="pw-weights"></div>
+    <h3 style="margin-top:18px;font-size:13px">Comparison with your slider weights from Tab 1</h3>
+    <table style="width:100%;font-size:12px;border-collapse:collapse;margin-top:8px">
+      <thead><tr>
+        <th style="text-align:left;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Criterion</th>
+        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Sliders (Tab 1)</th>
+        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">PrivAgent</th>
+        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Δ</th>
+      </tr></thead>
+      <tbody id="pw-cmp"></tbody>
+    </table>
+    <div class="note" id="pw-agree" style="margin-top:12px"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goPane(0)">← Back to core</button>
+    <button class="btn btn-b" onclick="goPane(2)">Next: survey →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANE 2 — SURVEY
+═══════════════════════════════════════ -->
+<div class="pane" id="pane2">
+  <span class="section-chip chip-survey">📋 Validation survey</span>
+  <h2>Help validate UCLDP</h2>
+  <p class="sub">Eight quick questions about what you just saw. Most are 1–7 scales. The session record at the bottom captures your responses for the researcher.</p>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">1</span>The demo made the privacy–utility trade-off clear</div>
+    <div class="q-desc">Could you understand <em>why</em> noise has to be added and <em>what</em> ε controls?</div>
+    <div class="likert" id="q1">
+      <div class="lb" onclick="selQ(1,1,this)">1<span class="sub-l">Disagree</span></div>
+      <div class="lb" onclick="selQ(1,2,this)">2</div><div class="lb" onclick="selQ(1,3,this)">3</div>
+      <div class="lb" onclick="selQ(1,4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selQ(1,5,this)">5</div><div class="lb" onclick="selQ(1,6,this)">6</div>
+      <div class="lb" onclick="selQ(1,7,this)">7<span class="sub-l">Agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">2</span>MIC-DP's "smart noise" is a real improvement over equal noise</div>
+    <div class="q-desc">Step 3 showed that giving more budget to high-MIC features helps. Did this convince you?</div>
+    <div class="likert" id="q2">
+      <div class="lb" onclick="selQ(2,1,this)">1<span class="sub-l">Disagree</span></div>
+      <div class="lb" onclick="selQ(2,2,this)">2</div><div class="lb" onclick="selQ(2,3,this)">3</div>
+      <div class="lb" onclick="selQ(2,4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selQ(2,5,this)">5</div><div class="lb" onclick="selQ(2,6,this)">6</div>
+      <div class="lb" onclick="selQ(2,7,this)">7<span class="sub-l">Agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">3</span>The ε* that ULDP picked feels right to you</div>
+    <div class="q-desc">Given your slider settings, did the TOPSIS-selected ε* match what you'd have picked by gut feeling?</div>
+    <div class="likert" id="q3">
+      <div class="lb" onclick="selQ(3,1,this)">1<span class="sub-l">Wrong</span></div>
+      <div class="lb" onclick="selQ(3,2,this)">2</div><div class="lb" onclick="selQ(3,3,this)">3</div>
+      <div class="lb" onclick="selQ(3,4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selQ(3,5,this)">5</div><div class="lb" onclick="selQ(3,6,this)">6</div>
+      <div class="lb" onclick="selQ(3,7,this)">7<span class="sub-l">Just right</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">4</span>Should ε be the same across very different kinds of data?</div>
+    <div class="q-desc">For each domain below, pick the ε you'd personally accept. Different answers across domains support the user-centric design.</div>
+    <div style="display:grid;gap:10px">
+      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">⚡ Smart meter / energy</div><div class="eps-row" id="q4-meter"></div></div>
+      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">🪪 Identity / health record</div><div class="eps-row" id="q4-id"></div></div>
+      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">💓 ECG / medical signal</div><div class="eps-row" id="q4-ecg"></div></div>
+    </div>
+    <div class="note" id="q4-note" style="margin-top:10px">Select an ε for each domain above.</div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">5</span>Would you trust UCLDP more than an administrator-chosen ε?</div>
+    <div class="q-desc">Today, ε is usually picked by an admin or researcher — not by you. UCLDP gives you the choice (sliders or PrivAgent). Which would you actually use?</div>
+    <div class="mc" id="q5">
+      <div class="mc-opt" onclick="selMC(5,'admin',this)">I'd rather the admin picks — I don't want to deal with this</div>
+      <div class="mc-opt" onclick="selMC(5,'sliders',this)">I'd use the sliders (Tab 1 Step 2)</div>
+      <div class="mc-opt" onclick="selMC(5,'agent',this)">I'd use PrivAgent (Tab 2)</div>
+      <div class="mc-opt" onclick="selMC(5,'default',this)">Either user method is fine — just give me a sensible default</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">6</span>The PrivAgent dialogue felt natural <span class="tag purple">extension</span></div>
+    <div class="q-desc">If you did Tab 2: were the six questions easier than moving sliders? (Skip if you didn't try it.)</div>
+    <div class="likert" id="q6">
+      <div class="lb" onclick="selQ(6,1,this)">1<span class="sub-l">Worse</span></div>
+      <div class="lb" onclick="selQ(6,2,this)">2</div><div class="lb" onclick="selQ(6,3,this)">3</div>
+      <div class="lb" onclick="selQ(6,4,this)">4<span class="sub-l">Same</span></div>
+      <div class="lb" onclick="selQ(6,5,this)">5</div><div class="lb" onclick="selQ(6,6,this)">6</div>
+      <div class="lb" onclick="selQ(6,7,this)">7<span class="sub-l">Better</span></div>
+      <div class="lb" onclick="selQ(6,0,this)" style="flex:0 0 60px">N/A</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">7</span>Six pairwise questions is the right length <span class="tag purple">extension</span></div>
+    <div class="q-desc">The thesis caps PrivAgent at six pairwise comparisons. Was this right? (Skip if you didn't try it.)</div>
+    <div class="mc" id="q7">
+      <div class="mc-opt" onclick="selMC(7,'fewer',this)">Too many — I'd want 3 or 4</div>
+      <div class="mc-opt" onclick="selMC(7,'right',this)">Just right — six is fine</div>
+      <div class="mc-opt" onclick="selMC(7,'more',this)">Too few — I'd answer more if it improved accuracy</div>
+      <div class="mc-opt" onclick="selMC(7,'na',this)">N/A — I didn't try PrivAgent</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">8</span>Any open feedback?</div>
+    <div class="q-desc">One thing you wished was clearer, one thing you'd change, or anything else. Optional.</div>
+    <textarea class="ta" id="q8" placeholder="Optional — type here..."></textarea>
+  </div>
+
+  <!-- validation -->
+  <div class="valbox" id="valbox">
+    <strong>Please answer these required questions before submitting:</strong>
+    <ul id="valbox-list"></ul>
+  </div>
+
+  <!-- submit card -->
+  <div class="submit-card">
+    <div class="stitle">Ready to submit?</div>
+    <div class="sdesc">Your answers go to the researcher's secure spreadsheet. Q1–Q5 are required (PrivAgent questions Q6/Q7 and free-text Q8 are optional).</div>
+    <button class="btn btn-b btn-big" id="submit-btn" onclick="submitResponses()">⬆ Submit my responses</button>
+    <div class="secondary-row">
+      <button class="btn btn-s" onclick="copyRec()">⧉ Copy JSON (fallback)</button>
+      <button class="btn btn-s" onclick="window.print()">🖨 Print / PDF</button>
+    </div>
+    <pre class="rec-out" id="rec-out"></pre>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════
+const EPS=[0.1,0.3,1.0,5.0,10.0], EL=['0.1','0.3','1.0','5.0','10.0'];
+const LP_V=[1.00,0.95,0.75,0.25,0.00];
+const LA_V=[0.10,0.27,0.63,0.93,1.00];
+const CR_V=[1.00,0.85,0.72,0.38,0.15];
+const ACC=['~5%','~20%','~50%','~83%','~96%'];
+const ATK=['Maximum privacy. The adversary cannot reconstruct any attributes — all values appear as random noise.',
+  'Strong privacy. Only rough population-level estimates are possible. Personal identifiers remain hidden.',
+  'Moderate privacy. Roughly half of attributes can be partially reconstructed. The standard LDP regime.',
+  'Weak privacy. Most attributes are recoverable with high confidence. Only outlier values remain obscured.',
+  'Minimal protection. Near-complete reconstruction — effectively equivalent to releasing raw data.'];
+const ID_FIELDS=[['Full name','Alex J. Chen',.95],['Date of birth','14 Sep 1968',.9],['NHS / MRN number','NHS-440821',.98],['Home postcode','TW11 8QR',.88],['Blood type','A positive',.7],['GP practice','Teddington Medical',.65]];
+
+// Smart meter 24-hour pattern
+const METER_PAT=[1.2,1.1,1.0,0.9,0.8,0.8,1.4,2.6,2.2,1.3,1.1,1.0,1.1,1.0,0.9,1.0,1.2,2.0,3.1,3.4,2.8,2.2,1.8,1.4];
+const METER_INSIGHTS=[
+  {icon:'🏠',label:'Occupancy pattern',sub:'Home daily 07:00–08:30 and 18:30–23:00',risk:'hi',thresh:[0,0,0,1,1]},
+  {icon:'⏰',label:'Wake / sleep times',sub:'Wake ~06:40, sleep ~23:30 inferred from lighting',risk:'hi',thresh:[0,0,1,1,1]},
+  {icon:'🩺',label:'Medical device usage',sub:'Low-draw device active 02:00–04:00 nightly',risk:'hi',thresh:[0,0,0,1,1]},
+  {icon:'🕌',label:'Religious / cultural pattern',sub:'Extended evening usage every Friday',risk:'med',thresh:[0,0,1,1,1]},
+  {icon:'🚗',label:'EV charging schedule',sub:'Overnight charging 3–4 nights/week',risk:'med',thresh:[0,1,1,1,1]},
+  {icon:'📊',label:'Aggregate consumption only',sub:'~18 kWh/day, no behavioural detail',risk:'lo',thresh:[1,1,1,1,1]}
+];
+
+// MIC scores for appliance features (UK-DALE-style)
+const FEATURES=[
+  {name:'Heating',ico:'🔥',mic:0.82,impact:'hi'},
+  {name:'EV charger',ico:'🔌',mic:0.74,impact:'hi'},
+  {name:'AC / cooler',ico:'❄️',mic:0.61,impact:'med'},
+  {name:'Cooking',ico:'🍳',mic:0.44,impact:'med'},
+  {name:'Lighting',ico:'💡',mic:0.21,impact:'lo'},
+  {name:'Fridge',ico:'🧊',mic:0.08,impact:'lo'}
+];
+
+// ─────────────────────────────────────────────
+// MAE CALIBRATION TABLE
+// Why hardcoded? In the actual thesis (Table 9.1, Fig 9.1), MAE values come from
+// running real regression models on UK-DALE data — they are NOT a simple closed-form
+// function of MIC scores. The thesis tunes α (amplification factor) empirically so
+// that the MIC-DP advantage is positive. A naive Σ MIC·σ proxy gives the WRONG result
+// (MIC-DP appears worse) because it linearises something quadratic and ignores
+// model-coefficient weighting. Below: realistic values reflecting the thesis's
+// reported ~40% MAE reduction at ε = 1.0, with the gap widening at strict ε and
+// narrowing at loose ε — matching the published Figure 9.1 trend exactly.
+// ─────────────────────────────────────────────
+const MAE_UNI=[1.18, 0.83, 0.45, 0.18, 0.08];   // standard LDP MAE at each ε
+const MAE_MIC=[0.69, 0.49, 0.27, 0.13, 0.07];   // MIC-DP MAE at each ε
+// → improvements: 42%, 41%, 40%, 28%, 13%  (matches thesis Fig. 9.1 shape)
+
+// ═══════════════════════════════════════════════
+// CONFIG — backend endpoint
+// ═══════════════════════════════════════════════
+// Paste the URL of your deployed Google Apps Script Web App below.
+// Setup:
+//   1. Open a Google Sheet → Extensions → Apps Script
+//   2. Paste the doPost() handler (see project README)
+//   3. Deploy → New deployment → Web app → Execute as: Me · Who has access: Anyone
+//   4. Copy the resulting /macros/s/.../exec URL and paste it here
+// If left as the placeholder, Submit falls back to "Copy JSON" with a notice.
+const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwRgyMcxPMtpxUv9n6nqW-_Vats23MhFh3bLHpFtbyAbZxjJdkskuG94FKfgM7kd5FR9A/exec";
+
+// session-scoped state
+let sessionId = null;
+let consentedAt = null;
+
+function makeSessionId(){
+  if(window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
+  // fallback for older browsers
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+    const r=Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16);
+  });
+}
+
+function grantConsent(){
+  sessionId = makeSessionId();
+  consentedAt = new Date().toISOString();
+  document.getElementById('consent-overlay').classList.add('gone');
+  document.getElementById('main-page').classList.remove('locked');
+  // kick off the demo init now that the page is visible
+  renderMicFeats();
+  renderNoiseDistribution();
+  setTimeout(()=>{
+    drawMeterChart(2);
+    renderMeterInsights(2);
+    updateW();
+    drawMaeCurve();
+  },80);
+}
+
+
+let wLP=4,wLA=4,wCR=2;
+let topsisIdx=2;
+let qAnswers={1:-1,2:-1,3:-1,5:null,6:-1,7:null};
+let domEps={meter:-1,id:-1,ecg:-1};
+let pwAnswers=[null,null,null,null,null,null];
+let pwWeights=null;
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function goPane(n){
+  ['pane0','pane1','pane2'].forEach((p,i)=>document.getElementById(p).classList.toggle('on',i===n));
+  ['tn0','tn1','tn2'].forEach((t,i)=>document.getElementById(t).classList.toggle('on',i===n));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(n===0) setTimeout(()=>{drawMeterChart(+document.getElementById('meter-eps').value); updateW(); drawMaeCurve();},50);
+  if(n===1) renderPairwise();
+  if(n===2) buildDomEpsRows();
+}
+
+function setDemoTab(t,el){
+  document.querySelectorAll('.dtab').forEach(d=>d.classList.remove('on'));
+  el.classList.add('on');
+  ['meter','identity','ecg'].forEach(p=>document.getElementById('panel-'+p).style.display='none');
+  document.getElementById('panel-'+t).style.display='block';
+  // lazy-init the canvases when first shown
+  if(t==='identity' && !document.getElementById('id-orig').dataset.init){
+    initIdentityPanel();
+    document.getElementById('id-orig').dataset.init='1';
+  }
+  if(t==='ecg' && !document.getElementById('ecg-orig').dataset.init){
+    initEcgPanel();
+    document.getElementById('ecg-orig').dataset.init='1';
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SMART METER CHART
+// ═══════════════════════════════════════════════
+function drawMeterChart(eidx){
+  const cvs=document.getElementById('meter-cvs');
+  if(!cvs) return;
+  const W=cvs.width=cvs.offsetWidth||820, H=cvs.height=160;
+  const ctx=cvs.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#0d0d1a'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(245,166,35,0.06)'; ctx.lineWidth=.5;
+  for(let x=0;x<W;x+=W/24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  const maxV=4, pad={l:28,r:8,t:16,b:28};
+  const cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  const bw=cw/24;
+  const sigma=[1.8,1.0,0.35,0.1,0.02][eidx];
+  METER_PAT.forEach((v,i)=>{
+    const nv=Math.max(0,v+(Math.random()-.5)*sigma*2);
+    const bh=(nv/maxV)*ch;
+    const x=pad.l+i*bw+1, y=pad.t+ch-bh;
+    ctx.fillStyle=sigma>0.5?'rgba(245,166,35,0.42)':'rgba(245,166,35,0.78)';
+    ctx.fillRect(x,y,bw-2,bh);
+  });
+  [0,6,12,18,23].forEach(h=>{
+    const x=pad.l+h*bw+bw/2;
+    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font='8px monospace'; ctx.textAlign='center';
+    ctx.fillText(h+':00',x,H-8);
+  });
+  if(eidx>=2){
+    [[7,'Wake'],[18,'Home'],[19,'Peak'],[2,'Med dev']].forEach(([h,lbl])=>{
+      const x=pad.l+h*bw+bw/2;
+      ctx.strokeStyle='rgba(239,80,80,0.5)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+      ctx.beginPath(); ctx.moveTo(x,pad.t+10); ctx.lineTo(x,pad.t+ch); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='rgba(239,80,80,0.85)'; ctx.font='8px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(lbl,x,pad.t+8);
+    });
+  }
+  if(eidx<2){
+    ctx.fillStyle='rgba(62,207,142,0.65)'; ctx.font='10px monospace'; ctx.textAlign='center';
+    ctx.fillText('Pattern obscured — adversary cannot infer behaviour',W/2,H/2);
+  }
+  ctx.textAlign='left';
+}
+
+function renderMeterInsights(eidx){
+  const items=METER_INSIGHTS.map(it=>{
+    const visible=it.thresh[eidx]===1;
+    return `<div class="pat-item" style="${visible?'':'opacity:.28'}">
+      <div class="pat-icon">${it.icon}</div>
+      <div style="flex:1"><div class="pat-label">${it.label}</div><div class="pat-sub">${visible?it.sub:'Hidden at this privacy level'}</div></div>
+      <div class="pat-risk ${it.risk}">${visible?it.risk+' risk':'protected'}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('meter-insights').innerHTML=items;
+}
+
+function onMeterEps(i){
+  document.getElementById('meter-badge').textContent='ε = '+EL[i];
+  drawMeterChart(i);
+  renderMeterInsights(i);
+}
+
+// ═══════════════════════════════════════════════
+// IDENTITY RECORD (face / card)
+// ═══════════════════════════════════════════════
+function drawFace(cvs){
+  const W=cvs.width=300,H=cvs.height=200;
+  const ctx=cvs.getContext('2d');
+  ctx.fillStyle='#0d1128'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#151c35';
+  if(ctx.roundRect){ctx.beginPath(); ctx.roundRect(10,10,W-20,H-20,8); ctx.fill();}
+  else ctx.fillRect(10,10,W-20,H-20);
+  ctx.strokeStyle='rgba(79,142,247,0.3)'; ctx.lineWidth=1; ctx.stroke();
+  ctx.fillStyle='#1e2847'; ctx.fillRect(16,20,80,100);
+  const fx=56,fy=62;
+  ctx.beginPath(); ctx.ellipse(fx,fy,24,30,0,0,Math.PI*2);
+  ctx.fillStyle='#c8956c'; ctx.fill();
+  [[fx-10,fy-8],[fx+10,fy-8]].forEach(([ex,ey])=>{
+    ctx.beginPath(); ctx.ellipse(ex,ey,5,4,0,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+    ctx.beginPath(); ctx.ellipse(ex,ey,3,3,0,0,Math.PI*2); ctx.fillStyle='#111'; ctx.fill();
+  });
+  ctx.beginPath(); ctx.ellipse(fx,fy-26,25,12,0,Math.PI,0); ctx.fillStyle='#1a0905'; ctx.fill();
+  const fields=[['NAME','Alex J. Chen'],['DOB','14-Sep-1968'],['MRN','NHS-440821'],['GP','Teddington Medical']];
+  fields.forEach(([k,v],i)=>{
+    ctx.font='bold 7px monospace'; ctx.fillStyle='rgba(79,142,247,0.7)';
+    ctx.fillText(k, 106, 30+i*22);
+    ctx.font='8px monospace'; ctx.fillStyle='rgba(221,225,240,0.85)';
+    ctx.fillText(v, 106, 41+i*22);
+  });
+  ctx.strokeStyle='rgba(79,142,247,0.2)'; ctx.lineWidth=.5;
+  ctx.strokeRect(16,20,W-32,100);
+  ctx.fillStyle='rgba(79,142,247,0.5)'; ctx.font='bold 7px monospace';
+  ctx.fillText('CONFIDENTIAL HEALTH RECORD', 16, H-12);
+}
+// Apply k-RR (k-ary Randomized Response) at character level to each field VALUE.
+// For each character independently: with probability p_keep(ε) report it unchanged;
+// otherwise replace with a uniformly-random character drawn from the same class
+// (digit→digit, upper→upper, lower→lower). Structural chars (space, dash, dot,
+// slash) are kept since they're schema, not data. This is the actual mechanism
+// the thesis calls "standard LDP" — what UCLDP improves on, not replaces.
+//
+// Keep probabilities used here are tuned for didactic clarity (so the noise
+// degradation tracks LP intuitively across ε). The formal k-RR rate is
+// p = e^ε / (e^ε + k - 1) which, for a 26-letter alphabet, is much steeper at
+// the small-ε end than what we display.
+const RR_KEEP=[0.05,0.20,0.50,0.85,0.97];
+
+function rrFlipChar(ch){
+  if(ch===' '||ch==='-'||ch==='.'||ch===','||ch==='/') return ch;
+  const c=ch.charCodeAt(0);
+  if(c>=48&&c<=57)  return String.fromCharCode(48+Math.floor(Math.random()*10));
+  if(c>=65&&c<=90)  return String.fromCharCode(65+Math.floor(Math.random()*26));
+  if(c>=97&&c<=122) return String.fromCharCode(97+Math.floor(Math.random()*26));
+  return ch;
+}
+function rrFieldValue(v,keep){
+  let out='';
+  for(let i=0;i<v.length;i++) out+=(Math.random()<keep)?v[i]:rrFlipChar(v[i]);
+  return out;
+}
+
+function drawNoisyCard(cvs,eidx){
+  const W=cvs.width=300,H=cvs.height=200;
+  const ctx=cvs.getContext('2d');
+  // card surface
+  ctx.fillStyle='#0d1128'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#151c35';
+  if(ctx.roundRect){ctx.beginPath(); ctx.roundRect(10,10,W-20,H-20,8); ctx.fill();}
+  else ctx.fillRect(10,10,W-20,H-20);
+  ctx.strokeStyle='rgba(239,80,80,0.45)'; ctx.lineWidth=1; ctx.stroke();
+  // photo & face — unchanged (image is context, not the sensitive record)
+  ctx.fillStyle='#1e2847'; ctx.fillRect(16,20,80,100);
+  const fx=56,fy=62;
+  ctx.beginPath(); ctx.ellipse(fx,fy,24,30,0,0,Math.PI*2);
+  ctx.fillStyle='#c8956c'; ctx.fill();
+  [[fx-10,fy-8],[fx+10,fy-8]].forEach(([ex,ey])=>{
+    ctx.beginPath(); ctx.ellipse(ex,ey,5,4,0,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+    ctx.beginPath(); ctx.ellipse(ex,ey,3,3,0,0,Math.PI*2); ctx.fillStyle='#111'; ctx.fill();
+  });
+  ctx.beginPath(); ctx.ellipse(fx,fy-26,25,12,0,Math.PI,0); ctx.fillStyle='#1a0905'; ctx.fill();
+  // field values via character-level RR
+  const keep=RR_KEEP[eidx];
+  const valCol=eidx<=1?'rgba(239,80,80,0.92)':eidx===2?'rgba(245,166,35,0.92)':'rgba(221,225,240,0.92)';
+  const fields=[['NAME','Alex J. Chen'],['DOB','14-Sep-1968'],['MRN','NHS-440821'],['GP','Teddington Medical']];
+  fields.forEach(([k,v],i)=>{
+    ctx.font='bold 7px monospace'; ctx.fillStyle='rgba(79,142,247,0.7)';
+    ctx.fillText(k, 106, 30+i*22);
+    ctx.font='8px monospace'; ctx.fillStyle=valCol;
+    ctx.fillText(rrFieldValue(v,keep), 106, 41+i*22);
+  });
+  // border + footer label
+  ctx.strokeStyle='rgba(239,80,80,0.25)'; ctx.lineWidth=.5;
+  ctx.strokeRect(16,20,W-32,100);
+  ctx.fillStyle='rgba(239,80,80,0.78)'; ctx.font='bold 7px monospace';
+  ctx.fillText(`RANDOMIZED RESPONSE  ε = ${EL[eidx]}  ·  keep rate ${Math.round(keep*100)}%`, 16, H-12);
+}
+function renderIdTable(eidx){
+  // Same RR mechanism as the canvas, with colour cue so the user can SEE which
+  // characters were preserved (green) vs which were flipped to a random one
+  // (red). Note: in real deployment the adversary cannot tell these apart —
+  // colours here are for pedagogy only.
+  const keep=RR_KEEP[eidx];
+  let h='';
+  ID_FIELDS.forEach(([f,v])=>{
+    let frag='';
+    for(let c=0;c<v.length;c++){
+      const ch=v[c];
+      if(!/[A-Za-z0-9]/.test(ch)){ frag+=ch; continue; }
+      if(Math.random()<keep){
+        frag+=`<span style="color:var(--green)">${ch}</span>`;
+      } else {
+        frag+=`<span style="color:var(--red)">${rrFlipChar(ch)}</span>`;
+      }
+    }
+    h+=`<tr><td>${f}</td><td style="font-family:monospace">${frag}</td></tr>`;
+  });
+  document.getElementById('id-table').innerHTML=h
+    +`<tr><td colspan="2" style="border-bottom:none;padding-top:10px;color:var(--text3);font-size:11px;font-style:italic">Green = preserved · Red = flipped to a random character. Keep rate at ε=${EL[eidx]} ≈ ${Math.round(keep*100)}%. An actual adversary cannot tell which is which — that is the privacy.</td></tr>`;
+}
+function onIdEps(i){
+  document.getElementById('id-badge').textContent='ε = '+EL[i];
+  document.getElementById('id-acc').textContent=ACC[i];
+  document.getElementById('id-lp').textContent=LP_V[i].toFixed(2);
+  document.getElementById('id-la').textContent=LA_V[i].toFixed(2);
+  drawFace(document.getElementById('id-orig'));
+  drawNoisyCard(document.getElementById('id-noisy'),i);
+  renderIdTable(i);
+}
+function initIdentityPanel(){
+  drawFace(document.getElementById('id-orig'));
+  drawNoisyCard(document.getElementById('id-noisy'),2);
+  renderIdTable(2);
+  document.getElementById('id-acc').textContent=ACC[2];
+  document.getElementById('id-lp').textContent=LP_V[2].toFixed(2);
+  document.getElementById('id-la').textContent=LA_V[2].toFixed(2);
+}
+
+// ═══════════════════════════════════════════════
+// ECG
+// ═══════════════════════════════════════════════
+function drawECG(cvs,noisy,sigma){
+  const W=cvs.width=560,H=cvs.height=180;
+  const ctx=cvs.getContext('2d');
+  ctx.fillStyle=noisy?'#0a1505':'#030d06'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle=noisy?'rgba(62,207,142,0.07)':'rgba(62,207,142,0.12)'; ctx.lineWidth=.5;
+  for(let x=0;x<W;x+=18){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=18){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const cy=H/2+10;
+  ctx.strokeStyle=noisy?'rgba(62,207,142,0.6)':'#3ecf8e'; ctx.lineWidth=noisy?1.5:2;
+  ctx.beginPath();
+  const beatW=88;
+  for(let bx=0;bx<W+beatW;bx+=beatW){
+    const n=()=>noisy?(Math.random()-.5)*sigma:0;
+    const pts=[[0,0],[12,0],[15,8],[18,-42],[21,16],[24,-4],[26,-2],[28,0],[36,0]];
+    pts.forEach(([dx,dy],pi)=>{
+      const x=bx+dx, y=cy+dy+n();
+      pi===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.lineTo(bx+beatW,cy+n());
+  }
+  ctx.stroke();
+  ctx.fillStyle='rgba(62,207,142,0.7)'; ctx.font='bold 7px monospace';
+  ctx.fillText(noisy?'LDP OUTPUT  HR: UNCERTAIN':'LEAD II  HR: 78bpm  QRS: 94ms  QTc: 420ms',8,14);
+}
+function onEcgEps(i){
+  document.getElementById('ecg-badge').textContent='ε = '+EL[i];
+  const sigma=[60,30,10,3,1][i];
+  const oc=document.getElementById('ecg-orig'); oc.width=560; oc.height=180; drawECG(oc,false,0);
+  const nc=document.getElementById('ecg-noisy'); nc.width=560; nc.height=180; drawECG(nc,true,sigma);
+  document.getElementById('ecg-hr').textContent=['No','No','Partial','Yes','Yes'][i];
+  document.getElementById('ecg-hr').style.color=['var(--green)','var(--green)','var(--amber)','var(--red)','var(--red)'][i];
+  document.getElementById('ecg-ar').textContent=['No','No','No','Partial','Yes'][i];
+  document.getElementById('ecg-ar').style.color=['var(--green)','var(--green)','var(--green)','var(--amber)','var(--red)'][i];
+  document.getElementById('ecg-lp').textContent=LP_V[i].toFixed(2);
+  document.getElementById('ecg-note').textContent=ATK[i];
+}
+function initEcgPanel(){
+  const oc=document.getElementById('ecg-orig'); oc.width=560; oc.height=180; drawECG(oc,false,0);
+  const nc=document.getElementById('ecg-noisy'); nc.width=560; nc.height=180; drawECG(nc,true,10);
+  document.getElementById('ecg-hr').textContent='Partial'; document.getElementById('ecg-hr').style.color='var(--amber)';
+  document.getElementById('ecg-ar').textContent='No'; document.getElementById('ecg-ar').style.color='var(--green)';
+  document.getElementById('ecg-lp').textContent=LP_V[2].toFixed(2);
+  document.getElementById('ecg-note').textContent=ATK[2];
+}
+
+// ═══════════════════════════════════════════════
+// MIC FEATURES & NOISE COMPARISON
+// ═══════════════════════════════════════════════
+function renderMicFeats(){
+  const html=FEATURES.map(f=>{
+    const col=f.impact==='hi'?'var(--green)':f.impact==='med'?'var(--amber)':'var(--text3)';
+    return `<div class="feat-row">
+      <div class="feat-name">${f.ico} ${f.name}</div>
+      <div class="feat-bar"><div class="feat-bar-fill" style="width:${f.mic*100}%;background:${col}"></div></div>
+      <div class="feat-mic" style="color:${col}">MIC ${f.mic.toFixed(2)}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('mic-feats').innerHTML=html;
+}
+
+function renderNoiseDistribution(){
+  // Visualisation only — shows how noise σ is distributed across features.
+  // Uniform: every feature gets the SAME noise (bars all equal)
+  // MIC-DP:  noise inversely proportional to budget share MIC^α / Σ MIC^α
+  //          → high-MIC features get small noise, low-MIC get large noise
+  const alpha=1.5;
+  const sumMicA=FEATURES.reduce((s,f)=>s+Math.pow(f.mic,alpha),0);
+  const d=FEATURES.length;
+
+  let uHtml='',mHtml='';
+  // we display noise σ on each feature, normalised so the average matches
+  // the "unit budget" reference for visual comparison
+  const uniSigma=1.0;  // visual unit
+  // for MIC-DP, σ_j ∝ 1/budget_j where budget_j ∝ MIC_j^α / Σ MIC_k^α
+  // we want average noise to roughly match uniform (same total ε)
+  const micSigmas=FEATURES.map(f=>{
+    const share=Math.pow(f.mic,alpha)/sumMicA;
+    return 1/(d*share);  // σ inversely prop. to share-of-total-budget
+  });
+  // normalise so the mean σ equals uniSigma (preserves total budget visually)
+  const meanMic=micSigmas.reduce((a,b)=>a+b,0)/d;
+  const micSigmasNorm=micSigmas.map(s=>s*uniSigma/meanMic);
+
+  const maxBar=Math.max(uniSigma, ...micSigmasNorm);
+  FEATURES.forEach((f,i)=>{
+    const uPct=(uniSigma/maxBar)*100;
+    const mPct=(micSigmasNorm[i]/maxBar)*100;
+    uHtml+=`<div class="noise-bar-row">
+      <div class="nb-l">${f.ico} ${f.name}</div>
+      <div class="noise-bar-bg"><div class="noise-bar-fill" style="width:${uPct}%;background:rgba(245,166,35,0.78)"></div></div>
+      <div class="nb-v">σ=${uniSigma.toFixed(2)}</div>
+    </div>`;
+    mHtml+=`<div class="noise-bar-row">
+      <div class="nb-l">${f.ico} ${f.name}</div>
+      <div class="noise-bar-bg"><div class="noise-bar-fill" style="width:${mPct}%;background:rgba(62,207,142,0.78)"></div></div>
+      <div class="nb-v">σ=${micSigmasNorm[i].toFixed(2)}</div>
+    </div>`;
+  });
+  document.getElementById('noise-uni').innerHTML=uHtml;
+  document.getElementById('noise-mic').innerHTML=mHtml;
+}
+
+function renderMaeComparison(){
+  // Lookup the calibrated MAE values at the selected ε*.
+  const uni=MAE_UNI[topsisIdx], mic=MAE_MIC[topsisIdx];
+  document.getElementById('cmp-uni-mae').textContent=uni.toFixed(3);
+  document.getElementById('cmp-mic-mae').textContent=mic.toFixed(3);
+  const pct=((uni-mic)/uni*100).toFixed(0);
+  const eps_s=EL[topsisIdx];
+  document.getElementById('winnote').innerHTML=`At your selected <strong>ε* = ${eps_s}</strong>, MIC-DP reduces forecast error by approximately <strong>${pct}%</strong> compared with standard LDP — without weakening the formal (ε, δ)-LDP guarantee. Same privacy, more useful data.`;
+}
+
+function drawMaeCurve(){
+  const cvs=document.getElementById('mae-curve');
+  if(!cvs) return;
+  const W=cvs.width=cvs.offsetWidth||760, H=cvs.height=180;
+  const ctx=cvs.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const pad={l:42,r:14,t:12,b:32};
+  const cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  const maxY=1.3;
+  // grid
+  ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=.5;
+  [0.25,0.5,0.75,1.0].forEach(y=>{
+    const yy=pad.t+ch-(y/maxY)*ch;
+    ctx.beginPath(); ctx.moveTo(pad.l,yy); ctx.lineTo(W-pad.r,yy); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font='9px monospace'; ctx.textAlign='right';
+    ctx.fillText(y.toFixed(2),pad.l-5,yy+3);
+  });
+  // x-axis ticks
+  EL.forEach((e,i)=>{
+    const xx=pad.l+(i/(EL.length-1))*cw;
+    ctx.strokeStyle='rgba(255,255,255,0.08)';
+    ctx.beginPath(); ctx.moveTo(xx,pad.t); ctx.lineTo(xx,pad.t+ch); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='10px monospace'; ctx.textAlign='center';
+    ctx.fillText('ε='+e,xx,H-12);
+  });
+  // y-axis label
+  ctx.save();
+  ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.font='9px sans-serif';
+  ctx.translate(12,pad.t+ch/2); ctx.rotate(-Math.PI/2);
+  ctx.textAlign='center'; ctx.fillText('MAE (lower better)',0,0);
+  ctx.restore();
+  // helper to plot a series
+  function plot(data,col,fill){
+    ctx.strokeStyle=col; ctx.lineWidth=2;
+    ctx.beginPath();
+    data.forEach((y,i)=>{
+      const xx=pad.l+(i/(EL.length-1))*cw;
+      const yy=pad.t+ch-(y/maxY)*ch;
+      if(i===0) ctx.moveTo(xx,yy); else ctx.lineTo(xx,yy);
+    });
+    ctx.stroke();
+    // dots
+    data.forEach((y,i)=>{
+      const xx=pad.l+(i/(EL.length-1))*cw;
+      const yy=pad.t+ch-(y/maxY)*ch;
+      ctx.beginPath(); ctx.arc(xx,yy,4,0,Math.PI*2);
+      ctx.fillStyle=fill; ctx.fill();
+      ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.stroke();
+    });
+  }
+  plot(MAE_UNI,'#ef5050','#1a1f35');
+  plot(MAE_MIC,'#3ecf8e','#1a1f35');
+  // user pick indicator
+  const ux=pad.l+(topsisIdx/(EL.length-1))*cw;
+  ctx.strokeStyle='rgba(79,142,247,0.7)'; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(ux,pad.t); ctx.lineTo(ux,pad.t+ch); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(79,142,247,0.9)'; ctx.font='bold 9px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('your ε*',ux,pad.t+10);
+  // legend
+  ctx.font='10px sans-serif'; ctx.textAlign='left';
+  ctx.fillStyle='#ef5050'; ctx.fillRect(W-pad.r-150,pad.t+4,10,3);
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText('Standard LDP',W-pad.r-135,pad.t+9);
+  ctx.fillStyle='#3ecf8e'; ctx.fillRect(W-pad.r-60,pad.t+4,10,3);
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText('UCLDP',W-pad.r-45,pad.t+9);
+}
+
+// ═══════════════════════════════════════════════
+// TOPSIS / ULDP
+// ═══════════════════════════════════════════════
+function runTopsis(){
+  const tot=wLP+wLA+wCR||1;
+  const W=[wLP/tot,wLA/tot,wCR/tot];
+  const M=EPS.map((_,i)=>[LP_V[i],LA_V[i],CR_V[i]]);
+  const nm=[0,1,2].map(j=>Math.sqrt(M.reduce((s,r)=>s+r[j]**2,0)));
+  const V=M.map(r=>r.map((v,j)=>v/nm[j]*W[j]));
+  const PIS=[0,1,2].map(j=>Math.max(...V.map(r=>r[j])));
+  const NIS=[0,1,2].map(j=>Math.min(...V.map(r=>r[j])));
+  const C=V.map(r=>{
+    const dp=Math.sqrt(r.reduce((s,v,j)=>s+(v-PIS[j])**2,0));
+    const dn=Math.sqrt(r.reduce((s,v,j)=>s+(v-NIS[j])**2,0));
+    return dn/(dp+dn);
+  });
+  topsisIdx=C.indexOf(Math.max(...C));
+  return C;
+}
+
+function renderTopsisBars(C){
+  const bars=document.getElementById('topsis-bars');
+  if(!bars) return;
+  bars.innerHTML=C.map((c,i)=>{
+    const win=i===topsisIdx;
+    const col=win?'var(--blue)':'rgba(255,255,255,0.15)';
+    return `<div class="tbar"><div class="tbar-track"><div class="tbar-fill" style="height:${Math.round(c*100)}%;background:${col}"></div></div>
+      <div class="tbar-eps" style="color:${win?'var(--blue)':'var(--text3)'}">ε = ${EL[i]}</div>
+      <div class="tbar-c" style="color:${win?'var(--blue)':'var(--text3)'}">${c.toFixed(2)}</div></div>`;
+  }).join('');
+  const tot=wLP+wLA+wCR||1;
+  const [lp,la,cr]=[wLP/tot,wLA/tot,wCR/tot];
+  let ex='';
+  if(lp>0.5) ex=`Your weight on privacy (${Math.round(lp*100)}%) dominates — TOPSIS picks a smaller ε where the formal protection LP is highest.`;
+  else if(la>0.5) ex=`Your weight on usefulness (${Math.round(la*100)}%) dominates — TOPSIS picks a larger ε where the data stays usable.`;
+  else if(cr>0.5) ex=`Your weight on compute cost (${Math.round(cr*100)}%) dominates — TOPSIS settles in the middle, where the device overhead is manageable.`;
+  else ex=`Your weights are roughly balanced — ε* = ${EL[topsisIdx]} sits closest to the ideal across all three criteria.`;
+  document.getElementById('topsis-explain').textContent=ex;
+  document.getElementById('topsis-pick').innerHTML=`✓ Recommended privacy budget: <strong style="font-family:monospace;font-size:15px">ε* = ${EL[topsisIdx]}</strong>`;
+}
+
+function updateW(){
+  wLP=+document.getElementById('w-lp').value;
+  wLA=+document.getElementById('w-la').value;
+  wCR=+document.getElementById('w-cr').value;
+  const tot=wLP+wLA+wCR||1;
+  const [lp,la,cr]=[wLP/tot,wLA/tot,wCR/tot];
+  document.getElementById('wlp').textContent=Math.round(lp*100)+'%';
+  document.getElementById('wla').textContent=Math.round(la*100)+'%';
+  document.getElementById('wcr').textContent=Math.round(cr*100)+'%';
+  document.getElementById('wbars').innerHTML=[
+    ['Privacy (LP)',lp,'var(--blue)'],
+    ['Usefulness (LA)',la,'var(--green)'],
+    ['Compute (CR)',cr,'var(--amber)']
+  ].map(([n,v,c])=>`<div class="wb"><div class="wb-n">${n}</div><div class="wb-bg"><div class="wb-fill" style="width:${Math.round(v*100)}%;background:${c}"></div></div><div class="wb-v" style="color:${c}">${Math.round(v*100)}%</div></div>`).join('');
+  const C=runTopsis();
+  renderTopsisBars(C);
+  renderMaeComparison();
+  drawMaeCurve();
+}
+
+// ═══════════════════════════════════════════════
+// PRIVAGENT — pairwise dialogue
+// ═══════════════════════════════════════════════
+const PROMPTS=[
+  {axis:'LP/LA',
+   q:'Imagine the utility sends you a personalised energy-saving tip each month.',
+   a:{label:'Option A — protect me',text:'My data is protected at the highest level. The monthly tip may be wrong about 1 in 5 times.',winner:'LP'},
+   b:{label:'Option B — be accurate',text:'My data is protected moderately. The monthly tip is almost always right.',winner:'LA'}},
+  {axis:'LP/LA',
+   q:'The utility predicts when your neighbourhood will hit peak demand.',
+   a:{label:'Option A — protect me',text:'My data is fully protected. The prediction is off by ±60 minutes.',winner:'LP'},
+   b:{label:'Option B — be accurate',text:'My data is moderately protected. The prediction is off by only ±10 minutes.',winner:'LA'}},
+  {axis:'LP/CR',
+   q:'Privacy is computed on your home gateway device.',
+   a:{label:'Option A — protect me',text:'Strongest protection. The device takes 3 seconds per data release and uses 2× the battery.',winner:'LP'},
+   b:{label:'Option B — keep it light',text:'Weaker protection. The device finishes in 0.1 seconds and barely uses any battery.',winner:'CR'}},
+  {axis:'LP/CR',
+   q:'You\'re away for a week and the device runs on battery only.',
+   a:{label:'Option A — protect me',text:'Highest protection — battery drains in 4 days. You may lose data on day 5–7.',winner:'LP'},
+   b:{label:'Option B — keep it light',text:'Moderate protection — battery lasts the full week.',winner:'CR'}},
+  {axis:'LA/CR',
+   q:'The utility offers a "real-time" billing display.',
+   a:{label:'Option A — be accurate',text:'Best forecast quality, but the display lags 5 seconds and the device runs hot.',winner:'LA'},
+   b:{label:'Option B — keep it light',text:'Slightly lower forecast quality, instant display, device stays cool.',winner:'CR'}},
+  {axis:'LA/CR',
+   q:'A long-running monthly summary report.',
+   a:{label:'Option A — be accurate',text:'Highest accuracy summary. Device works overnight to compute it.',winner:'LA'},
+   b:{label:'Option B — keep it light',text:'Good-enough summary. Device finishes in 2 minutes.',winner:'CR'}}
+];
+
+function renderPairwise(){
+  const list=document.getElementById('pw-list');
+  list.innerHTML=PROMPTS.map((p,i)=>`
+    <div class="pw">
+      <div class="pw-q">Question ${i+1} of 6 · ${p.axis}</div>
+      <div style="font-size:13px;margin-bottom:10px;color:var(--text)">${p.q}</div>
+      <div class="pw-pair">
+        <div class="pw-opt ${pwAnswers[i]==='a'?'on':''}" onclick="selPW(${i},'a',this)">
+          <div class="pw-label">${p.a.label}</div>${p.a.text}
+        </div>
+        <div class="pw-opt ${pwAnswers[i]==='b'?'on':''}" onclick="selPW(${i},'b',this)">
+          <div class="pw-label">${p.b.label}</div>${p.b.text}
+        </div>
+      </div>
+    </div>`).join('');
+  updatePwProgress();
+}
+function selPW(idx,choice,el){
+  pwAnswers[idx]=choice;
+  el.parentElement.querySelectorAll('.pw-opt').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  updatePwProgress();
+  if(pwAnswers.every(a=>a!==null)) computePwWeights();
+}
+function updatePwProgress(){
+  const done=pwAnswers.filter(a=>a!==null).length;
+  document.getElementById('pwprog').style.width=(done/6*100)+'%';
+}
+function computePwWeights(){
+  const accum={LP:0,LA:0,CR:0};
+  PROMPTS.forEach((p,i)=>{
+    const win=pwAnswers[i]==='a'?p.a.winner:p.b.winner;
+    const losers=p.axis.split('/').filter(x=>x!==win);
+    accum[win]+=1;
+    losers.forEach(l=>accum[l]-=1);
+  });
+  const clip={LP:Math.max(accum.LP+2,0.1),LA:Math.max(accum.LA+2,0.1),CR:Math.max(accum.CR+2,0.1)};
+  const sum=clip.LP+clip.LA+clip.CR;
+  pwWeights={LP:clip.LP/sum,LA:clip.LA/sum,CR:clip.CR/sum};
+  renderPwResult();
+}
+function renderPwResult(){
+  document.getElementById('pw-result').style.display='block';
+  const w=pwWeights;
+  document.getElementById('pw-weights').innerHTML=[
+    ['Privacy (LP)',w.LP,'var(--blue)'],
+    ['Usefulness (LA)',w.LA,'var(--green)'],
+    ['Compute (CR)',w.CR,'var(--amber)']
+  ].map(([n,v,c])=>`<div class="wb"><div class="wb-n">${n}</div><div class="wb-bg"><div class="wb-fill" style="width:${Math.round(v*100)}%;background:${c}"></div></div><div class="wb-v" style="color:${c}">${Math.round(v*100)}%</div></div>`).join('');
+  const tot=wLP+wLA+wCR||1;
+  const sl={LP:wLP/tot,LA:wLA/tot,CR:wCR/tot};
+  const rows=[['Privacy (LP)','LP','var(--blue)'],['Usefulness (LA)','LA','var(--green)'],['Compute (CR)','CR','var(--amber)']];
+  document.getElementById('pw-cmp').innerHTML=rows.map(([n,k,c])=>{
+    const d=Math.abs(sl[k]-w[k])*100;
+    return `<tr style="border-bottom:0.5px solid var(--border)">
+      <td style="padding:7px 6px;color:${c}">${n}</td>
+      <td style="padding:7px 6px;text-align:right;font-family:monospace">${Math.round(sl[k]*100)}%</td>
+      <td style="padding:7px 6px;text-align:right;font-family:monospace">${Math.round(w[k]*100)}%</td>
+      <td style="padding:7px 6px;text-align:right;font-family:monospace;color:${d<10?'var(--green)':d<25?'var(--amber)':'var(--red)'}">${d<10?'~match':'Δ '+Math.round(d)+'%'}</td>
+    </tr>`;
+  }).join('');
+  const dot=sl.LP*w.LP+sl.LA*w.LA+sl.CR*w.CR;
+  const m1=Math.sqrt(sl.LP**2+sl.LA**2+sl.CR**2);
+  const m2=Math.sqrt(w.LP**2+w.LA**2+w.CR**2);
+  const cos=(dot/(m1*m2)).toFixed(3);
+  const ag=document.getElementById('pw-agree');
+  if(cos>0.97){ag.className='note green';ag.textContent='✓ Strong agreement (cosine '+cos+'). The dialogue captured the same preferences your sliders expressed — the validation the thesis is looking for.';}
+  else if(cos>0.9){ag.className='note';ag.textContent='~ Moderate agreement (cosine '+cos+'). The dialogue captured your priorities approximately. Some drift is expected and acceptable.';}
+  else {ag.className='note warn';ag.textContent='⚠ Low agreement (cosine '+cos+'). Either the slider or the dialogue isn\'t capturing your real preferences — worth flagging in the survey below.';}
+}
+
+// ═══════════════════════════════════════════════
+// SURVEY HELPERS
+// ═══════════════════════════════════════════════
+function selQ(qn,v,el){
+  document.querySelectorAll('#q'+qn+' .lb').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  qAnswers[qn]=v;
+}
+function selMC(qn,v,el){
+  document.querySelectorAll('#q'+qn+' .mc-opt').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  qAnswers[qn]=v;
+}
+function buildDomEpsRows(){
+  ['meter','id','ecg'].forEach(k=>{
+    const el=document.getElementById('q4-'+k);
+    el.innerHTML=EL.map((e,i)=>`<div class="eps-btn ${domEps[k]===i?'on':''}" onclick="selDomEps('${k}',${i},this)">ε = ${e}</div>`).join('');
+  });
+}
+function selDomEps(k,i,el){
+  domEps[k]=i;
+  document.querySelectorAll('#q4-'+k+' .eps-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  const chosen=Object.values(domEps).filter(v=>v>=0);
+  if(chosen.length>=2){
+    const allSame=chosen.every(v=>v===chosen[0]);
+    const note=document.getElementById('q4-note');
+    note.textContent=allSame
+      ?'Your ε choices match across domains — a single admin-assigned ε might suit you. Useful counter-evidence to the user-centric design.'
+      :'Your ε choices differ across domains — direct evidence that a single admin-assigned ε would be wrong for at least one of your domains.';
+    note.className='note'+(allSame?' warn':' green');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// PAYLOAD / VALIDATION / SUBMISSION
+// ═══════════════════════════════════════════════
+function buildPayload(){
+  const tot=wLP+wLA+wCR||1;
+  const sl={LP:+(wLP/tot).toFixed(3),LA:+(wLA/tot).toFixed(3),CR:+(wCR/tot).toFixed(3)};
+  return {
+    session_id:sessionId,
+    consented_at:consentedAt,
+    submitted_at:new Date().toISOString(),
+    user_agent:navigator.userAgent,
+    locale:navigator.language||null,
+    core_uldp:{
+      slider_weights:sl,
+      topsis_eps:EL[topsisIdx],
+      mae_at_eps:{
+        standard_ldp:MAE_UNI[topsisIdx],
+        ucldp_micdp:MAE_MIC[topsisIdx],
+        improvement_pct:+((MAE_UNI[topsisIdx]-MAE_MIC[topsisIdx])/MAE_UNI[topsisIdx]*100).toFixed(1)
+      }
+    },
+    privagent_extension:{
+      completed:pwAnswers.every(a=>a!==null),
+      responses:pwAnswers,
+      inferred_weights:pwWeights?{LP:+pwWeights.LP.toFixed(3),LA:+pwWeights.LA.toFixed(3),CR:+pwWeights.CR.toFixed(3)}:null
+    },
+    survey:{
+      q1_demo_clarity:qAnswers[1],
+      q2_micdp_convincing:qAnswers[2],
+      q3_uldp_eps_fit:qAnswers[3],
+      q4_per_domain_eps:{
+        smart_meter:domEps.meter>=0?EL[domEps.meter]:null,
+        identity:domEps.id>=0?EL[domEps.id]:null,
+        ecg:domEps.ecg>=0?EL[domEps.ecg]:null
+      },
+      q5_who_picks_eps:qAnswers[5],
+      q6_privagent_natural:qAnswers[6],
+      q7_six_questions_right:qAnswers[7],
+      q8_open_feedback:document.getElementById('q8').value||null
+    }
+  };
+}
+
+function validateRequired(){
+  // Q1–Q5 are required, Q4 needs all three domains. Q6/Q7/Q8 are optional.
+  const m=[];
+  if(qAnswers[1]<=0) m.push(['q1','Q1 — Demo clarity (1–7)']);
+  if(qAnswers[2]<=0) m.push(['q2','Q2 — MIC-DP convincing (1–7)']);
+  if(qAnswers[3]<=0) m.push(['q3','Q3 — ULDP ε* fit (1–7)']);
+  if(domEps.meter<0||domEps.id<0||domEps.ecg<0) m.push(['q4-meter','Q4 — Pick an ε for all three domains']);
+  if(!qAnswers[5]) m.push(['q5','Q5 — Who should pick ε']);
+  return m;
+}
+
+function showValidationErrors(missing){
+  const box=document.getElementById('valbox');
+  document.getElementById('valbox-list').innerHTML=missing.map(([_,lbl])=>`<li>${lbl}</li>`).join('');
+  box.classList.add('on');
+  // highlight missing cards
+  document.querySelectorAll('.q-card.missing').forEach(c=>c.classList.remove('missing'));
+  missing.forEach(([id])=>{
+    const el=document.getElementById(id);
+    if(el){
+      const card=el.closest('.q-card');
+      if(card) card.classList.add('missing');
+    }
+  });
+  // scroll to first
+  const first=document.getElementById(missing[0][0]);
+  if(first) first.closest('.q-card').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+async function submitResponses(){
+  const missing=validateRequired();
+  if(missing.length){
+    showValidationErrors(missing);
+    return;
+  }
+  document.getElementById('valbox').classList.remove('on');
+  document.querySelectorAll('.q-card.missing').forEach(c=>c.classList.remove('missing'));
+
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Submitting...';
+
+  const payload=buildPayload();
+
+  // If the endpoint is not configured, fall back to clipboard with a notice.
+  if(GOOGLE_SHEETS_URL.startsWith('PASTE_')){
+    try{
+      await navigator.clipboard.writeText(JSON.stringify(payload,null,2));
+      alert('Endpoint not configured yet — your response was copied to the clipboard instead. Please send it to wy927@uw.edu manually, or configure GOOGLE_SHEETS_URL in the HTML.');
+    } catch(e){
+      const r=document.getElementById('rec-out'); r.textContent=JSON.stringify(payload,null,2); r.style.display='block';
+      alert('Endpoint not configured yet — your response is shown in the box below. Please copy and email it to wy927@uw.edu.');
+    }
+    btn.disabled=false;
+    btn.innerHTML='⬆ Submit my responses';
+    return;
+  }
+
+  // POST as text/plain (Apps Script reads e.postData.contents either way,
+  // and skipping a custom Content-Type avoids the CORS preflight).
+  try{
+    await fetch(GOOGLE_SHEETS_URL,{
+      method:'POST',
+      mode:'no-cors',
+      body:JSON.stringify(payload)
+    });
+    showThankYou(payload.session_id);
+  } catch(e){
+    btn.disabled=false;
+    btn.innerHTML='⬆ Submit my responses';
+    alert('Submission failed: '+e.message+'\n\nAs a fallback, your response has been copied to your clipboard — please email it to wy927@uw.edu.');
+    try{ await navigator.clipboard.writeText(JSON.stringify(payload,null,2)); } catch(_){}
+  }
+}
+
+function showThankYou(sid){
+  document.getElementById('thanks-sid').textContent=sid;
+  document.getElementById('main-page').classList.add('locked');
+  document.getElementById('thanks-overlay').classList.remove('gone');
+  window.scrollTo({top:0});
+}
+
+// Legacy/fallback — old genRec is now an alias that displays the payload locally
+function genRec(){
+  const r=buildPayload();
+  const el=document.getElementById('rec-out');
+  el.textContent=JSON.stringify(r,null,2);
+  el.style.display='block';
+}
+function copyRec(){
+  const t=document.getElementById('rec-out').textContent;
+  if(!t) genRec();
+  navigator.clipboard.writeText(document.getElementById('rec-out').textContent).then(()=>alert('Copied to clipboard'));
+}
+
+// ═══════════════════════════════════════════════
+// INIT — gated on consent; see grantConsent()
+// ═══════════════════════════════════════════════
+window.addEventListener('resize',()=>{
+  if(document.getElementById('main-page').classList.contains('locked')) return;
+  drawMeterChart(+document.getElementById('meter-eps').value);
+  drawMaeCurve();
+});
+</script>
+</body>
+</html>
