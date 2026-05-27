@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>UCLDP — Demo & Validation Survey</title>
+<title>Privacy Demo — Help Us Test a New Way to Protect Your Data</title>
 <style>
 :root{
   --bg:#0c0e18;--bg2:#131629;--bg3:#1a1f35;--bg4:#212840;
@@ -22,14 +22,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .page{max-width:880px;margin:0 auto;padding:24px 20px 80px}
 .timebar{display:flex;align-items:center;gap:8px;padding:8px 14px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);font-size:11px;color:var(--text2);margin-bottom:16px}
 .timebar b{color:var(--text);font-weight:600}
-.top-nav{display:flex;gap:0;margin-bottom:28px;border:0.5px solid var(--border2);border-radius:var(--rl);overflow:hidden}
-.top-tab{flex:1;padding:13px 8px;text-align:center;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--text2);background:var(--bg2);transition:all .2s;border-right:0.5px solid var(--border2)}
-.top-tab:last-child{border-right:none}
-.top-tab.on{background:var(--blue-d);color:var(--blue)}
-.top-tab .num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--bg3);font-size:10px;font-weight:700;margin-right:6px}
-.top-tab.on .num{background:var(--blue);color:#fff}
-.top-tab .est{display:block;font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:.04em}
-.top-tab.on .est{color:var(--blue)}
+.top-nav-removed{display:none}
+.progress-track{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:24px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue) 0%,var(--purple) 100%);border-radius:3px;transition:width .5s ease}
 .pane{display:none}.pane.on{display:block}
 h2{font-size:21px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px}
 h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
@@ -46,11 +41,6 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
 .stage b{color:var(--text);display:block;font-weight:600;font-size:12px;margin-bottom:2px}
 .stage-cur{border-color:var(--blue);background:var(--blue-d);color:var(--blue)}
 .stage-cur b{color:var(--blue)}
-/* data type tabs */
-.dtabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.dtab{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;border:0.5px solid var(--border2);color:var(--text2);background:var(--bg3);cursor:pointer;transition:all .15s}
-.dtab:hover{border-color:var(--blue);color:var(--text)}
-.dtab.on{background:var(--blue-d);border-color:var(--blue);color:var(--blue)}
 /* canvas wrap */
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .cvs-wrap{position:relative;background:#000;border-radius:var(--r);overflow:hidden}
@@ -97,7 +87,9 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
 .wb-fill{height:100%;border-radius:3px;transition:width .4s}
 .wb-v{font-size:11px;color:var(--text3);width:34px;text-align:right;font-family:monospace}
 /* MIC features */
-.feat-row{display:grid;grid-template-columns:120px 1fr 60px;gap:10px;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--border);font-size:12px}
+.feat-row{display:grid;grid-template-columns:120px 1fr 60px;gap:10px;align-items:center;padding:7px 9px;border-bottom:0.5px solid var(--border);font-size:12px;border-radius:6px;transition:background .15s,box-shadow .15s}
+.feat-row:hover{background:rgba(79,142,247,0.06)}
+.feat-row.feat-on{background:rgba(79,142,247,0.13);box-shadow:0 0 0 1px var(--blue) inset}
 .feat-row:last-child{border-bottom:none}
 .feat-name{display:flex;align-items:center;gap:7px}
 .feat-bar{height:7px;background:var(--bg4);border-radius:4px;overflow:hidden;position:relative}
@@ -222,48 +214,47 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
 ═══════════════════════════════════════ -->
 <div class="overlay" id="consent-overlay">
   <div class="overlay-card">
-    <h1>Research Study Participation</h1>
-    <p style="color:var(--text)">You're invited to take part in a brief research study evaluating <strong>UCLDP</strong>, a user-centric privacy framework developed for a PhD dissertation at the University of Washington. Your responses help validate whether the framework matches real users' privacy preferences.</p>
+    <h1>Help us test a new way to protect your data</h1>
+    <p style="color:var(--text)">You're invited to take part in a brief research study evaluating <strong>UCLDP</strong>, a user-centric privacy framework developed for a PhD dissertation at the University of Washington.</p>
+    <p style="color:var(--text)">In plain terms: UCLDP lets <em>you</em> — not a company — decide how your data is protected. Your feedback helps us check if regular people find it useful and easy to use.</p>
 
-    <h4>What you'll do (~18–22 minutes)</h4>
+    <h4>What you'll do (about 15 minutes)</h4>
     <ul>
-      <li>Walk through an interactive demo of three privacy scenarios (smart meter, identity record, ECG)</li>
-      <li>Optionally try a conversational privacy preference dialogue</li>
-      <li>Answer eight short survey questions about your experience</li>
+      <li>Try a quick demo. See how privacy settings affect your data.</li>
+      <li>Answer a few simple "Option A or Option B" questions.</li>
+      <li>Fill out a short survey at the end.</li>
     </ul>
 
-    <h4>What we collect</h4>
+    <h4>What we record</h4>
     <ul>
-      <li>Your interactions with the demo (which ε you choose, slider weights)</li>
-      <li>Your ratings on the survey questions</li>
-      <li>Free-text feedback if you choose to provide any</li>
-      <li>A random anonymous session ID generated in your browser</li>
+      <li>The choices you make in the demo and survey.</li>
+      <li>Any feedback you write.</li>
+      <li>A random ID created in your browser.</li>
     </ul>
 
     <h4>What we do NOT collect</h4>
     <ul>
-      <li>Your name, email, IP address, or any other identifying information</li>
-      <li>Any personal data — every demo scenario uses synthetic examples</li>
+      <li>Your name, email, or IP address.</li>
+      <li>Any personal data. All examples in the demo are fake.</li>
     </ul>
 
-    <h4>Voluntary participation</h4>
+    <h4>You're in control</h4>
     <ul>
-      <li>You may close this page at any time without consequence</li>
-      <li>Submitted responses cannot be linked back to you</li>
-      <li>Aggregated results may appear in academic publications</li>
+      <li>You can close this page any time.</li>
+      <li>Your answers can't be traced back to you.</li>
+      <li>Results may appear in academic papers.</li>
     </ul>
 
     <div class="contacts">
-      <strong style="color:var(--text2)">Researcher:</strong> Wenjun Yang, PhD candidate · <span style="color:var(--blue)">wy927@uw.edu</span><br>
-      <strong style="color:var(--text2)">Faculty advisor:</strong> Dr. Eyhab Al-Masri · <span style="color:var(--blue)">ealmasri@uw.edu</span><br>
-      <strong style="color:var(--text2)">UW Tacoma HSD IRB Protocol:</strong> <span style="color:var(--text3)">[insert approved protocol number]</span>
+      Want to learn more about this research? Read the published paper:<br>
+      <a href="https://ieeexplore.ieee.org/document/11218270" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">📄 IEEE Transactions on Privacy — "MIC-DP" (2025)</a>
     </div>
 
-    <p style="font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.65">By clicking "I consent and continue," you confirm that you are 18 or older and agree to participate under the terms above.</p>
+    <p style="font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.65">By continuing, you confirm that you are 18 or older and agree to take part.</p>
 
     <div class="actions">
       <button class="btn btn-s" onclick="window.location.href='about:blank'">No thanks, exit</button>
-      <button class="btn btn-b" onclick="grantConsent()">I consent and continue</button>
+      <button class="btn btn-b" onclick="grantConsent()">I agree — let's start</button>
     </div>
   </div>
 </div>
@@ -275,14 +266,18 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
   <div class="overlay-card thanks-card">
     <div class="check">✓</div>
     <h1>Thank you!</h1>
-    <p style="color:var(--text)">Your responses have been recorded. The data will be used in the dissertation analysis.</p>
+    <p style="color:var(--text)">Your responses have been saved. Thank you for helping with this research.</p>
 
     <h4>Your anonymous session ID</h4>
     <div class="sid" id="thanks-sid">—</div>
-    <p style="font-size:11.5px;color:var(--text3);margin-top:6px">If you ever want your data removed, email <span style="color:var(--blue)">wy927@uw.edu</span> with this ID.</p>
+    <p style="font-size:11.5px;color:var(--text3);margin-top:6px">Thank you for your submission!</p>
 
     <div class="contacts" style="text-align:left">
-      Questions about the study? Reach out to <strong style="color:var(--text2)">Wenjun Yang</strong> at <span style="color:var(--blue)">wy927@uw.edu</span> or <strong style="color:var(--text2)">Dr. Eyhab Al-Masri</strong> at <span style="color:var(--blue)">ealmasri@uw.edu</span>.
+      If you have any questions about this research, please contact the researcher:<br>
+      <strong style="color:var(--text2)">Wenjun Yang</strong> · <a href="mailto:wy927@uw.edu" style="color:var(--blue);text-decoration:none">wy927@uw.edu</a>
+      <br><br>
+      Curious about the science behind this? Read the published paper:<br>
+      <a href="https://ieeexplore.ieee.org/document/11218270" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">📄 IEEE Transactions on Privacy — "MIC-DP" (2025)</a>
     </div>
 
     <div class="actions" style="justify-content:center">
@@ -293,59 +288,76 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
 
 <div class="page locked" id="main-page">
 
-<div class="timebar">⏱ <b>About 18–22 minutes total.</b> Tab 1 demo (~8 min) · Tab 2 PrivAgent (~5 min) · Tab 3 survey (~8 min). Your answers help validate the dissertation.</div>
+<div class="timebar" id="progress-bar">⏱ <b>Step 1 of 3 — Try the demo</b> · About 15 minutes total. The progress bar fills as you go.</div>
 
-<div class="top-nav">
-  <div class="top-tab on" id="tn0" onclick="goPane(0)"><span class="num">1</span>Core UCLDP<span class="est">≈ 8 min</span></div>
-  <div class="top-tab" id="tn1" onclick="goPane(1)"><span class="num">2</span>PrivAgent (extension)<span class="est">≈ 5 min</span></div>
-  <div class="top-tab" id="tn2" onclick="goPane(2)"><span class="num">3</span>Survey<span class="est">≈ 8 min</span></div>
-</div>
+<div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:33%"></div></div>
 
 <!-- ═══════════════════════════════════════
      PANE 0 — CORE UCLDP DEMO
 ═══════════════════════════════════════ -->
 <div class="pane on" id="pane0">
-  <span class="section-chip chip-core">🎯 Core UCLDP framework</span>
-  <h2>How the user-centric privacy pipeline works</h2>
-  <p class="sub">Local Differential Privacy adds noise to your data <em>before</em> it leaves your device. The trade-off: too little noise leaks personal information, too much makes the data useless. UCLDP improves on standard LDP in two ways — it lets <strong>you</strong> choose the privacy budget ε based on your priorities (ULDP), and it spreads the noise budget unequally across features so the important ones stay accurate (MIC-DP).</p>
+  <span class="section-chip chip-core">🎯 The demo</span>
+  <h2>How this privacy tool works</h2>
+  <p class="sub">When apps collect your data, they often add a bit of <strong>random noise</strong> to hide your details. This is called <em>privacy noise</em>. <br><br>The trade-off is simple:
+  <ul style="margin:8px 0 8px 22px;color:var(--text2);font-size:13px;line-height:1.8">
+    <li><strong style="color:var(--green)">More noise</strong> = better privacy, but the data becomes less useful.</li>
+    <li><strong style="color:var(--red)">Less noise</strong> = more useful data, but more risk of leaking personal info.</li>
+  </ul>
+  The amount of noise is set by a number called <strong>ε (epsilon)</strong>. <strong style="color:var(--text)">Today, a company picks ε for you. Our tool lets you pick it yourself.</strong></p>
+
+  <div class="note" style="margin-bottom:18px">
+    <strong style="color:var(--text)">💡 How to use this page:</strong> Scroll down through 4 short steps. Try the sliders. There's nothing to install — everything happens in your browser.
+  </div>
 
   <div class="stages">
-    <div class="stage stage-cur"><b>Step 1</b>See the leak</div>
-    <div class="stage stage-cur"><b>Step 2</b>ULDP picks ε</div>
-    <div class="stage stage-cur"><b>Step 3</b>MIC-DP smart noise</div>
-    <div class="stage stage-cur"><b>Step 4</b>Compare</div>
+    <div class="stage stage-cur"><b>Step 1</b>See the problem</div>
+    <div class="stage stage-cur"><b>Step 2</b>Pick what matters</div>
+    <div class="stage stage-cur"><b>Step 3</b>Smart noise</div>
+    <div class="stage stage-cur"><b>Step 4</b>Compare results</div>
   </div>
 
-  <!-- ── STEP 1 — three scenarios ── -->
-  <h3>Step 1 — Three kinds of data, three ways an adversary can hurt you</h3>
-  <p class="sub" style="margin-top:-4px">Switch between the three scenarios below. Each shows raw data on the left, what the data looks like after standard LDP noise on the right, and what an adversary can still figure out at that ε.</p>
+  <!-- ── STEP 1 — three scenarios, flat ── -->
+  <h3>Step 1 — See how privacy noise affects 3 kinds of data</h3>
+  <p class="sub" style="margin-top:-4px">Below are three examples. <strong style="color:var(--text)">Drag the slider</strong> in each box to change the privacy level. Watch how the data changes. Try the extremes to see the trade-off.</p>
 
-  <div class="dtabs" id="demo-tabs">
-    <div class="dtab on" onclick="setDemoTab('meter',this)">⚡ Smart meter</div>
-    <div class="dtab" onclick="setDemoTab('identity',this)">🪪 Identity record</div>
-    <div class="dtab" onclick="setDemoTab('ecg',this)">💓 ECG signal</div>
-  </div>
-
-  <!-- smart meter panel -->
+  <!-- smart meter panel (always visible) -->
   <div id="panel-meter">
     <div class="card">
-      <div class="clbl">24-hour electricity consumption</div>
-      <canvas id="meter-cvs" height="160"></canvas>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:18px">⚡</span><strong style="font-size:14px">Scenario A — Your home electricity meter</strong></div>
+      <div class="clbl">A smart meter reports how much power your home uses every hour</div>
+      <div style="font-size:12px;color:var(--text2);margin:6px 0 12px;line-height:1.6">Without privacy protection, this hourly data reveals when you wake up, leave home, and go to sleep — even what appliances you run. Compare the two charts below as you move the slider.</div>
+      <div class="two">
+        <div>
+          <div class="cvs-wrap" style="padding:6px 0 0">
+            <canvas id="meter-cvs-clean" height="160" style="display:block;width:100%"></canvas>
+            <div class="cvs-lbl" style="color:var(--green)">Before — your real data</div>
+          </div>
+        </div>
+        <div>
+          <div class="cvs-wrap" style="padding:6px 0 0">
+            <canvas id="meter-cvs" height="160" style="display:block;width:100%"></canvas>
+            <div class="cvs-lbl" style="color:var(--red)">After — what gets shared</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin:10px 0 2px;text-align:center">↓ Slide left = more privacy · slide right = more data leakage ↓</div>
       <div class="srow">
-        <label style="color:var(--green)">ε = 0.1 (max privacy)</label>
+        <label style="color:var(--green)">🔒 Strong privacy</label>
         <input type="range" id="meter-eps" min="0" max="4" step="1" value="2" oninput="onMeterEps(+this.value)">
-        <label style="color:var(--red)">ε = 10 (no privacy)</label>
+        <label style="color:var(--red)">No privacy 🚨</label>
         <div class="epsbadge" id="meter-badge">ε = 1.0</div>
       </div>
-      <div class="clbl" style="margin-top:14px">Behavioural patterns still visible at this ε</div>
+      <div class="clbl" style="margin-top:14px">What an attacker could still figure out at this setting</div>
       <div id="meter-insights"></div>
     </div>
   </div>
 
-  <!-- identity panel -->
-  <div id="panel-identity" style="display:none">
+  <!-- identity panel (always visible) -->
+  <div id="panel-identity">
     <div class="card">
-      <div class="clbl">Health record card</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:18px">🪪</span><strong style="font-size:14px">Scenario B — Your health record card</strong></div>
+      <div class="clbl">Personal info on a medical record</div>
+      <div style="font-size:12px;color:var(--text2);margin:6px 0 12px;line-height:1.6">Names, dates, and ID numbers are very sensitive. Privacy noise scrambles individual letters and digits. <strong>Drag the slider</strong> to see what stays readable.</div>
       <div class="two">
         <div><div class="cvs-wrap">
           <canvas id="id-orig" height="200"></canvas>
@@ -353,65 +365,69 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
         </div></div>
         <div><div class="cvs-wrap">
           <canvas id="id-noisy" height="200"></canvas>
-          <div class="cvs-lbl" style="color:var(--red)">After LDP — adversary view</div>
+          <div class="cvs-lbl" style="color:var(--red)">After noise — what gets shared</div>
         </div></div>
       </div>
+      <div style="font-size:11px;color:var(--text3);margin:6px 0 2px;text-align:center">↓ Drag to change the privacy level ↓</div>
       <div class="srow">
-        <label style="color:var(--green)">ε = 0.1</label>
+        <label style="color:var(--green)">🔒 Strong privacy</label>
         <input type="range" id="id-eps" min="0" max="4" step="1" value="2" oninput="onIdEps(+this.value)">
-        <label style="color:var(--red)">ε = 10</label>
+        <label style="color:var(--red)">No privacy 🚨</label>
         <div class="epsbadge" id="id-badge">ε = 1.0</div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="stat-l">Adversary accuracy</div><div class="stat-v" id="id-acc" style="color:var(--amber)">—</div></div>
-        <div class="stat"><div class="stat-l">Privacy level LP</div><div class="stat-v" id="id-lp" style="color:var(--blue)">—</div></div>
-        <div class="stat"><div class="stat-l">Accuracy level LA</div><div class="stat-v" id="id-la" style="color:var(--green)">—</div></div>
+        <div class="stat"><div class="stat-l">Attacker's accuracy</div><div class="stat-v" id="id-acc" style="color:var(--amber)">—</div></div>
+        <div class="stat"><div class="stat-l">Privacy score</div><div class="stat-v" id="id-lp" style="color:var(--blue)">—</div></div>
+        <div class="stat"><div class="stat-l">Usefulness score</div><div class="stat-v" id="id-la" style="color:var(--green)">—</div></div>
       </div>
-      <div class="clbl" style="margin-top:14px">Character-level view — Randomized Response at this ε</div>
+      <div class="clbl" style="margin-top:14px">Letter-by-letter view at this privacy level</div>
       <table class="idtable" id="id-table"></table>
     </div>
   </div>
 
-  <!-- ECG panel -->
-  <div id="panel-ecg" style="display:none">
+  <!-- ECG panel (always visible) -->
+  <div id="panel-ecg">
     <div class="card">
-      <div class="clbl">ECG signal — what noise does to the waveform</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:18px">💓</span><strong style="font-size:14px">Scenario C — A heart signal (ECG)</strong></div>
+      <div class="clbl">A live ECG signal from a wearable</div>
+      <div style="font-size:12px;color:var(--text2);margin:6px 0 12px;line-height:1.6">Doctors need to see clean heart signals. But the same data can reveal stress, exercise, or illness. <strong>Drag the slider</strong> to see how privacy hides — or keeps — the heartbeat.</div>
       <div class="two">
         <div><div class="cvs-wrap">
           <canvas id="ecg-orig" height="180"></canvas>
-          <div class="cvs-lbl" style="color:var(--green)">Clean ECG — private</div>
+          <div class="cvs-lbl" style="color:var(--green)">Clean signal — private</div>
         </div></div>
         <div><div class="cvs-wrap">
           <canvas id="ecg-noisy" height="180"></canvas>
-          <div class="cvs-lbl" style="color:var(--red)">After LDP</div>
+          <div class="cvs-lbl" style="color:var(--red)">After noise</div>
         </div></div>
       </div>
+      <div style="font-size:11px;color:var(--text3);margin:6px 0 2px;text-align:center">↓ Drag to change the privacy level ↓</div>
       <div class="srow">
-        <label style="color:var(--green)">ε = 0.1</label>
+        <label style="color:var(--green)">🔒 Strong privacy</label>
         <input type="range" id="ecg-eps" min="0" max="4" step="1" value="2" oninput="onEcgEps(+this.value)">
-        <label style="color:var(--red)">ε = 10</label>
+        <label style="color:var(--red)">No privacy 🚨</label>
         <div class="epsbadge" id="ecg-badge">ε = 1.0</div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="stat-l">Heart rate detectable</div><div class="stat-v" id="ecg-hr" style="color:var(--amber)">—</div></div>
-        <div class="stat"><div class="stat-l">Arrhythmia visible</div><div class="stat-v" id="ecg-ar" style="color:var(--red)">—</div></div>
-        <div class="stat"><div class="stat-l">Privacy level LP</div><div class="stat-v" id="ecg-lp" style="color:var(--blue)">—</div></div>
+        <div class="stat"><div class="stat-l">Heart rate readable?</div><div class="stat-v" id="ecg-hr" style="color:var(--amber)">—</div></div>
+        <div class="stat"><div class="stat-l">Heart issues visible?</div><div class="stat-v" id="ecg-ar" style="color:var(--red)">—</div></div>
+        <div class="stat"><div class="stat-l">Privacy score</div><div class="stat-v" id="ecg-lp" style="color:var(--blue)">—</div></div>
       </div>
       <div class="note" id="ecg-note"></div>
     </div>
   </div>
 
-  <div class="note">The trade-off is real for every kind of data. Different domains may need different ε. The remainder of the demo focuses on smart meter (matching Chapter 8 of the dissertation), but the same UCLDP pipeline applies to identity and medical signals too.</div>
+  <div class="note">🔑 <strong>The point:</strong> Different kinds of data have different sensitivity. You may want strong privacy for your medical records but more usefulness for your electricity meter. Our tool lets you choose, instead of one setting for everything.</div>
 
   <!-- ── STEP 2 — ULDP ── -->
-  <h3>Step 2 — ULDP picks your ε from your priorities</h3>
-  <p class="sub" style="margin-top:-4px">Three things matter to you, but they trade off. Rate how much each one matters and ULDP runs TOPSIS — a standard multi-criteria decision method — to pick the ε candidate closest to your ideal.</p>
+  <h3>Step 2 — Tell us what matters to you</h3>
+  <p class="sub" style="margin-top:-4px"><strong>Move the three sliders</strong> below to show how important each thing is. We'll then pick the best privacy setting for you automatically.</p>
   <div class="card">
     <div class="crit">
       <div class="crit-ico" style="background:var(--blue-d)">🔒</div>
       <div class="crit-body">
-        <div class="crit-name">Privacy strength <span class="tag blue">LP</span></div>
-        <div class="crit-desc">How hard it is for someone to figure out anything about your data.</div>
+        <div class="crit-name">Privacy <span class="tag blue">LP</span></div>
+        <div class="crit-desc">How well your personal info is hidden from outsiders.</div>
         <input type="range" id="w-lp" min="1" max="10" value="4" oninput="updateW()" style="width:100%;margin-top:5px;accent-color:var(--blue)">
       </div>
       <div class="crit-pct" id="wlp" style="color:var(--blue)">40%</div>
@@ -420,7 +436,7 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
       <div class="crit-ico" style="background:var(--green-d)">🎯</div>
       <div class="crit-body">
         <div class="crit-name">Usefulness <span class="tag green">LA</span></div>
-        <div class="crit-desc">How accurate the analyst's forecast remains after your data is privatised.</div>
+        <div class="crit-desc">How accurate the service stays — for example, how good a forecast or recommendation can be.</div>
         <input type="range" id="w-la" min="1" max="10" value="4" oninput="updateW()" style="width:100%;margin-top:5px;accent-color:var(--green)">
       </div>
       <div class="crit-pct" id="wla" style="color:var(--green)">40%</div>
@@ -428,8 +444,8 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
     <div class="crit" style="margin-bottom:0">
       <div class="crit-ico" style="background:var(--amber-d)">⚡</div>
       <div class="crit-body">
-        <div class="crit-name">Compute cost <span class="tag amber">CR</span></div>
-        <div class="crit-desc">How much battery and CPU your home device uses to add noise.</div>
+        <div class="crit-name">Battery / speed <span class="tag amber">CR</span></div>
+        <div class="crit-desc">How much battery and time your device uses to protect data.</div>
         <input type="range" id="w-cr" min="1" max="10" value="2" oninput="updateW()" style="width:100%;margin-top:5px;accent-color:var(--amber)">
       </div>
       <div class="crit-pct" id="wcr" style="color:var(--amber)">20%</div>
@@ -437,72 +453,98 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
     <div style="margin-top:12px" id="wbars"></div>
   </div>
   <div class="card">
-    <div class="clbl">TOPSIS closeness coefficient — higher = better fit for you</div>
+    <div class="clbl">Our pick for you — taller bar = better match for your priorities</div>
     <div class="tbar-wrap" id="topsis-bars"></div>
     <div class="note" id="topsis-explain"></div>
     <div class="note green" id="topsis-pick" style="margin-top:8px;font-size:13px;font-weight:500"></div>
   </div>
 
   <!-- ── STEP 3 — MIC-DP ── -->
-  <h3>Step 3 — MIC-DP adds smart noise <span class="tag green" style="font-size:11px;padding:2px 8px;font-weight:600">CORE CONTRIBUTION</span></h3>
-  <p class="sub" style="margin-top:-4px">Standard LDP adds the same noise to every feature. But not every feature matters equally for the analyst's forecast. MIC-DP measures each feature's <strong>Maximum Information Coefficient</strong> against the prediction target and gives more budget (less noise) to the features that matter most. Same total ε, same formal privacy. Just redistributed.</p>
+  <h3>Step 3 — Smart noise: not all data is equal</h3>
+  <p class="sub" style="margin-top:-4px">The old way adds the <em>same</em> amount of noise to everything. Our way (called <strong>MIC-DP</strong>) gives <strong>less noise to the data that matters most</strong> and <strong>more noise to less important data</strong>. Same total privacy. Better results.</p>
   <div class="card">
-    <div class="clbl">Each appliance feature has a different MIC score (correlation with grid demand)</div>
+    <div class="clbl">Each home appliance has a different importance for predicting power use</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:10px">👉 <strong style="color:var(--text)">Click any appliance below</strong> to see how the two methods treat it differently.</div>
     <div id="mic-feats"></div>
-    <div class="noise-cmp" style="margin-top:18px">
-      <div class="noise-col uni">
-        <h4 style="color:var(--amber)">Standard LDP — equal noise σ for all</h4>
-        <div id="noise-uni"></div>
-        <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.55">Every feature gets σ = sensitivity / (ε/d). Low-MIC features (fridge, lighting) get the same noise as high-MIC features (heating, EV) — wasting budget on signals that barely matter for the forecast.</div>
+
+    <div style="margin-top:18px;padding:14px;background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--r)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:18px">🎛️</span>
+        <strong style="font-size:13px">Try it: adjust how "smart" the noise is</strong>
       </div>
-      <div class="noise-col mic">
-        <h4 style="color:var(--green)">MIC-DP — budget ∝ MIC<sup>α</sup></h4>
-        <div id="noise-mic"></div>
-        <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.55">Feature j gets budget share MIC<sub>j</sub><sup>α</sup> / Σ MIC<sub>k</sub><sup>α</sup> (with α = 1.5 here). High-MIC features get less noise; low-MIC features absorb more. Total budget identical, formal (ε, δ)-DP unchanged — only the distribution changes.</div>
+      <div style="font-size:11.5px;color:var(--text2);margin-bottom:10px;line-height:1.6">Move the slider to change how aggressively our method shifts noise toward less important data. Watch the green bars below rearrange.</div>
+      <div class="srow" style="margin:8px 0">
+        <label style="color:var(--text2)">Gentle (closer to old way)</label>
+        <input type="range" id="alpha-slider" min="10" max="25" step="1" value="15" oninput="onAlphaChange(+this.value)">
+        <label style="color:var(--text)">Aggressive</label>
+        <div class="epsbadge" id="alpha-badge" style="color:var(--green)">α = 1.5</div>
       </div>
     </div>
+
+    <div class="noise-cmp" style="margin-top:18px">
+      <div class="noise-col uni">
+        <h4 style="color:var(--amber)">Old way — same noise for everything</h4>
+        <div id="noise-uni"></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.55">Every appliance gets the same amount of noise. The fridge (which barely matters) gets the same protection as the heating (which matters a lot). That wastes privacy budget on less useful info.</div>
+      </div>
+      <div class="noise-col mic">
+        <h4 style="color:var(--green)">Our way — smart noise</h4>
+        <div id="noise-mic"></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px;line-height:1.55">Important data gets less noise (stays accurate). Less important data gets more noise (extra privacy). The total amount of privacy is the same — just spread more wisely.</div>
+      </div>
+    </div>
+    <div class="note green" id="alpha-explain" style="margin-top:12px;display:none"></div>
   </div>
 
   <!-- ── STEP 4 — comparison ── -->
-  <h3>Step 4 — Same privacy, better forecast</h3>
+  <h3>Step 4 — Result: same privacy, more useful data</h3>
   <div class="card">
-    <div class="clbl">Forecast error at your selected ε* (lower = more useful)</div>
+    <div style="padding:12px 14px;background:var(--blue-d);border:0.5px solid var(--blue);border-radius:var(--r);margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:18px">🔬</span>
+        <strong style="font-size:13px;color:var(--blue)">Try it: explore different privacy settings</strong>
+      </div>
+      <div style="font-size:11.5px;color:var(--text2);margin-bottom:10px;line-height:1.6">Below we automatically picked the best setting for your priorities. But what if you tried a different one? <strong style="color:var(--text)">Click any ε below</strong> to see how the comparison changes.</div>
+      <div class="eps-row" id="step4-eps-row"></div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px" id="step4-eps-hint">Currently showing: <strong id="step4-current-label" style="color:var(--blue)">your auto-picked setting</strong>. Click any other ε above to compare.</div>
+    </div>
+
+    <div class="clbl">Forecasting error at the chosen setting (lower = better)</div>
     <div class="cmp2">
       <div class="cmpbox lo">
-        <div class="cmpl">Standard LDP</div>
+        <div class="cmpl">Old way</div>
         <div class="cmpv" id="cmp-uni-mae" style="color:var(--red)">—</div>
-        <div class="cmpl">MAE (normalised)</div>
+        <div class="cmpl">Error (lower is better)</div>
       </div>
       <div class="cmpbox hi">
-        <div class="cmpl">UCLDP (MIC-DP)</div>
+        <div class="cmpl">Our way (UCLDP)</div>
         <div class="cmpv" id="cmp-mic-mae" style="color:var(--green)">—</div>
-        <div class="cmpl">MAE (normalised)</div>
+        <div class="cmpl">Error (lower is better)</div>
       </div>
     </div>
     <div class="note green" id="winnote"></div>
     <div class="curve-wrap">
-      <div class="clbl" style="margin-bottom:6px">MAE across all ε candidates (calibrated from thesis Table 9.1, UK-DALE)</div>
+      <div class="clbl" style="margin-bottom:6px">Comparison across all privacy settings (from real-world UK home energy data)</div>
       <canvas id="mae-curve" height="180" style="width:100%;display:block"></canvas>
     </div>
-    <div class="note" style="margin-top:10px">Why is MIC-DP's advantage bigger at small ε? When the total budget is tiny, every bit matters. Concentrating it on the features that drive the forecast (high MIC) preserves signal where it counts. At loose ε (5.0, 10.0), even uniform noise is small enough that the gap narrows — and the dissertation reports this exact pattern in Figure 9.1.</div>
+    <div class="note" style="margin-top:10px">💡 The improvement is biggest when you ask for strong privacy. That's where it matters most — when the budget is tight, spending it wisely makes a real difference.</div>
   </div>
 
   <!-- federated mini -->
   <div class="card" style="border-color:var(--purple)">
-    <div class="clbl" style="color:var(--purple)">Quick note — federated setting (LDP-MIC)</div>
-    <p style="font-size:12.5px;color:var(--text2);line-height:1.7">When many homes share data for a neighbourhood-wide forecast, no central server can be trusted with raw inputs. <strong style="color:var(--text)">LDP-MIC</strong> is the federated variant: each home runs MIC-DP locally before any data leaves the device. The server sees only noisy outputs and uses trust-weighted aggregation to discard suspicious updates. Same core algorithm, distributed.</p>
+    <div class="clbl" style="color:var(--purple)">Bonus: works for groups too</div>
+    <p style="font-size:12.5px;color:var(--text2);line-height:1.7">When many homes share data — say, for a city-wide energy forecast — no single company should see your raw info. <strong style="color:var(--text)">Our tool can run on each home's device</strong> so only protected data ever leaves. The central system combines the protected pieces. Same idea, bigger scale.</p>
     <div class="fed-diag" style="margin-top:6px">
-      <div class="fed-node">🏠 home 1<br>MIC-DP local</div>
+      <div class="fed-node">🏠 Home 1<br>protects locally</div>
       <div class="fed-arrow">↘</div>
-      <div class="fed-server">📡 server<br>trust-weighted aggregation</div>
+      <div class="fed-server">📡 Central<br>combines safely</div>
       <div class="fed-arrow">↙</div>
-      <div class="fed-node">🏠 home 2<br>MIC-DP local</div>
+      <div class="fed-node">🏠 Home 2<br>protects locally</div>
     </div>
   </div>
 
   <div class="btn-row">
-    <button class="btn btn-s" onclick="goPane(1)">Next: PrivAgent extension →</button>
-    <button class="btn btn-b" onclick="goPane(2)">Skip to survey →</button>
+    <button class="btn btn-b" onclick="goPane(1)">Continue to Step 2 →</button>
   </div>
 </div>
 
@@ -510,25 +552,26 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
      PANE 1 — PRIVAGENT EXTENSION
 ═══════════════════════════════════════ -->
 <div class="pane" id="pane1">
-  <span class="section-chip chip-ext">💬 Optional system extension</span>
-  <h2>PrivAgent — a conversational way to set your priorities</h2>
-  <p class="sub">Some users don't enjoy moving three sliders. PrivAgent replaces the slider interface with six short "would you rather" questions in plain language. It then converts your answers into the same Privacy / Usefulness / Compute weight vector that Step 2 needed. <strong style="color:var(--text)">PrivAgent is a standalone extension</strong> — the core UCLDP results in Tab 1 don't depend on it. Whether your weights come from sliders, PrivAgent, or a default, the rest of the pipeline works the same.</p>
+  <span class="section-chip chip-ext">💬 Step 2 — Quick questions</span>
+  <h2>6 quick "would you rather" questions <span style="font-size:13px;color:var(--red);font-weight:500">★ required</span></h2>
+  <p class="sub">Some people don't like moving sliders. So we also offer 6 simple choices: just pick the option that sounds better to you. We'll then figure out your priorities automatically.</p>
+  <p class="sub" style="margin-top:-6px"><strong style="color:var(--text)">How to answer:</strong> read both options. Tap the one that feels right. There's no wrong answer.</p>
 
-  <div class="note purple">In this tab you'll see the dialogue, the weights it produces, and a comparison with what you set with sliders on Tab 1. We're not feeding these weights back into Tab 1 — the comparison is just to validate whether the dialogue captures what the sliders do.</div>
+  <div class="note purple">After all 6 questions, we'll show what we learned and compare it with your slider answers from Step 1. <strong style="color:var(--text)">Please answer all 6 to continue to the survey.</strong></div>
 
   <div class="pwprog"><div class="pwprog-fill" id="pwprog" style="width:0%"></div></div>
   <div id="pw-list"></div>
 
   <div class="card" id="pw-result" style="display:none;border-color:var(--purple)">
-    <div class="clbl" style="color:var(--purple)">PrivAgent's inferred weights</div>
+    <div class="clbl" style="color:var(--purple)">What we learned about your priorities</div>
     <div id="pw-weights"></div>
-    <h3 style="margin-top:18px;font-size:13px">Comparison with your slider weights from Tab 1</h3>
+    <h3 style="margin-top:18px;font-size:13px">Comparison with your slider answers from Step 1</h3>
     <table style="width:100%;font-size:12px;border-collapse:collapse;margin-top:8px">
       <thead><tr>
-        <th style="text-align:left;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Criterion</th>
-        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Sliders (Tab 1)</th>
-        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">PrivAgent</th>
-        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Δ</th>
+        <th style="text-align:left;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Priority</th>
+        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">From sliders</th>
+        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">From these 6 questions</th>
+        <th style="text-align:right;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Difference</th>
       </tr></thead>
       <tbody id="pw-cmp"></tbody>
     </table>
@@ -536,8 +579,8 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
   </div>
 
   <div class="btn-row">
-    <button class="btn btn-s" onclick="goPane(0)">← Back to core</button>
-    <button class="btn btn-b" onclick="goPane(2)">Next: survey →</button>
+    <button class="btn btn-s" onclick="goPane(0)">← Back to demo</button>
+    <button class="btn btn-b" onclick="tryGoToSurvey()">Continue to survey →</button>
   </div>
 </div>
 
@@ -545,25 +588,25 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
      PANE 2 — SURVEY
 ═══════════════════════════════════════ -->
 <div class="pane" id="pane2">
-  <span class="section-chip chip-survey">📋 Validation survey</span>
-  <h2>Help validate UCLDP</h2>
-  <p class="sub">Eight quick questions about what you just saw. Most are 1–7 scales. The session record at the bottom captures your responses for the researcher.</p>
+  <span class="section-chip chip-survey">📋 Step 3 — Quick survey</span>
+  <h2>Tell us what you thought</h2>
+  <p class="sub">A few quick questions about your experience. Most are simple 1–7 ratings. Should take about 4 minutes. All questions marked <span style="color:var(--red)">★</span> are required.</p>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">1</span>The demo made the privacy–utility trade-off clear</div>
-    <div class="q-desc">Could you understand <em>why</em> noise has to be added and <em>what</em> ε controls?</div>
+    <div class="q-title"><span class="q-num">1</span>The demo was easy to understand <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">How clear was the demo to you?</div>
     <div class="likert" id="q1">
-      <div class="lb" onclick="selQ(1,1,this)">1<span class="sub-l">Disagree</span></div>
+      <div class="lb" onclick="selQ(1,1,this)">1<span class="sub-l">Confusing</span></div>
       <div class="lb" onclick="selQ(1,2,this)">2</div><div class="lb" onclick="selQ(1,3,this)">3</div>
-      <div class="lb" onclick="selQ(1,4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selQ(1,4,this)">4<span class="sub-l">OK</span></div>
       <div class="lb" onclick="selQ(1,5,this)">5</div><div class="lb" onclick="selQ(1,6,this)">6</div>
-      <div class="lb" onclick="selQ(1,7,this)">7<span class="sub-l">Agree</span></div>
+      <div class="lb" onclick="selQ(1,7,this)">7<span class="sub-l">Very clear</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">2</span>MIC-DP's "smart noise" is a real improvement over equal noise</div>
-    <div class="q-desc">Step 3 showed that giving more budget to high-MIC features helps. Did this convince you?</div>
+    <div class="q-title"><span class="q-num">2</span>Giving more privacy to important data makes sense <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">In Step 3, our smart noise gives less noise to important data. Was that a good idea?</div>
     <div class="likert" id="q2">
       <div class="lb" onclick="selQ(2,1,this)">1<span class="sub-l">Disagree</span></div>
       <div class="lb" onclick="selQ(2,2,this)">2</div><div class="lb" onclick="selQ(2,3,this)">3</div>
@@ -574,8 +617,8 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">3</span>The ε* that ULDP picked feels right to you</div>
-    <div class="q-desc">Given your slider settings, did the TOPSIS-selected ε* match what you'd have picked by gut feeling?</div>
+    <div class="q-title"><span class="q-num">3</span>The privacy setting we picked felt right <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">In Step 2, we picked a setting from your slider choices. Did it match what you would have picked yourself?</div>
     <div class="likert" id="q3">
       <div class="lb" onclick="selQ(3,1,this)">1<span class="sub-l">Wrong</span></div>
       <div class="lb" onclick="selQ(3,2,this)">2</div><div class="lb" onclick="selQ(3,3,this)">3</div>
@@ -586,55 +629,90 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">4</span>Should ε be the same across very different kinds of data?</div>
-    <div class="q-desc">For each domain below, pick the ε you'd personally accept. Different answers across domains support the user-centric design.</div>
+    <div class="q-title"><span class="q-num">4</span>How much privacy do you want for each kind of data? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Pick a privacy setting for each kind below. <strong>Tap an ε value</strong> for each row.</div>
     <div style="display:grid;gap:10px">
-      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">⚡ Smart meter / energy</div><div class="eps-row" id="q4-meter"></div></div>
-      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">🪪 Identity / health record</div><div class="eps-row" id="q4-id"></div></div>
-      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">💓 ECG / medical signal</div><div class="eps-row" id="q4-ecg"></div></div>
+      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">⚡ Smart meter (electricity)</div><div class="eps-row" id="q4-meter"></div></div>
+      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">🪪 Health record</div><div class="eps-row" id="q4-id"></div></div>
+      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">💓 Heart signal (ECG)</div><div class="eps-row" id="q4-ecg"></div></div>
     </div>
-    <div class="note" id="q4-note" style="margin-top:10px">Select an ε for each domain above.</div>
+    <div class="note" id="q4-note" style="margin-top:10px">Pick one privacy level for each kind of data above.</div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">5</span>Would you trust UCLDP more than an administrator-chosen ε?</div>
-    <div class="q-desc">Today, ε is usually picked by an admin or researcher — not by you. UCLDP gives you the choice (sliders or PrivAgent). Which would you actually use?</div>
+    <div class="q-title"><span class="q-num">5</span>Who should decide your privacy setting? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Right now, companies decide for you. Our tool lets you decide. Which would you prefer?</div>
     <div class="mc" id="q5">
-      <div class="mc-opt" onclick="selMC(5,'admin',this)">I'd rather the admin picks — I don't want to deal with this</div>
-      <div class="mc-opt" onclick="selMC(5,'sliders',this)">I'd use the sliders (Tab 1 Step 2)</div>
-      <div class="mc-opt" onclick="selMC(5,'agent',this)">I'd use PrivAgent (Tab 2)</div>
-      <div class="mc-opt" onclick="selMC(5,'default',this)">Either user method is fine — just give me a sensible default</div>
+      <div class="mc-opt" onclick="selMC(5,'admin',this)">A company or admin should decide — I don't want to bother</div>
+      <div class="mc-opt" onclick="selMC(5,'sliders',this)">I'd like to use the sliders (from Step 1)</div>
+      <div class="mc-opt" onclick="selMC(5,'agent',this)">I'd like to answer the 6 quick questions (from Step 2)</div>
+      <div class="mc-opt" onclick="selMC(5,'default',this)">Either way is fine — but give me a good default to start with</div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">6</span>The PrivAgent dialogue felt natural <span class="tag purple">extension</span></div>
-    <div class="q-desc">If you did Tab 2: were the six questions easier than moving sliders? (Skip if you didn't try it.)</div>
+    <div class="q-title"><span class="q-num">6</span>The 6 quick questions in Step 2 were easy to understand <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">How did you feel about the "Option A or Option B" questions?</div>
     <div class="likert" id="q6">
-      <div class="lb" onclick="selQ(6,1,this)">1<span class="sub-l">Worse</span></div>
+      <div class="lb" onclick="selQ(6,1,this)">1<span class="sub-l">Confusing</span></div>
       <div class="lb" onclick="selQ(6,2,this)">2</div><div class="lb" onclick="selQ(6,3,this)">3</div>
-      <div class="lb" onclick="selQ(6,4,this)">4<span class="sub-l">Same</span></div>
+      <div class="lb" onclick="selQ(6,4,this)">4<span class="sub-l">OK</span></div>
       <div class="lb" onclick="selQ(6,5,this)">5</div><div class="lb" onclick="selQ(6,6,this)">6</div>
-      <div class="lb" onclick="selQ(6,7,this)">7<span class="sub-l">Better</span></div>
-      <div class="lb" onclick="selQ(6,0,this)" style="flex:0 0 60px">N/A</div>
+      <div class="lb" onclick="selQ(6,7,this)">7<span class="sub-l">Very clear</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">7</span>Six pairwise questions is the right length <span class="tag purple">extension</span></div>
-    <div class="q-desc">The thesis caps PrivAgent at six pairwise comparisons. Was this right? (Skip if you didn't try it.)</div>
+    <div class="q-title"><span class="q-num">7</span>How did you feel about answering 6 questions in Step 2?</div>
+    <div class="q-desc">Was that too many, too few, or about right?</div>
     <div class="mc" id="q7">
-      <div class="mc-opt" onclick="selMC(7,'fewer',this)">Too many — I'd want 3 or 4</div>
-      <div class="mc-opt" onclick="selMC(7,'right',this)">Just right — six is fine</div>
-      <div class="mc-opt" onclick="selMC(7,'more',this)">Too few — I'd answer more if it improved accuracy</div>
-      <div class="mc-opt" onclick="selMC(7,'na',this)">N/A — I didn't try PrivAgent</div>
+      <div class="mc-opt" onclick="selMC(7,'fewer',this)">Too many — 3 or 4 would be better</div>
+      <div class="mc-opt" onclick="selMC(7,'right',this)">Just right — 6 is fine</div>
+      <div class="mc-opt" onclick="selMC(7,'more',this)">Too few — I'd answer more if it helped</div>
+    </div>
+  </div>
+
+  <!-- ── NEW: Usefulness, Usability, Accessibility ── -->
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">8</span>Would this kind of tool be useful in your daily life? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Think about apps, smart devices, or websites you use. Would having this kind of privacy control help you?</div>
+    <div class="likert" id="q8u">
+      <div class="lb" onclick="selQ(8,1,this)">1<span class="sub-l">Not useful</span></div>
+      <div class="lb" onclick="selQ(8,2,this)">2</div><div class="lb" onclick="selQ(8,3,this)">3</div>
+      <div class="lb" onclick="selQ(8,4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selQ(8,5,this)">5</div><div class="lb" onclick="selQ(8,6,this)">6</div>
+      <div class="lb" onclick="selQ(8,7,this)">7<span class="sub-l">Very useful</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">8</span>Any open feedback?</div>
-    <div class="q-desc">One thing you wished was clearer, one thing you'd change, or anything else. Optional.</div>
-    <textarea class="ta" id="q8" placeholder="Optional — type here..."></textarea>
+    <div class="q-title"><span class="q-num">9</span>How easy was this tool to use? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Was it easy to follow the steps, tap buttons, and move sliders?</div>
+    <div class="likert" id="q9u">
+      <div class="lb" onclick="selQ(9,1,this)">1<span class="sub-l">Hard</span></div>
+      <div class="lb" onclick="selQ(9,2,this)">2</div><div class="lb" onclick="selQ(9,3,this)">3</div>
+      <div class="lb" onclick="selQ(9,4,this)">4<span class="sub-l">OK</span></div>
+      <div class="lb" onclick="selQ(9,5,this)">5</div><div class="lb" onclick="selQ(9,6,this)">6</div>
+      <div class="lb" onclick="selQ(9,7,this)">7<span class="sub-l">Very easy</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">10</span>Was the language and design accessible to you? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Think about font size, colors, plain language, and reading level. Was anything hard to read or follow?</div>
+    <div class="likert" id="q10u">
+      <div class="lb" onclick="selQ(10,1,this)">1<span class="sub-l">Not accessible</span></div>
+      <div class="lb" onclick="selQ(10,2,this)">2</div><div class="lb" onclick="selQ(10,3,this)">3</div>
+      <div class="lb" onclick="selQ(10,4,this)">4<span class="sub-l">OK</span></div>
+      <div class="lb" onclick="selQ(10,5,this)">5</div><div class="lb" onclick="selQ(10,6,this)">6</div>
+      <div class="lb" onclick="selQ(10,7,this)">7<span class="sub-l">Very accessible</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">11</span>Any feedback or things to improve?</div>
+    <div class="q-desc">Anything you'd change, found confusing, or wished was different. Optional.</div>
+    <textarea class="ta" id="q11" placeholder="Type here (optional)..."></textarea>
   </div>
 
   <!-- validation -->
@@ -643,15 +721,15 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
     <ul id="valbox-list"></ul>
   </div>
 
+  <div class="btn-row" style="margin-bottom:16px">
+    <button class="btn btn-s" onclick="goPane(1)">← Back to questions</button>
+  </div>
+
   <!-- submit card -->
   <div class="submit-card">
     <div class="stitle">Ready to submit?</div>
-    <div class="sdesc">Your answers go to the researcher's secure spreadsheet. Q1–Q5 are required (PrivAgent questions Q6/Q7 and free-text Q8 are optional).</div>
+    <div class="sdesc">Your answers will be saved anonymously. Questions marked ★ are required. Q7 and Q11 are optional.</div>
     <button class="btn btn-b btn-big" id="submit-btn" onclick="submitResponses()">⬆ Submit my responses</button>
-    <div class="secondary-row">
-      <button class="btn btn-s" onclick="copyRec()">⧉ Copy JSON (fallback)</button>
-      <button class="btn btn-s" onclick="window.print()">🖨 Print / PDF</button>
-    </div>
     <pre class="rec-out" id="rec-out"></pre>
   </div>
 </div>
@@ -744,16 +822,23 @@ function grantConsent(){
   renderNoiseDistribution();
   setTimeout(()=>{
     drawMeterChart(2);
+    drawMeterCleanChart();
     renderMeterInsights(2);
+    initIdentityPanel();
+    initEcgPanel();
     updateW();
+    renderStep4Eps();
     drawMaeCurve();
+    // render the pairwise questions immediately so they're ready when user arrives at pane 1
+    renderPairwise();
+    buildDomEpsRows();
   },80);
 }
 
 
 let wLP=4,wLA=4,wCR=2;
 let topsisIdx=2;
-let qAnswers={1:-1,2:-1,3:-1,5:null,6:-1,7:null};
+let qAnswers={1:-1,2:-1,3:-1,5:null,6:-1,7:null,8:-1,9:-1,10:-1};
 let domEps={meter:-1,id:-1,ecg:-1};
 let pwAnswers=[null,null,null,null,null,null];
 let pwWeights=null;
@@ -761,29 +846,51 @@ let pwWeights=null;
 // ═══════════════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════════════
+const PROGRESS_LABELS=[
+  '⏱ <b>Step 1 of 3 — Try the demo</b> · Scroll through the 4 sub-steps below.',
+  '⏱ <b>Step 2 of 3 — Quick questions</b> · 6 short "would you rather" choices.',
+  '⏱ <b>Step 3 of 3 — Survey</b> · A few quick ratings, then submit.'
+];
+
+function updateProgress(n){
+  document.getElementById('progress-bar').innerHTML=PROGRESS_LABELS[n];
+  document.getElementById('progress-fill').style.width=((n+1)/3*100)+'%';
+}
+
 function goPane(n){
   ['pane0','pane1','pane2'].forEach((p,i)=>document.getElementById(p).classList.toggle('on',i===n));
-  ['tn0','tn1','tn2'].forEach((t,i)=>document.getElementById(t).classList.toggle('on',i===n));
+  updateProgress(n);
   window.scrollTo({top:0,behavior:'smooth'});
-  if(n===0) setTimeout(()=>{drawMeterChart(+document.getElementById('meter-eps').value); updateW(); drawMaeCurve();},50);
+  if(n===0) setTimeout(()=>{
+    drawMeterChart(+document.getElementById('meter-eps').value);
+    drawMeterCleanChart();
+    onIdEps(+document.getElementById('id-eps').value);
+    onEcgEps(+document.getElementById('ecg-eps').value);
+    updateW();
+    drawMaeCurve();
+  },50);
   if(n===1) renderPairwise();
   if(n===2) buildDomEpsRows();
 }
 
-function setDemoTab(t,el){
-  document.querySelectorAll('.dtab').forEach(d=>d.classList.remove('on'));
-  el.classList.add('on');
-  ['meter','identity','ecg'].forEach(p=>document.getElementById('panel-'+p).style.display='none');
-  document.getElementById('panel-'+t).style.display='block';
-  // lazy-init the canvases when first shown
-  if(t==='identity' && !document.getElementById('id-orig').dataset.init){
-    initIdentityPanel();
-    document.getElementById('id-orig').dataset.init='1';
+// Gatekeeper: from Pane 1, only allow advancing to Pane 2 if all 6 pairwise are done
+function tryGoToSurvey(){
+  if(pwAnswers.some(a=>a===null)){
+    const missingCount=pwAnswers.filter(a=>a===null).length;
+    // Find first unanswered question and scroll to it
+    const firstIdx=pwAnswers.findIndex(a=>a===null);
+    alert(`Please answer all 6 quick questions before continuing (${missingCount} still to go).`);
+    // briefly highlight the first unanswered card
+    const cards=document.querySelectorAll('#pw-list .pw');
+    if(cards[firstIdx]){
+      cards[firstIdx].scrollIntoView({behavior:'smooth',block:'center'});
+      cards[firstIdx].style.outline='2px solid var(--red)';
+      cards[firstIdx].style.borderRadius='10px';
+      setTimeout(()=>{ cards[firstIdx].style.outline=''; },2200);
+    }
+    return;
   }
-  if(t==='ecg' && !document.getElementById('ecg-orig').dataset.init){
-    initEcgPanel();
-    document.getElementById('ecg-orig').dataset.init='1';
-  }
+  goPane(2);
 }
 
 // ═══════════════════════════════════════════════
@@ -828,6 +935,43 @@ function drawMeterChart(eidx){
     ctx.fillStyle='rgba(62,207,142,0.65)'; ctx.font='10px monospace'; ctx.textAlign='center';
     ctx.fillText('Pattern obscured — adversary cannot infer behaviour',W/2,H/2);
   }
+  ctx.textAlign='left';
+}
+
+function drawMeterCleanChart(){
+  const cvs=document.getElementById('meter-cvs-clean');
+  if(!cvs) return;
+  const W=cvs.width=cvs.offsetWidth||400, H=cvs.height=160;
+  const ctx=cvs.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#08120a'; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(62,207,142,0.07)'; ctx.lineWidth=.5;
+  for(let x=0;x<W;x+=W/24){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  const maxV=4, pad={l:28,r:8,t:16,b:28};
+  const cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  const bw=cw/24;
+  // clean bars — no noise added
+  METER_PAT.forEach((v,i)=>{
+    const bh=(v/maxV)*ch;
+    const x=pad.l+i*bw+1, y=pad.t+ch-bh;
+    ctx.fillStyle='rgba(62,207,142,0.78)';
+    ctx.fillRect(x,y,bw-2,bh);
+  });
+  // hour labels
+  [0,6,12,18,23].forEach(h=>{
+    const x=pad.l+h*bw+bw/2;
+    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font='8px monospace'; ctx.textAlign='center';
+    ctx.fillText(h+':00',x,H-8);
+  });
+  // always show the pattern markers since this is the unprotected version
+  [[7,'Wake'],[18,'Home'],[19,'Peak'],[2,'Med dev']].forEach(([h,lbl])=>{
+    const x=pad.l+h*bw+bw/2;
+    ctx.strokeStyle='rgba(239,80,80,0.5)'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(x,pad.t+10); ctx.lineTo(x,pad.t+ch); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(239,80,80,0.85)'; ctx.font='8px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(lbl,x,pad.t+8);
+  });
   ctx.textAlign='left';
 }
 
@@ -1033,12 +1177,17 @@ function initEcgPanel(){
 }
 
 // ═══════════════════════════════════════════════
-// MIC FEATURES & NOISE COMPARISON
+// MIC FEATURES & NOISE COMPARISON (now interactive)
 // ═══════════════════════════════════════════════
+let alphaVal = 1.5;     // smart-noise amplification factor — adjustable
+let highlightedFeat = null;  // feature index the user clicked, or null
+let step4EpsIdx = null; // user override for step 4 comparison ε; null = use topsisIdx
+
 function renderMicFeats(){
-  const html=FEATURES.map(f=>{
+  const html=FEATURES.map((f,i)=>{
     const col=f.impact==='hi'?'var(--green)':f.impact==='med'?'var(--amber)':'var(--text3)';
-    return `<div class="feat-row">
+    const on=highlightedFeat===i?'feat-on':'';
+    return `<div class="feat-row ${on}" onclick="toggleHighlightFeat(${i})" style="cursor:pointer">
       <div class="feat-name">${f.ico} ${f.name}</div>
       <div class="feat-bar"><div class="feat-bar-fill" style="width:${f.mic*100}%;background:${col}"></div></div>
       <div class="feat-mic" style="color:${col}">MIC ${f.mic.toFixed(2)}</div>
@@ -1047,26 +1196,50 @@ function renderMicFeats(){
   document.getElementById('mic-feats').innerHTML=html;
 }
 
+function toggleHighlightFeat(i){
+  highlightedFeat = (highlightedFeat===i) ? null : i;
+  renderMicFeats();
+  renderNoiseDistribution();
+  updateHighlightExplain();
+}
+
+function updateHighlightExplain(){
+  const box=document.getElementById('alpha-explain');
+  if(highlightedFeat===null){ box.style.display='none'; return; }
+  const f=FEATURES[highlightedFeat];
+  // compute σ values for the selected feature under both methods
+  const sumMicA=FEATURES.reduce((s,x)=>s+Math.pow(x.mic,alphaVal),0);
+  const d=FEATURES.length;
+  const uniSigma=1.0;
+  const share=Math.pow(f.mic,alphaVal)/sumMicA;
+  const micS=1/(d*share);
+  const micSigmas=FEATURES.map(x=>1/(d*Math.pow(x.mic,alphaVal)/sumMicA));
+  const meanMic=micSigmas.reduce((a,b)=>a+b,0)/d;
+  const micSnorm=micS*uniSigma/meanMic;
+  const verdict = micSnorm < uniSigma * 0.85
+      ? `<strong style="color:var(--green)">less noise → stays more accurate</strong>`
+      : (micSnorm > uniSigma * 1.15
+          ? `<strong style="color:var(--amber)">more noise → extra privacy on this less-important feature</strong>`
+          : `<strong>about the same noise as the old way</strong>`);
+  box.innerHTML = `${f.ico} <strong>${f.name}</strong> (importance score: ${f.mic.toFixed(2)}) — under our smart method, this feature gets ${verdict}.`;
+  box.style.display='block';
+}
+
 function renderNoiseDistribution(){
   // Visualisation only — shows how noise σ is distributed across features.
   // Uniform: every feature gets the SAME noise (bars all equal)
   // MIC-DP:  noise inversely proportional to budget share MIC^α / Σ MIC^α
   //          → high-MIC features get small noise, low-MIC get large noise
-  const alpha=1.5;
+  const alpha=alphaVal;
   const sumMicA=FEATURES.reduce((s,f)=>s+Math.pow(f.mic,alpha),0);
   const d=FEATURES.length;
 
   let uHtml='',mHtml='';
-  // we display noise σ on each feature, normalised so the average matches
-  // the "unit budget" reference for visual comparison
   const uniSigma=1.0;  // visual unit
-  // for MIC-DP, σ_j ∝ 1/budget_j where budget_j ∝ MIC_j^α / Σ MIC_k^α
-  // we want average noise to roughly match uniform (same total ε)
   const micSigmas=FEATURES.map(f=>{
     const share=Math.pow(f.mic,alpha)/sumMicA;
-    return 1/(d*share);  // σ inversely prop. to share-of-total-budget
+    return 1/(d*share);
   });
-  // normalise so the mean σ equals uniSigma (preserves total budget visually)
   const meanMic=micSigmas.reduce((a,b)=>a+b,0)/d;
   const micSigmasNorm=micSigmas.map(s=>s*uniSigma/meanMic);
 
@@ -1074,12 +1247,13 @@ function renderNoiseDistribution(){
   FEATURES.forEach((f,i)=>{
     const uPct=(uniSigma/maxBar)*100;
     const mPct=(micSigmasNorm[i]/maxBar)*100;
-    uHtml+=`<div class="noise-bar-row">
+    const hi = highlightedFeat===i ? 'box-shadow:0 0 0 2px var(--blue) inset;border-radius:4px;' : '';
+    uHtml+=`<div class="noise-bar-row" style="${hi}">
       <div class="nb-l">${f.ico} ${f.name}</div>
       <div class="noise-bar-bg"><div class="noise-bar-fill" style="width:${uPct}%;background:rgba(245,166,35,0.78)"></div></div>
       <div class="nb-v">σ=${uniSigma.toFixed(2)}</div>
     </div>`;
-    mHtml+=`<div class="noise-bar-row">
+    mHtml+=`<div class="noise-bar-row" style="${hi}">
       <div class="nb-l">${f.ico} ${f.name}</div>
       <div class="noise-bar-bg"><div class="noise-bar-fill" style="width:${mPct}%;background:rgba(62,207,142,0.78)"></div></div>
       <div class="nb-v">σ=${micSigmasNorm[i].toFixed(2)}</div>
@@ -1089,14 +1263,50 @@ function renderNoiseDistribution(){
   document.getElementById('noise-mic').innerHTML=mHtml;
 }
 
+function onAlphaChange(v){
+  alphaVal = v/10;  // slider int (10–25) → 1.0–2.5
+  document.getElementById('alpha-badge').textContent = 'α = ' + alphaVal.toFixed(1);
+  renderNoiseDistribution();
+  updateHighlightExplain();
+}
+
+// ── Step 4 interactive ε selector ──
+function renderStep4Eps(){
+  const el=document.getElementById('step4-eps-row');
+  if(!el) return;
+  el.innerHTML = EL.map((e,i)=>{
+    const isAuto = (i===topsisIdx) && (step4EpsIdx===null);
+    const isPicked = (i===step4EpsIdx);
+    const cls = (isAuto || isPicked) ? 'on' : '';
+    const lbl = isAuto ? `ε = ${e} ★` : `ε = ${e}`;
+    return `<div class="eps-btn ${cls}" onclick="onStep4EpsPick(${i})" title="${i===topsisIdx?'Auto-picked for you':'Click to explore'}">${lbl}</div>`;
+  }).join('');
+  // update the label below
+  const lbl=document.getElementById('step4-current-label');
+  if(step4EpsIdx===null) lbl.innerHTML=`your auto-picked setting (ε = ${EL[topsisIdx]}) ★`;
+  else lbl.innerHTML=`ε = ${EL[step4EpsIdx]} <span style="color:var(--text3);font-weight:normal">(exploration — your auto-pick was ε = ${EL[topsisIdx]})</span>`;
+}
+
+function onStep4EpsPick(i){
+  // clicking the auto-picked one returns to auto mode
+  step4EpsIdx = (i===topsisIdx) ? null : i;
+  renderStep4Eps();
+  renderMaeComparison();
+  drawMaeCurve();
+}
+
 function renderMaeComparison(){
-  // Lookup the calibrated MAE values at the selected ε*.
-  const uni=MAE_UNI[topsisIdx], mic=MAE_MIC[topsisIdx];
+  // Look up MAE values at whichever ε is currently being shown in Step 4.
+  const idx = step4EpsIdx===null ? topsisIdx : step4EpsIdx;
+  const uni=MAE_UNI[idx], mic=MAE_MIC[idx];
   document.getElementById('cmp-uni-mae').textContent=uni.toFixed(3);
   document.getElementById('cmp-mic-mae').textContent=mic.toFixed(3);
   const pct=((uni-mic)/uni*100).toFixed(0);
-  const eps_s=EL[topsisIdx];
-  document.getElementById('winnote').innerHTML=`At your selected <strong>ε* = ${eps_s}</strong>, MIC-DP reduces forecast error by approximately <strong>${pct}%</strong> compared with standard LDP — without weakening the formal (ε, δ)-LDP guarantee. Same privacy, more useful data.`;
+  const eps_s=EL[idx];
+  const prefix = step4EpsIdx===null
+      ? `At your auto-picked <strong>ε* = ${eps_s}</strong>,`
+      : `At <strong>ε = ${eps_s}</strong> (exploring),`;
+  document.getElementById('winnote').innerHTML=`${prefix} our way reduces the error by about <strong>${pct}%</strong>. Same privacy, more useful data.`;
 }
 
 function drawMaeCurve(){
@@ -1151,19 +1361,28 @@ function drawMaeCurve(){
   }
   plot(MAE_UNI,'#ef5050','#1a1f35');
   plot(MAE_MIC,'#3ecf8e','#1a1f35');
-  // user pick indicator
+  // user pick indicator — auto-picked ε* (blue dashed)
   const ux=pad.l+(topsisIdx/(EL.length-1))*cw;
   ctx.strokeStyle='rgba(79,142,247,0.7)'; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
   ctx.beginPath(); ctx.moveTo(ux,pad.t); ctx.lineTo(ux,pad.t+ch); ctx.stroke();
   ctx.setLineDash([]);
   ctx.fillStyle='rgba(79,142,247,0.9)'; ctx.font='bold 9px sans-serif'; ctx.textAlign='center';
-  ctx.fillText('your ε*',ux,pad.t+10);
+  ctx.fillText('auto-pick',ux,pad.t+10);
+  // user's exploration override (purple dashed) — only when different from auto-pick
+  if(step4EpsIdx!==null && step4EpsIdx!==topsisIdx){
+    const ex=pad.l+(step4EpsIdx/(EL.length-1))*cw;
+    ctx.strokeStyle='rgba(167,139,250,0.85)'; ctx.lineWidth=1.5; ctx.setLineDash([2,3]);
+    ctx.beginPath(); ctx.moveTo(ex,pad.t); ctx.lineTo(ex,pad.t+ch); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(167,139,250,1)'; ctx.font='bold 9px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('exploring',ex,pad.t+22);
+  }
   // legend
   ctx.font='10px sans-serif'; ctx.textAlign='left';
   ctx.fillStyle='#ef5050'; ctx.fillRect(W-pad.r-150,pad.t+4,10,3);
-  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText('Standard LDP',W-pad.r-135,pad.t+9);
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText('Old way',W-pad.r-135,pad.t+9);
   ctx.fillStyle='#3ecf8e'; ctx.fillRect(W-pad.r-60,pad.t+4,10,3);
-  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText('UCLDP',W-pad.r-45,pad.t+9);
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText('Our way',W-pad.r-45,pad.t+9);
 }
 
 // ═══════════════════════════════════════════════
@@ -1223,6 +1442,9 @@ function updateW(){
   ].map(([n,v,c])=>`<div class="wb"><div class="wb-n">${n}</div><div class="wb-bg"><div class="wb-fill" style="width:${Math.round(v*100)}%;background:${c}"></div></div><div class="wb-v" style="color:${c}">${Math.round(v*100)}%</div></div>`).join('');
   const C=runTopsis();
   renderTopsisBars(C);
+  // sliders moved → reset Step 4 exploration override and re-render selector
+  step4EpsIdx = null;
+  renderStep4Eps();
   renderMaeComparison();
   drawMaeCurve();
 }
@@ -1232,29 +1454,29 @@ function updateW(){
 // ═══════════════════════════════════════════════
 const PROMPTS=[
   {axis:'LP/LA',
-   q:'Imagine the utility sends you a personalised energy-saving tip each month.',
-   a:{label:'Option A — protect me',text:'My data is protected at the highest level. The monthly tip may be wrong about 1 in 5 times.',winner:'LP'},
-   b:{label:'Option B — be accurate',text:'My data is protected moderately. The monthly tip is almost always right.',winner:'LA'}},
+   q:'Your power company wants to send you a monthly tip to help you save energy.',
+   a:{label:'Option A — keep me private',text:'Hide my data as much as possible. The monthly tip might be wrong sometimes (about 1 in 5).',winner:'LP'},
+   b:{label:'Option B — make the tip accurate',text:'Share a bit more. The tip will almost always be right.',winner:'LA'}},
   {axis:'LP/LA',
-   q:'The utility predicts when your neighbourhood will hit peak demand.',
-   a:{label:'Option A — protect me',text:'My data is fully protected. The prediction is off by ±60 minutes.',winner:'LP'},
-   b:{label:'Option B — be accurate',text:'My data is moderately protected. The prediction is off by only ±10 minutes.',winner:'LA'}},
+   q:'Your neighborhood wants to predict when power use will be highest.',
+   a:{label:'Option A — keep me private',text:'Hide my data fully. The prediction could be off by up to an hour.',winner:'LP'},
+   b:{label:'Option B — make the prediction accurate',text:'Share a bit more. The prediction will be off by only 10 minutes.',winner:'LA'}},
   {axis:'LP/CR',
-   q:'Privacy is computed on your home gateway device.',
-   a:{label:'Option A — protect me',text:'Strongest protection. The device takes 3 seconds per data release and uses 2× the battery.',winner:'LP'},
-   b:{label:'Option B — keep it light',text:'Weaker protection. The device finishes in 0.1 seconds and barely uses any battery.',winner:'CR'}},
+   q:'Privacy protection runs on your home device (like a small box or smart plug).',
+   a:{label:'Option A — strongest privacy',text:'Strong protection. The device takes 3 seconds per update and uses more battery.',winner:'LP'},
+   b:{label:'Option B — save battery',text:'Lighter protection. The device is fast and barely uses battery.',winner:'CR'}},
   {axis:'LP/CR',
-   q:'You\'re away for a week and the device runs on battery only.',
-   a:{label:'Option A — protect me',text:'Highest protection — battery drains in 4 days. You may lose data on day 5–7.',winner:'LP'},
-   b:{label:'Option B — keep it light',text:'Moderate protection — battery lasts the full week.',winner:'CR'}},
+   q:'You\'re traveling for a week. Your home device must run on its battery only.',
+   a:{label:'Option A — strongest privacy',text:'Highest protection — but the battery runs out in 4 days. You may lose some data.',winner:'LP'},
+   b:{label:'Option B — save battery',text:'Lighter protection — the battery lasts the full week.',winner:'CR'}},
   {axis:'LA/CR',
-   q:'The utility offers a "real-time" billing display.',
-   a:{label:'Option A — be accurate',text:'Best forecast quality, but the display lags 5 seconds and the device runs hot.',winner:'LA'},
-   b:{label:'Option B — keep it light',text:'Slightly lower forecast quality, instant display, device stays cool.',winner:'CR'}},
+   q:'You\'re looking at a "live" billing display in your app.',
+   a:{label:'Option A — make it accurate',text:'Very accurate display, but it updates 5 seconds late. The device gets a bit warm.',winner:'LA'},
+   b:{label:'Option B — keep it fast',text:'A bit less accurate. Updates instantly. Device stays cool.',winner:'CR'}},
   {axis:'LA/CR',
-   q:'A long-running monthly summary report.',
-   a:{label:'Option A — be accurate',text:'Highest accuracy summary. Device works overnight to compute it.',winner:'LA'},
-   b:{label:'Option B — keep it light',text:'Good-enough summary. Device finishes in 2 minutes.',winner:'CR'}}
+   q:'You want a monthly summary of your energy use.',
+   a:{label:'Option A — make it accurate',text:'Most accurate summary. Your device works on it overnight.',winner:'LA'},
+   b:{label:'Option B — keep it fast',text:'Good summary. Your device finishes in 2 minutes.',winner:'CR'}}
 ];
 
 function renderPairwise(){
@@ -1332,7 +1554,9 @@ function renderPwResult(){
 // SURVEY HELPERS
 // ═══════════════════════════════════════════════
 function selQ(qn,v,el){
-  document.querySelectorAll('#q'+qn+' .lb').forEach(b=>b.classList.remove('on'));
+  // Find the container — IDs are 'q1', 'q2', etc. Q8/Q9/Q10 use 'q8u'/'q9u'/'q10u' to avoid colliding with the legacy 'q8' textarea-id mental model.
+  const containerId = (qn>=8 && qn<=10) ? ('q'+qn+'u') : ('q'+qn);
+  document.querySelectorAll('#'+containerId+' .lb').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
   qAnswers[qn]=v;
 }
@@ -1377,6 +1601,9 @@ function buildPayload(){
     core_uldp:{
       slider_weights:sl,
       topsis_eps:EL[topsisIdx],
+      mic_dp_alpha:alphaVal,
+      step4_explored_eps:step4EpsIdx===null?null:EL[step4EpsIdx],
+      highlighted_feature:highlightedFeat===null?null:FEATURES[highlightedFeat].name,
       mae_at_eps:{
         standard_ldp:MAE_UNI[topsisIdx],
         ucldp_micdp:MAE_MIC[topsisIdx],
@@ -1390,29 +1617,37 @@ function buildPayload(){
     },
     survey:{
       q1_demo_clarity:qAnswers[1],
-      q2_micdp_convincing:qAnswers[2],
-      q3_uldp_eps_fit:qAnswers[3],
+      q2_smart_noise_makes_sense:qAnswers[2],
+      q3_picked_setting_feels_right:qAnswers[3],
       q4_per_domain_eps:{
         smart_meter:domEps.meter>=0?EL[domEps.meter]:null,
         identity:domEps.id>=0?EL[domEps.id]:null,
         ecg:domEps.ecg>=0?EL[domEps.ecg]:null
       },
       q5_who_picks_eps:qAnswers[5],
-      q6_privagent_natural:qAnswers[6],
-      q7_six_questions_right:qAnswers[7],
-      q8_open_feedback:document.getElementById('q8').value||null
+      q6_six_questions_easy_to_understand:qAnswers[6],
+      q7_six_questions_length:qAnswers[7],
+      q8_usefulness:qAnswers[8],
+      q9_usability:qAnswers[9],
+      q10_accessibility:qAnswers[10],
+      q11_open_feedback:document.getElementById('q11').value||null
     }
   };
 }
 
 function validateRequired(){
-  // Q1–Q5 are required, Q4 needs all three domains. Q6/Q7/Q8 are optional.
+  // Q1, Q2, Q3, Q4 (all 3 domains), Q5, Q6, Q8, Q9, Q10 are required.
+  // Q7 (length opinion) and Q11 (open feedback) are optional.
   const m=[];
-  if(qAnswers[1]<=0) m.push(['q1','Q1 — Demo clarity (1–7)']);
-  if(qAnswers[2]<=0) m.push(['q2','Q2 — MIC-DP convincing (1–7)']);
-  if(qAnswers[3]<=0) m.push(['q3','Q3 — ULDP ε* fit (1–7)']);
-  if(domEps.meter<0||domEps.id<0||domEps.ecg<0) m.push(['q4-meter','Q4 — Pick an ε for all three domains']);
-  if(!qAnswers[5]) m.push(['q5','Q5 — Who should pick ε']);
+  if(qAnswers[1]<=0) m.push(['q1','Q1 — Demo was easy to understand (1–7)']);
+  if(qAnswers[2]<=0) m.push(['q2','Q2 — Smart noise makes sense (1–7)']);
+  if(qAnswers[3]<=0) m.push(['q3','Q3 — Picked setting feels right (1–7)']);
+  if(domEps.meter<0||domEps.id<0||domEps.ecg<0) m.push(['q4-meter','Q4 — Pick a privacy level for all three kinds of data']);
+  if(!qAnswers[5]) m.push(['q5','Q5 — Who should decide your privacy setting']);
+  if(qAnswers[6]<=0) m.push(['q6','Q6 — The 6 quick questions were easy to understand (1–7)']);
+  if(qAnswers[8]<=0) m.push(['q8u','Q8 — Would this tool be useful in your daily life (1–7)']);
+  if(qAnswers[9]<=0) m.push(['q9u','Q9 — How easy was this tool to use (1–7)']);
+  if(qAnswers[10]<=0) m.push(['q10u','Q10 — Was the language and design accessible (1–7)']);
   return m;
 }
 
@@ -1453,10 +1688,10 @@ async function submitResponses(){
   if(GOOGLE_SHEETS_URL.startsWith('PASTE_')){
     try{
       await navigator.clipboard.writeText(JSON.stringify(payload,null,2));
-      alert('Endpoint not configured yet — your response was copied to the clipboard instead. Please send it to wy927@uw.edu manually, or configure GOOGLE_SHEETS_URL in the HTML.');
+      alert('Submission endpoint is not yet configured. Your response has been copied to the clipboard as a fallback.');
     } catch(e){
       const r=document.getElementById('rec-out'); r.textContent=JSON.stringify(payload,null,2); r.style.display='block';
-      alert('Endpoint not configured yet — your response is shown in the box below. Please copy and email it to wy927@uw.edu.');
+      alert('Submission endpoint is not yet configured. Your response is shown in the box below — please copy it.');
     }
     btn.disabled=false;
     btn.innerHTML='⬆ Submit my responses';
@@ -1475,7 +1710,7 @@ async function submitResponses(){
   } catch(e){
     btn.disabled=false;
     btn.innerHTML='⬆ Submit my responses';
-    alert('Submission failed: '+e.message+'\n\nAs a fallback, your response has been copied to your clipboard — please email it to wy927@uw.edu.');
+    alert('Submission failed: '+e.message+'\n\nAs a fallback, your response has been copied to your clipboard.');
     try{ await navigator.clipboard.writeText(JSON.stringify(payload,null,2)); } catch(_){}
   }
 }
@@ -1506,6 +1741,7 @@ function copyRec(){
 window.addEventListener('resize',()=>{
   if(document.getElementById('main-page').classList.contains('locked')) return;
   drawMeterChart(+document.getElementById('meter-eps').value);
+  drawMeterCleanChart();
   drawMaeCurve();
 });
 </script>
