@@ -25,6 +25,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .top-nav-removed{display:none}
 .progress-track{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:24px}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--blue) 0%,var(--purple) 100%);border-radius:3px;transition:width .5s ease}
+
+/* part headers in survey */
+.part-header{display:flex;gap:14px;align-items:center;margin:28px 0 14px;padding:14px 16px;background:linear-gradient(90deg,rgba(79,142,247,0.10),rgba(167,139,250,0.04) 60%,transparent);border-radius:var(--rl);border-left:3px solid var(--blue)}
+.part-chip{width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0}
+.part-title{font-size:15px;font-weight:600;color:var(--text);line-height:1.3}
+.part-sub{font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.5}
+
+/* SUS-specific */
+.sus-instr{font-size:12px;color:var(--text2);background:var(--bg3);padding:10px 14px;border-radius:var(--r);margin-bottom:14px;line-height:1.6}
+.sus-row{display:grid;grid-template-columns:1fr 280px;gap:18px;align-items:center;padding:11px 14px;border-bottom:0.5px solid var(--border);background:var(--bg2);border-radius:6px;margin-bottom:6px}
+.sus-row .sus-text{font-size:13px;color:var(--text);line-height:1.5}
+.sus-row .sus-text .req{color:var(--red);margin-left:4px}
+.sus-row .sus-scale{display:flex;gap:5px;justify-content:flex-end}
+.sus-row .sus-scale .lb5{flex:0 0 42px;padding:7px 0;text-align:center;font-size:11px;font-weight:500;border:0.5px solid var(--border2);background:var(--bg3);color:var(--text2);border-radius:5px;cursor:pointer;transition:all .12s}
+.sus-row .sus-scale .lb5:hover{border-color:var(--blue);color:var(--text)}
+.sus-row .sus-scale .lb5.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.sus-scale-lbls{display:flex;justify-content:space-between;font-size:9.5px;color:var(--text3);text-transform:uppercase;letter-spacing:.03em;padding:0 14px 8px 14px}
+@media (max-width:680px){
+  .sus-row{grid-template-columns:1fr;gap:8px}
+  .sus-row .sus-scale{justify-content:space-between}
+  .sus-row .sus-scale .lb5{flex:1}
+}
+
+/* forced-choice epsilon picker (C2) */
+.forced-eps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:8px}
+.forced-eps .feps{padding:14px 12px;border:0.5px solid var(--border2);background:var(--bg3);border-radius:var(--r);cursor:pointer;transition:all .15s;text-align:left}
+.forced-eps .feps:hover{border-color:var(--blue)}
+.forced-eps .feps.on{border-color:var(--green);background:rgba(62,207,142,0.10);box-shadow:0 0 0 1px var(--green) inset}
+.forced-eps .feps .feps-eps{font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
+.forced-eps .feps .feps-desc{font-size:11px;color:var(--text2);line-height:1.5}
 .pane{display:none}.pane.on{display:block}
 h2{font-size:21px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px}
 h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
@@ -218,18 +248,20 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
     <p style="color:var(--text)">You're invited to take part in a brief research study evaluating <strong>UCLDP</strong>, a user-centric privacy framework developed for a PhD dissertation at the University of Washington.</p>
     <p style="color:var(--text)">In plain terms: UCLDP lets <em>you</em> — not a company — decide how your data is protected. Your feedback helps us check if regular people find it useful and easy to use.</p>
 
-    <h4>What you'll do (about 15 minutes)</h4>
+    <h4>What you'll do (about 25 minutes)</h4>
     <ul>
-      <li>Try a quick demo. See how privacy settings affect your data.</li>
-      <li>Answer a few simple "Option A or Option B" questions.</li>
-      <li>Fill out a short survey at the end.</li>
+      <li>Answer a few questions about yourself before starting.</li>
+      <li>Try an interactive demo. See how privacy settings affect your data.</li>
+      <li>Try a short "Option A or Option B" preference dialogue.</li>
+      <li>Complete a short survey with rating questions at the end.</li>
     </ul>
 
     <h4>What we record</h4>
     <ul>
-      <li>The choices you make in the demo and survey.</li>
+      <li>Your answers in the demo and survey.</li>
       <li>Any feedback you write.</li>
-      <li>A random ID created in your browser.</li>
+      <li>A random ID created in your browser. </li>
+      <li>How long you spent on the study.</li>
     </ul>
 
     <h4>What we do NOT collect</h4>
@@ -241,7 +273,9 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
     <h4>You're in control</h4>
     <ul>
       <li>You can close this page any time.</li>
+      <li><strong>If you close the page before submitting, no data will be recorded.</strong></li>
       <li>Your answers can't be traced back to you.</li>
+      <li>Anonymous response data will be retained for at least 5 years following publication, in line with university data retention policy.</li>
       <li>Results may appear in academic papers.</li>
     </ul>
 
@@ -288,15 +322,103 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
 
 <div class="page locked" id="main-page">
 
-<div class="timebar" id="progress-bar">⏱ <b>Step 1 of 3 — Try the demo</b> · About 15 minutes total. The progress bar fills as you go.</div>
+<div class="timebar" id="progress-bar">⏱ <b>Step 1 of 4 — A few quick questions about you</b> · About 25 minutes total. The progress bar fills as you go.</div>
 
-<div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:33%"></div></div>
+<div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:25%"></div></div>
 
 <!-- ═══════════════════════════════════════
-     PANE 0 — CORE UCLDP DEMO
+     PANE 0 — PRE-DEMO QUESTIONS (Part A)
 ═══════════════════════════════════════ -->
 <div class="pane on" id="pane0">
-  <span class="section-chip chip-core">🎯 The demo</span>
+  <span class="section-chip chip-survey">📝 Step 1 — A few quick questions about you</span>
+  <h2>Before we start the demo</h2>
+  <p class="sub">These short questions help us understand your background so we can interpret your feedback well. None of your answers can be traced back to you. All questions marked <span style="color:var(--red)">★</span> are required.</p>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">A1</span>When online services collect information about me, I worry that my personal data could be misused. <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">How much do you agree with the statement above?</div>
+    <div class="likert" id="qA1">
+      <div class="lb" onclick="selPre('A1',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selPre('A1',2,this)">2</div><div class="lb" onclick="selPre('A1',3,this)">3</div>
+      <div class="lb" onclick="selPre('A1',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selPre('A1',5,this)">5</div><div class="lb" onclick="selPre('A1',6,this)">6</div>
+      <div class="lb" onclick="selPre('A1',7,this)">7<span class="sub-l">Strongly agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">A2</span>I am aware that companies collect data about me when I use their services. <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">How much do you agree with the statement above?</div>
+    <div class="likert" id="qA2">
+      <div class="lb" onclick="selPre('A2',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selPre('A2',2,this)">2</div><div class="lb" onclick="selPre('A2',3,this)">3</div>
+      <div class="lb" onclick="selPre('A2',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selPre('A2',5,this)">5</div><div class="lb" onclick="selPre('A2',6,this)">6</div>
+      <div class="lb" onclick="selPre('A2',7,this)">7<span class="sub-l">Strongly agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">A3</span>Before this study, how clearly did you understand what a "privacy budget" (epsilon) controls in a data system? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">It is completely fine if this is a new idea to you — there is no right answer. We just want to know your starting point.</div>
+    <div class="likert" id="qA3">
+      <div class="lb" onclick="selPre('A3',1,this)">1<span class="sub-l">Not at all</span></div>
+      <div class="lb" onclick="selPre('A3',2,this)">2</div><div class="lb" onclick="selPre('A3',3,this)">3</div>
+      <div class="lb" onclick="selPre('A3',4,this)">4<span class="sub-l">Somewhat</span></div>
+      <div class="lb" onclick="selPre('A3',5,this)">5</div><div class="lb" onclick="selPre('A3',6,this)">6</div>
+      <div class="lb" onclick="selPre('A3',7,this)">7<span class="sub-l">Very clearly</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">A4</span>What is your age range? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Used only to describe the participant sample.</div>
+    <div class="mc" id="qA4">
+      <div class="mc-opt" onclick="selPreMC('A4','18-24',this)">18–24</div>
+      <div class="mc-opt" onclick="selPreMC('A4','25-34',this)">25–34</div>
+      <div class="mc-opt" onclick="selPreMC('A4','35-44',this)">35–44</div>
+      <div class="mc-opt" onclick="selPreMC('A4','45-54',this)">45–54</div>
+      <div class="mc-opt" onclick="selPreMC('A4','55+',this)">55 or older</div>
+      <div class="mc-opt" onclick="selPreMC('A4','prefer_not_to_say',this)">Prefer not to say</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">A5</span>Which best describes your technical background? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Be as honest as possible — there is no "right" answer.</div>
+    <div class="mc" id="qA5">
+      <div class="mc-opt" onclick="selPreMC('A5','non_technical',this)">Non-technical — I don't work in tech or with code</div>
+      <div class="mc-opt" onclick="selPreMC('A5','some_background',this)">Some background in technology or computing</div>
+      <div class="mc-opt" onclick="selPreMC('A5','cs_or_data_professional',this)">Computer science, engineering, or data professional</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">A6</span>Have you ever used a tool that lets you control your privacy settings beyond a simple on/off switch? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">For example, tools that let you choose what kinds of data are shared, or pick a privacy "level."</div>
+    <div class="mc" id="qA6">
+      <div class="mc-opt" onclick="selPreMC('A6','never',this)">Never</div>
+      <div class="mc-opt" onclick="selPreMC('A6','once_or_twice',this)">Once or twice</div>
+      <div class="mc-opt" onclick="selPreMC('A6','regularly',this)">Regularly</div>
+    </div>
+  </div>
+
+  <!-- validation hint -->
+  <div class="valbox" id="valbox-pre">
+    <strong>Please answer all required questions before continuing:</strong>
+    <ul id="valbox-pre-list"></ul>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-b" onclick="tryGoToDemo()">Continue to the demo →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PANE 1 — CORE UCLDP DEMO
+═══════════════════════════════════════ -->
+<div class="pane" id="pane1">
+  <span class="section-chip chip-core">🎯 Step 2 — The interactive demo</span>
   <h2>How this privacy tool works</h2>
   <p class="sub">When apps collect your data, they often add a bit of <strong>random noise</strong> to hide your details. This is called <em>privacy noise</em>. <br><br>The trade-off is simple:
   <ul style="margin:8px 0 8px 22px;color:var(--text2);font-size:13px;line-height:1.8">
@@ -544,20 +666,21 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
   </div>
 
   <div class="btn-row">
-    <button class="btn btn-b" onclick="goPane(1)">Continue to Step 2 →</button>
+    <button class="btn btn-s" onclick="goPane(0)">← Back</button>
+    <button class="btn btn-b" onclick="goPane(2)">Continue to Step 3 →</button>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════
-     PANE 1 — PRIVAGENT EXTENSION
+     PANE 2 — PRIVAGENT EXTENSION
 ═══════════════════════════════════════ -->
-<div class="pane" id="pane1">
-  <span class="section-chip chip-ext">💬 Step 2 — Quick questions</span>
-  <h2>6 quick "would you rather" questions <span style="font-size:13px;color:var(--red);font-weight:500">★ required</span></h2>
+<div class="pane" id="pane2">
+  <span class="section-chip chip-ext">💬 Step 3 — Quick "would you rather" questions</span>
+  <h2>6 quick preference questions <span style="font-size:13px;color:var(--red);font-weight:500">★ required</span></h2>
   <p class="sub">Some people don't like moving sliders. So we also offer 6 simple choices: just pick the option that sounds better to you. We'll then figure out your priorities automatically.</p>
   <p class="sub" style="margin-top:-6px"><strong style="color:var(--text)">How to answer:</strong> read both options. Tap the one that feels right. There's no wrong answer.</p>
 
-  <div class="note purple">After all 6 questions, we'll show what we learned and compare it with your slider answers from Step 1. <strong style="color:var(--text)">Please answer all 6 to continue to the survey.</strong></div>
+  <div class="note purple">After all 6 questions, we'll show what we learned and compare it with your slider answers from the demo. <strong style="color:var(--text)">Please answer all 6 to continue to the survey.</strong></div>
 
   <div class="pwprog"><div class="pwprog-fill" id="pwprog" style="width:0%"></div></div>
   <div id="pw-list"></div>
@@ -565,7 +688,7 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
   <div class="card" id="pw-result" style="display:none;border-color:var(--purple)">
     <div class="clbl" style="color:var(--purple)">What we learned about your priorities</div>
     <div id="pw-weights"></div>
-    <h3 style="margin-top:18px;font-size:13px">Comparison with your slider answers from Step 1</h3>
+    <h3 style="margin-top:18px;font-size:13px">Comparison with your slider answers from the demo</h3>
     <table style="width:100%;font-size:12px;border-collapse:collapse;margin-top:8px">
       <thead><tr>
         <th style="text-align:left;padding:6px;color:var(--text3);font-size:10px;font-weight:600;text-transform:uppercase">Priority</th>
@@ -579,159 +702,329 @@ h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
   </div>
 
   <div class="btn-row">
-    <button class="btn btn-s" onclick="goPane(0)">← Back to demo</button>
+    <button class="btn btn-s" onclick="goPane(1)">← Back to demo</button>
     <button class="btn btn-b" onclick="tryGoToSurvey()">Continue to survey →</button>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════
-     PANE 2 — SURVEY
+     PANE 3 — SURVEY (Parts B-G)
 ═══════════════════════════════════════ -->
-<div class="pane" id="pane2">
-  <span class="section-chip chip-survey">📋 Step 3 — Quick survey</span>
-  <h2>Tell us what you thought</h2>
-  <p class="sub">A few quick questions about your experience. Most are simple 1–7 ratings. Should take about 4 minutes. All questions marked <span style="color:var(--red)">★</span> are required.</p>
+<div class="pane" id="pane3">
+  <span class="section-chip chip-survey">📋 Step 4 — Survey</span>
+  <h2>One last set of questions</h2>
+  <p class="sub">Most are simple 1–7 ratings. Should take about 8–10 minutes. All questions marked <span style="color:var(--red)">★</span> are required.</p>
 
-  <div class="q-card">
-    <div class="q-title"><span class="q-num">1</span>The demo was easy to understand <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">How clear was the demo to you?</div>
-    <div class="likert" id="q1">
-      <div class="lb" onclick="selQ(1,1,this)">1<span class="sub-l">Confusing</span></div>
-      <div class="lb" onclick="selQ(1,2,this)">2</div><div class="lb" onclick="selQ(1,3,this)">3</div>
-      <div class="lb" onclick="selQ(1,4,this)">4<span class="sub-l">OK</span></div>
-      <div class="lb" onclick="selQ(1,5,this)">5</div><div class="lb" onclick="selQ(1,6,this)">6</div>
-      <div class="lb" onclick="selQ(1,7,this)">7<span class="sub-l">Very clear</span></div>
+  <!-- ───────────────────────────── PART B ───────────────────────────── -->
+  <div class="part-header">
+    <div class="part-chip">B</div>
+    <div>
+      <div class="part-title">After the demo</div>
+      <div class="part-sub">5 short questions about what you took away from the demo.</div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">2</span>Giving more privacy to important data makes sense <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">In Step 3, our smart noise gives less noise to important data. Was that a good idea?</div>
-    <div class="likert" id="q2">
-      <div class="lb" onclick="selQ(2,1,this)">1<span class="sub-l">Disagree</span></div>
-      <div class="lb" onclick="selQ(2,2,this)">2</div><div class="lb" onclick="selQ(2,3,this)">3</div>
-      <div class="lb" onclick="selQ(2,4,this)">4<span class="sub-l">Neutral</span></div>
-      <div class="lb" onclick="selQ(2,5,this)">5</div><div class="lb" onclick="selQ(2,6,this)">6</div>
-      <div class="lb" onclick="selQ(2,7,this)">7<span class="sub-l">Agree</span></div>
+    <div class="q-title"><span class="q-num">B1</span>After completing the demo, how clearly do you now understand what a "privacy budget" (epsilon) controls? <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qB1">
+      <div class="lb" onclick="selSv('B1',1,this)">1<span class="sub-l">Not at all</span></div>
+      <div class="lb" onclick="selSv('B1',2,this)">2</div><div class="lb" onclick="selSv('B1',3,this)">3</div>
+      <div class="lb" onclick="selSv('B1',4,this)">4<span class="sub-l">Somewhat</span></div>
+      <div class="lb" onclick="selSv('B1',5,this)">5</div><div class="lb" onclick="selSv('B1',6,this)">6</div>
+      <div class="lb" onclick="selSv('B1',7,this)">7<span class="sub-l">Very clearly</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">3</span>The privacy setting we picked felt right <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">In Step 2, we picked a setting from your slider choices. Did it match what you would have picked yourself?</div>
-    <div class="likert" id="q3">
-      <div class="lb" onclick="selQ(3,1,this)">1<span class="sub-l">Wrong</span></div>
-      <div class="lb" onclick="selQ(3,2,this)">2</div><div class="lb" onclick="selQ(3,3,this)">3</div>
-      <div class="lb" onclick="selQ(3,4,this)">4<span class="sub-l">Neutral</span></div>
-      <div class="lb" onclick="selQ(3,5,this)">5</div><div class="lb" onclick="selQ(3,6,this)">6</div>
-      <div class="lb" onclick="selQ(3,7,this)">7<span class="sub-l">Just right</span></div>
+    <div class="q-title"><span class="q-num">B2</span>The demo clearly showed the trade-off between privacy protection and data usefulness. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qB2">
+      <div class="lb" onclick="selSv('B2',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('B2',2,this)">2</div><div class="lb" onclick="selSv('B2',3,this)">3</div>
+      <div class="lb" onclick="selSv('B2',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('B2',5,this)">5</div><div class="lb" onclick="selSv('B2',6,this)">6</div>
+      <div class="lb" onclick="selSv('B2',7,this)">7<span class="sub-l">Strongly agree</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">4</span>How much privacy do you want for each kind of data? <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">Pick a privacy setting for each kind below. <strong>Tap an ε value</strong> for each row.</div>
-    <div style="display:grid;gap:10px">
-      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">⚡ Smart meter (electricity)</div><div class="eps-row" id="q4-meter"></div></div>
-      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">🪪 Health record</div><div class="eps-row" id="q4-id"></div></div>
-      <div class="icard"><div style="font-size:12px;font-weight:500;margin-bottom:8px">💓 Heart signal (ECG)</div><div class="eps-row" id="q4-ecg"></div></div>
+    <div class="q-title"><span class="q-num">B3</span>The demo helped me understand why combining multiple data sources can create a privacy risk — even when each one is protected on its own. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qB3">
+      <div class="lb" onclick="selSv('B3',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('B3',2,this)">2</div><div class="lb" onclick="selSv('B3',3,this)">3</div>
+      <div class="lb" onclick="selSv('B3',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('B3',5,this)">5</div><div class="lb" onclick="selSv('B3',6,this)">6</div>
+      <div class="lb" onclick="selSv('B3',7,this)">7<span class="sub-l">Strongly agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">B4</span>How much privacy do you want for each kind of data? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Pick a setting for each row. The small text under each ε reminds you what that setting means in practice.</div>
+    <div style="display:grid;gap:14px;margin-top:6px">
+      <div class="icard">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">⚡ Smart meter (electricity use)</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">ε = 0.1 → no daily patterns can be recovered · ε = 10 → wake time, appliance use, and EV charging are easily detected</div>
+        <div class="eps-row" id="q4-meter"></div>
+      </div>
+      <div class="icard">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">🪪 Health record card</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">ε = 0.1 → name and date of birth are fully scrambled · ε = 10 → most fields are reconstructable</div>
+        <div class="eps-row" id="q4-id"></div>
+      </div>
+      <div class="icard">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">💓 Heart signal (ECG)</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">ε = 0.1 → only random noise is shared · ε = 10 → heart rate and rhythm irregularities are clearly visible</div>
+        <div class="eps-row" id="q4-ecg"></div>
+      </div>
     </div>
     <div class="note" id="q4-note" style="margin-top:10px">Pick one privacy level for each kind of data above.</div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">5</span>Who should decide your privacy setting? <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">Right now, companies decide for you. Our tool lets you decide. Which would you prefer?</div>
-    <div class="mc" id="q5">
-      <div class="mc-opt" onclick="selMC(5,'admin',this)">A company or admin should decide — I don't want to bother</div>
-      <div class="mc-opt" onclick="selMC(5,'sliders',this)">I'd like to use the sliders (from Step 1)</div>
-      <div class="mc-opt" onclick="selMC(5,'agent',this)">I'd like to answer the 6 quick questions (from Step 2)</div>
-      <div class="mc-opt" onclick="selMC(5,'default',this)">Either way is fine — but give me a good default to start with</div>
+    <div class="q-title"><span class="q-num">B5</span>Which of these best describes your privacy priorities? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Pick whichever feels closest to you — there is no right answer.</div>
+    <div class="mc" id="qB5">
+      <div class="mc-opt" onclick="selSvMC('B5','privacy_first',this)"><strong>Privacy first</strong> — I want the strongest protection, even if services work less well.</div>
+      <div class="mc-opt" onclick="selSvMC('B5','accuracy_first',this)"><strong>Accuracy first</strong> — I want services to work well, even if it uses more of my data.</div>
+      <div class="mc-opt" onclick="selSvMC('B5','balanced',this)"><strong>Balanced</strong> — I want a fair trade-off between privacy and usefulness.</div>
+      <div class="mc-opt" onclick="selSvMC('B5','efficient',this)"><strong>Resource-efficient</strong> — I want minimal battery use and quick responses on my device.</div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────── PART C ───────────────────────────── -->
+  <div class="part-header">
+    <div class="part-chip">C</div>
+    <div>
+      <div class="part-title">About the recommendation you got</div>
+      <div class="part-sub">In the demo, the tool used your sliders to pick a privacy setting (ε*). The next questions are about how well it matched what you actually want.</div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">6</span>The 6 quick questions in Step 2 were easy to understand <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">How did you feel about the "Option A or Option B" questions?</div>
-    <div class="likert" id="q6">
-      <div class="lb" onclick="selQ(6,1,this)">1<span class="sub-l">Confusing</span></div>
-      <div class="lb" onclick="selQ(6,2,this)">2</div><div class="lb" onclick="selQ(6,3,this)">3</div>
-      <div class="lb" onclick="selQ(6,4,this)">4<span class="sub-l">OK</span></div>
-      <div class="lb" onclick="selQ(6,5,this)">5</div><div class="lb" onclick="selQ(6,6,this)">6</div>
-      <div class="lb" onclick="selQ(6,7,this)">7<span class="sub-l">Very clear</span></div>
+    <div class="q-title"><span class="q-num">C2</span>If you had to choose ONE privacy setting for your own personal data in general, which would you pick? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Use the same ε scale as before. The reminder under each option shows what it means in practice.</div>
+    <div class="forced-eps" id="qC2"></div>
+  </div>
+
+  <div class="q-card" id="qC3-card" style="display:none">
+    <div class="q-title"><span class="q-num">C3</span>How well does the recommendation match what you actually want? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">
+      <div style="display:flex;justify-content:space-around;gap:14px;margin:10px 0;padding:12px;background:var(--bg3);border-radius:10px">
+        <div style="text-align:center;flex:1">
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em">The tool recommended</div>
+          <div style="font-size:22px;font-weight:700;color:var(--blue);margin-top:2px">ε = <span id="c3-rec">—</span></div>
+        </div>
+        <div style="text-align:center;flex:1">
+          <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em">You chose</div>
+          <div style="font-size:22px;font-weight:700;color:var(--green);margin-top:2px">ε = <span id="c3-yours">—</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="likert" id="qC3">
+      <div class="lb" onclick="selSv('C3',1,this)">1<span class="sub-l">Completely wrong</span></div>
+      <div class="lb" onclick="selSv('C3',2,this)">2</div><div class="lb" onclick="selSv('C3',3,this)">3</div>
+      <div class="lb" onclick="selSv('C3',4,this)">4<span class="sub-l">Mixed</span></div>
+      <div class="lb" onclick="selSv('C3',5,this)">5</div><div class="lb" onclick="selSv('C3',6,this)">6</div>
+      <div class="lb" onclick="selSv('C3',7,this)">7<span class="sub-l">Exactly right</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">7</span>How did you feel about answering 6 questions in Step 2?</div>
-    <div class="q-desc">Was that too many, too few, or about right?</div>
-    <div class="mc" id="q7">
-      <div class="mc-opt" onclick="selMC(7,'fewer',this)">Too many — 3 or 4 would be better</div>
-      <div class="mc-opt" onclick="selMC(7,'right',this)">Just right — 6 is fine</div>
-      <div class="mc-opt" onclick="selMC(7,'more',this)">Too few — I'd answer more if it helped</div>
-    </div>
-  </div>
-
-  <!-- ── NEW: Usefulness, Usability, Accessibility ── -->
-  <div class="q-card">
-    <div class="q-title"><span class="q-num">8</span>Would this kind of tool be useful in your daily life? <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">Think about apps, smart devices, or websites you use. Would having this kind of privacy control help you?</div>
-    <div class="likert" id="q8u">
-      <div class="lb" onclick="selQ(8,1,this)">1<span class="sub-l">Not useful</span></div>
-      <div class="lb" onclick="selQ(8,2,this)">2</div><div class="lb" onclick="selQ(8,3,this)">3</div>
-      <div class="lb" onclick="selQ(8,4,this)">4<span class="sub-l">Neutral</span></div>
-      <div class="lb" onclick="selQ(8,5,this)">5</div><div class="lb" onclick="selQ(8,6,this)">6</div>
-      <div class="lb" onclick="selQ(8,7,this)">7<span class="sub-l">Very useful</span></div>
+    <div class="q-title"><span class="q-num">C4</span>The tool clearly explained why it recommended this privacy setting. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qC4">
+      <div class="lb" onclick="selSv('C4',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('C4',2,this)">2</div><div class="lb" onclick="selSv('C4',3,this)">3</div>
+      <div class="lb" onclick="selSv('C4',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('C4',5,this)">5</div><div class="lb" onclick="selSv('C4',6,this)">6</div>
+      <div class="lb" onclick="selSv('C4',7,this)">7<span class="sub-l">Strongly agree</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">9</span>How easy was this tool to use? <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">Was it easy to follow the steps, tap buttons, and move sliders?</div>
-    <div class="likert" id="q9u">
-      <div class="lb" onclick="selQ(9,1,this)">1<span class="sub-l">Hard</span></div>
-      <div class="lb" onclick="selQ(9,2,this)">2</div><div class="lb" onclick="selQ(9,3,this)">3</div>
-      <div class="lb" onclick="selQ(9,4,this)">4<span class="sub-l">OK</span></div>
-      <div class="lb" onclick="selQ(9,5,this)">5</div><div class="lb" onclick="selQ(9,6,this)">6</div>
-      <div class="lb" onclick="selQ(9,7,this)">7<span class="sub-l">Very easy</span></div>
+    <div class="q-title"><span class="q-num">C5</span>This tool gave me meaningful control over my privacy settings. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qC5">
+      <div class="lb" onclick="selSv('C5',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('C5',2,this)">2</div><div class="lb" onclick="selSv('C5',3,this)">3</div>
+      <div class="lb" onclick="selSv('C5',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('C5',5,this)">5</div><div class="lb" onclick="selSv('C5',6,this)">6</div>
+      <div class="lb" onclick="selSv('C5',7,this)">7<span class="sub-l">Strongly agree</span></div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">10</span>Was the language and design accessible to you? <span style="color:var(--red)">★</span></div>
-    <div class="q-desc">Think about font size, colors, plain language, and reading level. Was anything hard to read or follow?</div>
-    <div class="likert" id="q10u">
-      <div class="lb" onclick="selQ(10,1,this)">1<span class="sub-l">Not accessible</span></div>
-      <div class="lb" onclick="selQ(10,2,this)">2</div><div class="lb" onclick="selQ(10,3,this)">3</div>
-      <div class="lb" onclick="selQ(10,4,this)">4<span class="sub-l">OK</span></div>
-      <div class="lb" onclick="selQ(10,5,this)">5</div><div class="lb" onclick="selQ(10,6,this)">6</div>
-      <div class="lb" onclick="selQ(10,7,this)">7<span class="sub-l">Very accessible</span></div>
+    <div class="q-title"><span class="q-num">C6</span>Looking back at your answer to B5 (your privacy priorities) and your slider settings — do they feel like the same kind of person? <span style="color:var(--red)">★</span></div>
+    <div class="mc" id="qC6">
+      <div class="mc-opt" onclick="selSvMC('C6','match',this)">Yes — about where I expected</div>
+      <div class="mc-opt" onclick="selSvMC('C6','close',this)">Somewhat — roughly the right area</div>
+      <div class="mc-opt" onclick="selSvMC('C6','mismatch',this)">No — the sliders placed me somewhere different</div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────── PART D — SUS ───────────────────────────── -->
+  <div class="part-header">
+    <div class="part-chip">D</div>
+    <div>
+      <div class="part-title">How easy was the tool to use?</div>
+      <div class="part-sub">10 quick statements. <strong>5-point scale</strong> (Strongly disagree → Strongly agree). Should take 2 minutes.</div>
+    </div>
+  </div>
+
+  <div class="sus-instr">For each statement, tap the number that best fits your reaction. If you're not sure, use the middle of the scale.</div>
+
+  <div id="sus-list"></div>
+
+  <!-- ───────────────────────────── PART E — TRUST ───────────────────────────── -->
+  <div class="part-header">
+    <div class="part-chip">E</div>
+    <div>
+      <div class="part-title">Trust in the recommendation</div>
+      <div class="part-sub">4 quick questions about whether you'd trust this kind of tool with your real data.</div>
     </div>
   </div>
 
   <div class="q-card">
-    <div class="q-title"><span class="q-num">11</span>Any feedback or things to improve?</div>
-    <div class="q-desc">Anything you'd change, found confusing, or wished was different. Optional.</div>
-    <textarea class="ta" id="q11" placeholder="Type here (optional)..."></textarea>
+    <div class="q-title"><span class="q-num">T1</span>This system can be trusted to choose a good privacy setting on my behalf. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qT1">
+      <div class="lb" onclick="selSv('T1',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('T1',2,this)">2</div><div class="lb" onclick="selSv('T1',3,this)">3</div>
+      <div class="lb" onclick="selSv('T1',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('T1',5,this)">5</div><div class="lb" onclick="selSv('T1',6,this)">6</div>
+      <div class="lb" onclick="selSv('T1',7,this)">7<span class="sub-l">Strongly agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">T2</span>The tool's reasoning for its recommended setting was transparent and easy to understand. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qT2">
+      <div class="lb" onclick="selSv('T2',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('T2',2,this)">2</div><div class="lb" onclick="selSv('T2',3,this)">3</div>
+      <div class="lb" onclick="selSv('T2',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('T2',5,this)">5</div><div class="lb" onclick="selSv('T2',6,this)">6</div>
+      <div class="lb" onclick="selSv('T2',7,this)">7<span class="sub-l">Strongly agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">T3</span>If I used this tool again tomorrow with the same priorities, I think it would give me a similar recommendation. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qT3">
+      <div class="lb" onclick="selSv('T3',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('T3',2,this)">2</div><div class="lb" onclick="selSv('T3',3,this)">3</div>
+      <div class="lb" onclick="selSv('T3',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('T3',5,this)">5</div><div class="lb" onclick="selSv('T3',6,this)">6</div>
+      <div class="lb" onclick="selSv('T3',7,this)">7<span class="sub-l">Strongly agree</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">T4</span>I would be willing to use this kind of tool for my real personal data. <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qT4">
+      <div class="lb" onclick="selSv('T4',1,this)">1<span class="sub-l">Strongly disagree</span></div>
+      <div class="lb" onclick="selSv('T4',2,this)">2</div><div class="lb" onclick="selSv('T4',3,this)">3</div>
+      <div class="lb" onclick="selSv('T4',4,this)">4<span class="sub-l">Neutral</span></div>
+      <div class="lb" onclick="selSv('T4',5,this)">5</div><div class="lb" onclick="selSv('T4',6,this)">6</div>
+      <div class="lb" onclick="selSv('T4',7,this)">7<span class="sub-l">Strongly agree</span></div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────── PART F — COGNITIVE LOAD ───────────────────────────── -->
+  <div class="part-header">
+    <div class="part-chip">F</div>
+    <div>
+      <div class="part-title">How hard was the task?</div>
+      <div class="part-sub">3 quick questions about effort. Be honest — there is no right answer.</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">CL1</span>How mentally demanding was this task? <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qCL1">
+      <div class="lb" onclick="selSv('CL1',1,this)">1<span class="sub-l">Very low</span></div>
+      <div class="lb" onclick="selSv('CL1',2,this)">2</div><div class="lb" onclick="selSv('CL1',3,this)">3</div>
+      <div class="lb" onclick="selSv('CL1',4,this)">4<span class="sub-l">Moderate</span></div>
+      <div class="lb" onclick="selSv('CL1',5,this)">5</div><div class="lb" onclick="selSv('CL1',6,this)">6</div>
+      <div class="lb" onclick="selSv('CL1',7,this)">7<span class="sub-l">Very high</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">CL2</span>How hard did you have to work to complete the task? <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qCL2">
+      <div class="lb" onclick="selSv('CL2',1,this)">1<span class="sub-l">Very low</span></div>
+      <div class="lb" onclick="selSv('CL2',2,this)">2</div><div class="lb" onclick="selSv('CL2',3,this)">3</div>
+      <div class="lb" onclick="selSv('CL2',4,this)">4<span class="sub-l">Moderate</span></div>
+      <div class="lb" onclick="selSv('CL2',5,this)">5</div><div class="lb" onclick="selSv('CL2',6,this)">6</div>
+      <div class="lb" onclick="selSv('CL2',7,this)">7<span class="sub-l">Very high</span></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">CL3</span>How frustrated, irritated, or stressed were you while using the tool? <span style="color:var(--red)">★</span></div>
+    <div class="likert" id="qCL3">
+      <div class="lb" onclick="selSv('CL3',1,this)">1<span class="sub-l">Very low</span></div>
+      <div class="lb" onclick="selSv('CL3',2,this)">2</div><div class="lb" onclick="selSv('CL3',3,this)">3</div>
+      <div class="lb" onclick="selSv('CL3',4,this)">4<span class="sub-l">Moderate</span></div>
+      <div class="lb" onclick="selSv('CL3',5,this)">5</div><div class="lb" onclick="selSv('CL3',6,this)">6</div>
+      <div class="lb" onclick="selSv('CL3',7,this)">7<span class="sub-l">Very high</span></div>
+    </div>
+  </div>
+
+  <!-- ───────────────────────────── PART G — OPEN-ENDED ───────────────────────────── -->
+  <div class="part-header">
+    <div class="part-chip">G</div>
+    <div>
+      <div class="part-title">A few last questions</div>
+      <div class="part-sub">Your preferred way of choosing privacy settings, plus three optional comments.</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">OE1</span>Which way would YOU prefer to choose your privacy settings? <span style="color:var(--red)">★</span></div>
+    <div class="q-desc">Pick the one that sounds easiest or most natural for you.</div>
+    <div class="mc" id="qOE1">
+      <div class="mc-opt" onclick="selSvMC('OE1','sliders',this)">Use the sliders I just tried</div>
+      <div class="mc-opt" onclick="selSvMC('OE1','preference_questions',this)">Answer a set of preference questions (like the "Option A vs Option B" ones)</div>
+      <div class="mc-opt" onclick="selSvMC('OE1','ai_chat',this)">Have a conversation with an AI assistant about my privacy preferences</div>
+      <div class="mc-opt" onclick="selSvMC('OE1','default',this)">Let the system decide for me with a good default</div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">OE2</span>What, if anything, did you find confusing or hard to understand?</div>
+    <div class="q-desc">Optional. A short note is fine.</div>
+    <textarea class="ta" id="qOE2" placeholder="Optional — type here..."></textarea>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">OE3</span>What would make this tool more useful or trustworthy for you?</div>
+    <div class="q-desc">Optional.</div>
+    <textarea class="ta" id="qOE3" placeholder="Optional — type here..."></textarea>
+  </div>
+
+  <div class="q-card">
+    <div class="q-title"><span class="q-num">OE4</span>Was there any information you needed that the demo did not provide?</div>
+    <div class="q-desc">Optional.</div>
+    <textarea class="ta" id="qOE4" placeholder="Optional — type here..."></textarea>
   </div>
 
   <!-- validation -->
   <div class="valbox" id="valbox">
-    <strong>Please answer these required questions before submitting:</strong>
+    <strong>Please answer the required questions before submitting:</strong>
     <ul id="valbox-list"></ul>
   </div>
 
   <div class="btn-row" style="margin-bottom:16px">
-    <button class="btn btn-s" onclick="goPane(1)">← Back to questions</button>
+    <button class="btn btn-s" onclick="goPane(2)">← Back to questions</button>
   </div>
 
   <!-- submit card -->
   <div class="submit-card">
     <div class="stitle">Ready to submit?</div>
-    <div class="sdesc">Your answers will be saved anonymously. Questions marked ★ are required. Q7 and Q11 are optional.</div>
+    <div class="sdesc">Your answers will be saved anonymously. Questions marked ★ are required. Open-ended questions (OE2, OE3, OE4) are optional.</div>
     <button class="btn btn-b btn-big" id="submit-btn" onclick="submitResponses()">⬆ Submit my responses</button>
     <pre class="rec-out" id="rec-out"></pre>
   </div>
+</div>
+
 </div>
 
 </div>
@@ -803,6 +1096,8 @@ const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwRgyMcxPMtpx
 // session-scoped state
 let sessionId = null;
 let consentedAt = null;
+let startedAt = null;  // when participant clicked "I agree"
+let paneEnterTs = {0:null,1:null,2:null,3:null};  // time when each pane was entered
 
 function makeSessionId(){
   if(window.crypto && window.crypto.randomUUID) return window.crypto.randomUUID();
@@ -815,9 +1110,11 @@ function makeSessionId(){
 function grantConsent(){
   sessionId = makeSessionId();
   consentedAt = new Date().toISOString();
+  startedAt = Date.now();
+  paneEnterTs[0] = Date.now();
   document.getElementById('consent-overlay').classList.add('gone');
   document.getElementById('main-page').classList.remove('locked');
-  // kick off the demo init now that the page is visible
+  // kick off the demo init now that the page is visible (demo is on pane1 now)
   renderMicFeats();
   renderNoiseDistribution();
   setTimeout(()=>{
@@ -829,16 +1126,28 @@ function grantConsent(){
     updateW();
     renderStep4Eps();
     drawMaeCurve();
-    // render the pairwise questions immediately so they're ready when user arrives at pane 1
+    // render the pairwise questions immediately so they're ready when user arrives at pane 2
     renderPairwise();
     buildDomEpsRows();
+    renderSusItems();
+    renderForcedEpsC2();
   },80);
 }
 
 
 let wLP=4,wLA=4,wCR=2;
 let topsisIdx=2;
-let qAnswers={1:-1,2:-1,3:-1,5:null,6:-1,7:null,8:-1,9:-1,10:-1};
+// Part A pre-demo answers
+let preAnswers={A1:-1,A2:-1,A3:-1,A4:null,A5:null,A6:null};
+// Comprehensive survey answers (Parts B,C,D,E,F,G) — keyed by question id
+let svAnswers={
+  B1:-1,B2:-1,B3:-1,B5:null,
+  C2:null,C3:-1,C4:-1,C5:-1,C6:null,
+  SUS1:-1,SUS2:-1,SUS3:-1,SUS4:-1,SUS5:-1,SUS6:-1,SUS7:-1,SUS8:-1,SUS9:-1,SUS10:-1,
+  T1:-1,T2:-1,T3:-1,T4:-1,
+  CL1:-1,CL2:-1,CL3:-1,
+  OE1:null
+};
 let domEps={meter:-1,id:-1,ecg:-1};
 let pwAnswers=[null,null,null,null,null,null];
 let pwWeights=null;
@@ -847,21 +1156,23 @@ let pwWeights=null;
 // NAVIGATION
 // ═══════════════════════════════════════════════
 const PROGRESS_LABELS=[
-  '⏱ <b>Step 1 of 3 — Try the demo</b> · Scroll through the 4 sub-steps below.',
-  '⏱ <b>Step 2 of 3 — Quick questions</b> · 6 short "would you rather" choices.',
-  '⏱ <b>Step 3 of 3 — Survey</b> · A few quick ratings, then submit.'
+  '⏱ <b>Step 1 of 4 — A few quick questions about you</b> · 6 short items before the demo.',
+  '⏱ <b>Step 2 of 4 — Try the demo</b> · Scroll through the 4 sub-steps below.',
+  '⏱ <b>Step 3 of 4 — Quick "would you rather" questions</b> · 6 short choices.',
+  '⏱ <b>Step 4 of 4 — Survey</b> · A few ratings and short comments, then submit.'
 ];
 
 function updateProgress(n){
   document.getElementById('progress-bar').innerHTML=PROGRESS_LABELS[n];
-  document.getElementById('progress-fill').style.width=((n+1)/3*100)+'%';
+  document.getElementById('progress-fill').style.width=((n+1)/4*100)+'%';
 }
 
 function goPane(n){
-  ['pane0','pane1','pane2'].forEach((p,i)=>document.getElementById(p).classList.toggle('on',i===n));
+  ['pane0','pane1','pane2','pane3'].forEach((p,i)=>document.getElementById(p).classList.toggle('on',i===n));
   updateProgress(n);
   window.scrollTo({top:0,behavior:'smooth'});
-  if(n===0) setTimeout(()=>{
+  paneEnterTs[n] = Date.now();
+  if(n===1) setTimeout(()=>{
     drawMeterChart(+document.getElementById('meter-eps').value);
     drawMeterCleanChart();
     onIdEps(+document.getElementById('id-eps').value);
@@ -869,18 +1180,41 @@ function goPane(n){
     updateW();
     drawMaeCurve();
   },50);
-  if(n===1) renderPairwise();
-  if(n===2) buildDomEpsRows();
+  if(n===2) renderPairwise();
+  if(n===3){
+    buildDomEpsRows();
+    renderForcedEpsC2();
+    updateC3Display();
+  }
 }
 
-// Gatekeeper: from Pane 1, only allow advancing to Pane 2 if all 6 pairwise are done
+// Gatekeeper from pane 0 (pre-demo) — require all Part A answered before demo
+function tryGoToDemo(){
+  const missing=[];
+  if(preAnswers.A1<=0) missing.push('A1');
+  if(preAnswers.A2<=0) missing.push('A2');
+  if(preAnswers.A3<=0) missing.push('A3');
+  if(!preAnswers.A4) missing.push('A4');
+  if(!preAnswers.A5) missing.push('A5');
+  if(!preAnswers.A6) missing.push('A6');
+  const box=document.getElementById('valbox-pre');
+  const list=document.getElementById('valbox-pre-list');
+  if(missing.length){
+    list.innerHTML=missing.map(m=>`<li>Question ${m} is required.</li>`).join('');
+    box.style.display='block';
+    box.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  box.style.display='none';
+  goPane(1);
+}
+
+// Gatekeeper from pane 2 (PrivAgent) → pane 3 (survey)
 function tryGoToSurvey(){
   if(pwAnswers.some(a=>a===null)){
     const missingCount=pwAnswers.filter(a=>a===null).length;
-    // Find first unanswered question and scroll to it
     const firstIdx=pwAnswers.findIndex(a=>a===null);
     alert(`Please answer all 6 quick questions before continuing (${missingCount} still to go).`);
-    // briefly highlight the first unanswered card
     const cards=document.querySelectorAll('#pw-list .pw');
     if(cards[firstIdx]){
       cards[firstIdx].scrollIntoView({behavior:'smooth',block:'center'});
@@ -890,7 +1224,7 @@ function tryGoToSurvey(){
     }
     return;
   }
-  goPane(2);
+  goPane(3);
 }
 
 // ═══════════════════════════════════════════════
@@ -1418,9 +1752,9 @@ function renderTopsisBars(C){
   const tot=wLP+wLA+wCR||1;
   const [lp,la,cr]=[wLP/tot,wLA/tot,wCR/tot];
   let ex='';
-  if(lp>0.5) ex=`Your weight on privacy (${Math.round(lp*100)}%) dominates — TOPSIS picks a smaller ε where the formal protection LP is highest.`;
-  else if(la>0.5) ex=`Your weight on usefulness (${Math.round(la*100)}%) dominates — TOPSIS picks a larger ε where the data stays usable.`;
-  else if(cr>0.5) ex=`Your weight on compute cost (${Math.round(cr*100)}%) dominates — TOPSIS settles in the middle, where the device overhead is manageable.`;
+  if(lp>0.5) ex=`Your weight on privacy (${Math.round(lp*100)}%) is the biggest — so the system picks a stronger privacy setting (smaller ε).`;
+  else if(la>0.5) ex=`Your weight on usefulness (${Math.round(la*100)}%) is the biggest — so the system picks a setting where data stays more accurate (larger ε).`;
+  else if(cr>0.5) ex=`Your weight on battery / speed (${Math.round(cr*100)}%) is the biggest — so the system picks a middle setting where device overhead stays manageable.`;
   else ex=`Your weights are roughly balanced — ε* = ${EL[topsisIdx]} sits closest to the ideal across all three criteria.`;
   document.getElementById('topsis-explain').textContent=ex;
   document.getElementById('topsis-pick').innerHTML=`✓ Recommended privacy budget: <strong style="font-family:monospace;font-size:15px">ε* = ${EL[topsisIdx]}</strong>`;
@@ -1551,23 +1885,102 @@ function renderPwResult(){
 }
 
 // ═══════════════════════════════════════════════
-// SURVEY HELPERS
+// PRE-DEMO (Part A) HELPERS
 // ═══════════════════════════════════════════════
-function selQ(qn,v,el){
-  // Find the container — IDs are 'q1', 'q2', etc. Q8/Q9/Q10 use 'q8u'/'q9u'/'q10u' to avoid colliding with the legacy 'q8' textarea-id mental model.
-  const containerId = (qn>=8 && qn<=10) ? ('q'+qn+'u') : ('q'+qn);
-  document.querySelectorAll('#'+containerId+' .lb').forEach(b=>b.classList.remove('on'));
+function selPre(qid,v,el){
+  document.querySelectorAll('#q'+qid+' .lb').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
-  qAnswers[qn]=v;
+  preAnswers[qid]=v;
 }
-function selMC(qn,v,el){
-  document.querySelectorAll('#q'+qn+' .mc-opt').forEach(b=>b.classList.remove('on'));
+function selPreMC(qid,v,el){
+  document.querySelectorAll('#q'+qid+' .mc-opt').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
-  qAnswers[qn]=v;
+  preAnswers[qid]=v;
 }
+
+// ═══════════════════════════════════════════════
+// SURVEY HELPERS (Parts B,C,D,E,F,G)
+// ═══════════════════════════════════════════════
+function selSv(qid,v,el){
+  document.querySelectorAll('#q'+qid+' .lb').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  svAnswers[qid]=v;
+}
+function selSvMC(qid,v,el){
+  document.querySelectorAll('#q'+qid+' .mc-opt').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  svAnswers[qid]=v;
+}
+// SUS uses a 5-point scale, rendered separately
+function selSus(qid,v,el){
+  document.querySelectorAll('#q'+qid+' .lb5').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  svAnswers[qid]=v;
+}
+
+// SUS items (Brooke 1996, standard wording — do not alter)
+const SUS_ITEMS = [
+  ['SUS1', 'I think that I would like to use this system frequently.'],
+  ['SUS2', 'I found the system unnecessarily complex.'],
+  ['SUS3', 'I thought the system was easy to use.'],
+  ['SUS4', 'I think that I would need the support of a technical person to be able to use this system.'],
+  ['SUS5', 'I found the various functions in this system were well integrated.'],
+  ['SUS6', 'I thought there was too much inconsistency in this system.'],
+  ['SUS7', 'I would imagine that most people would learn to use this system very quickly.'],
+  ['SUS8', 'I found the system very cumbersome to use.'],
+  ['SUS9', 'I felt very confident using the system.'],
+  ['SUS10', 'I needed to learn a lot of things before I could get going with this system.']
+];
+function renderSusItems(){
+  const wrap = document.getElementById('sus-list');
+  if(!wrap) return;
+  let html = '<div class="sus-scale-lbls"><span>Strongly disagree</span><span>Neutral</span><span>Strongly agree</span></div>';
+  SUS_ITEMS.forEach(([qid,text]) => {
+    html += `<div class="sus-row"><div class="sus-text">${text}<span class="req">★</span></div>` +
+            `<div class="sus-scale" id="q${qid}">` +
+            [1,2,3,4,5].map(v => `<div class="lb5" onclick="selSus('${qid}',${v},this)">${v}</div>`).join('') +
+            `</div></div>`;
+  });
+  wrap.innerHTML = html;
+}
+
+// C2 forced-choice epsilon picker with consequence labels
+const C2_LABELS = [
+  {eps:'0.1', desc:'Strongest privacy. Most patterns and identifiers are scrambled. Services may not work as well.'},
+  {eps:'0.3', desc:'Strong privacy. Only broad population-level info is recoverable.'},
+  {eps:'1.0', desc:'Balanced. About half of attributes can be roughly reconstructed; standard setting in practice.'},
+  {eps:'5.0', desc:'Weaker privacy. Most attributes recoverable. Data stays accurate.'},
+  {eps:'10.0', desc:'No real privacy. Data is essentially shared as-is. Services work best.'}
+];
+function renderForcedEpsC2(){
+  const el = document.getElementById('qC2');
+  if(!el) return;
+  el.innerHTML = C2_LABELS.map((o,i) => {
+    const on = svAnswers.C2 === o.eps ? 'on' : '';
+    return `<div class="feps ${on}" onclick="selC2('${o.eps}',this)">` +
+           `<div class="feps-eps">ε = ${o.eps}</div>` +
+           `<div class="feps-desc">${o.desc}</div></div>`;
+  }).join('');
+}
+function selC2(eps,el){
+  document.querySelectorAll('#qC2 .feps').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  svAnswers.C2 = eps;
+  // reveal C3 once forced choice is made and show the comparison
+  document.getElementById('qC3-card').style.display = 'block';
+  updateC3Display();
+}
+function updateC3Display(){
+  const rec = document.getElementById('c3-rec');
+  const yours = document.getElementById('c3-yours');
+  if(rec) rec.textContent = EL[topsisIdx];
+  if(yours) yours.textContent = svAnswers.C2 || '—';
+}
+
 function buildDomEpsRows(){
   ['meter','id','ecg'].forEach(k=>{
     const el=document.getElementById('q4-'+k);
+    if(!el) return;
     el.innerHTML=EL.map((e,i)=>`<div class="eps-btn ${domEps[k]===i?'on':''}" onclick="selDomEps('${k}',${i},this)">ε = ${e}</div>`).join('');
   });
 }
@@ -1580,8 +1993,8 @@ function selDomEps(k,i,el){
     const allSame=chosen.every(v=>v===chosen[0]);
     const note=document.getElementById('q4-note');
     note.textContent=allSame
-      ?'Your ε choices match across domains — a single admin-assigned ε might suit you. Useful counter-evidence to the user-centric design.'
-      :'Your ε choices differ across domains — direct evidence that a single admin-assigned ε would be wrong for at least one of your domains.';
+      ?'Your privacy choices are the same across all three kinds of data — a one-size-fits-all setting could work for you.'
+      :'Your privacy choices differ across kinds of data — a per-kind setting fits your preferences better than a single one for everything.';
     note.className='note'+(allSame?' warn':' green');
   }
 }
@@ -1589,65 +2002,149 @@ function selDomEps(k,i,el){
 // ═══════════════════════════════════════════════
 // PAYLOAD / VALIDATION / SUBMISSION
 // ═══════════════════════════════════════════════
+function susCompositeScore(){
+  // SUS scoring: odd items: (response - 1); even items: (5 - response). Sum * 2.5 → 0-100
+  let sum = 0;
+  let allAnswered = true;
+  SUS_ITEMS.forEach(([qid], idx) => {
+    const r = svAnswers[qid];
+    if(r <= 0){ allAnswered = false; return; }
+    sum += (idx % 2 === 0) ? (r - 1) : (5 - r);   // 0-based: idx 0 is SUS1 (odd-numbered item in spec)
+  });
+  return allAnswered ? +(sum * 2.5).toFixed(1) : null;
+}
+
 function buildPayload(){
-  const tot=wLP+wLA+wCR||1;
-  const sl={LP:+(wLP/tot).toFixed(3),LA:+(wLA/tot).toFixed(3),CR:+(wCR/tot).toFixed(3)};
+  const tot = wLP + wLA + wCR || 1;
+  const sl = {LP:+(wLP/tot).toFixed(3), LA:+(wLA/tot).toFixed(3), CR:+(wCR/tot).toFixed(3)};
+  const elapsedMs = startedAt ? (Date.now() - startedAt) : null;
   return {
-    session_id:sessionId,
-    consented_at:consentedAt,
-    submitted_at:new Date().toISOString(),
-    user_agent:navigator.userAgent,
-    locale:navigator.language||null,
-    core_uldp:{
-      slider_weights:sl,
-      topsis_eps:EL[topsisIdx],
-      mic_dp_alpha:alphaVal,
-      step4_explored_eps:step4EpsIdx===null?null:EL[step4EpsIdx],
-      highlighted_feature:highlightedFeat===null?null:FEATURES[highlightedFeat].name,
-      mae_at_eps:{
-        standard_ldp:MAE_UNI[topsisIdx],
-        ucldp_micdp:MAE_MIC[topsisIdx],
-        improvement_pct:+((MAE_UNI[topsisIdx]-MAE_MIC[topsisIdx])/MAE_UNI[topsisIdx]*100).toFixed(1)
+    session_id: sessionId,
+    survey_version: 'v3.0_hci_full',
+    consented_at: consentedAt,
+    submitted_at: new Date().toISOString(),
+    time_to_complete_seconds: elapsedMs ? Math.round(elapsedMs / 1000) : null,
+    user_agent: navigator.userAgent,
+    locale: navigator.language || null,
+
+    pre_demo_part_a: {
+      A1_iuipc_collection: preAnswers.A1,
+      A2_iuipc_awareness: preAnswers.A2,
+      A3_prior_eps_comprehension: preAnswers.A3,
+      A4_age_range: preAnswers.A4,
+      A5_technical_background: preAnswers.A5,
+      A6_privacy_tool_experience: preAnswers.A6
+    },
+
+    core_uldp: {
+      slider_weights: sl,
+      topsis_eps: EL[topsisIdx],
+      mic_dp_alpha: alphaVal,
+      step4_explored_eps: step4EpsIdx === null ? null : EL[step4EpsIdx],
+      highlighted_feature: highlightedFeat === null ? null : FEATURES[highlightedFeat].name,
+      mae_at_eps: {
+        standard_ldp: MAE_UNI[topsisIdx],
+        ucldp_micdp: MAE_MIC[topsisIdx],
+        improvement_pct: +((MAE_UNI[topsisIdx] - MAE_MIC[topsisIdx]) / MAE_UNI[topsisIdx] * 100).toFixed(1)
       }
     },
-    privagent_extension:{
-      completed:pwAnswers.every(a=>a!==null),
-      responses:pwAnswers,
-      inferred_weights:pwWeights?{LP:+pwWeights.LP.toFixed(3),LA:+pwWeights.LA.toFixed(3),CR:+pwWeights.CR.toFixed(3)}:null
+
+    privagent_extension: {
+      completed: pwAnswers.every(a => a !== null),
+      responses: pwAnswers,
+      inferred_weights: pwWeights ? {LP:+pwWeights.LP.toFixed(3), LA:+pwWeights.LA.toFixed(3), CR:+pwWeights.CR.toFixed(3)} : null
     },
-    survey:{
-      q1_demo_clarity:qAnswers[1],
-      q2_smart_noise_makes_sense:qAnswers[2],
-      q3_picked_setting_feels_right:qAnswers[3],
-      q4_per_domain_eps:{
-        smart_meter:domEps.meter>=0?EL[domEps.meter]:null,
-        identity:domEps.id>=0?EL[domEps.id]:null,
-        ecg:domEps.ecg>=0?EL[domEps.ecg]:null
+
+    survey_part_b: {
+      B1_post_demo_eps_comprehension: svAnswers.B1,
+      B2_demo_tradeoff_clarity: svAnswers.B2,
+      B3_linkage_attack_comprehension: svAnswers.B3,
+      B4_per_domain_eps: {
+        smart_meter: domEps.meter >= 0 ? EL[domEps.meter] : null,
+        identity: domEps.id >= 0 ? EL[domEps.id] : null,
+        ecg: domEps.ecg >= 0 ? EL[domEps.ecg] : null
       },
-      q5_who_picks_eps:qAnswers[5],
-      q6_six_questions_easy_to_understand:qAnswers[6],
-      q7_six_questions_length:qAnswers[7],
-      q8_usefulness:qAnswers[8],
-      q9_usability:qAnswers[9],
-      q10_accessibility:qAnswers[10],
-      q11_open_feedback:document.getElementById('q11').value||null
+      B5_self_identified_archetype: svAnswers.B5
+    },
+
+    survey_part_c: {
+      C1_slider_weights_from_demo: sl,
+      C2_forced_eps_choice: svAnswers.C2,
+      C3_topsis_satisfaction: svAnswers.C3,
+      C4_explanation_quality: svAnswers.C4,
+      C5_perceived_control: svAnswers.C5,
+      C6_archetype_match: svAnswers.C6
+    },
+
+    survey_part_d_sus: {
+      items: Object.fromEntries(SUS_ITEMS.map(([qid]) => [qid, svAnswers[qid]])),
+      composite_score: susCompositeScore()
+    },
+
+    survey_part_e_trust: {
+      T1_trust_recommendation: svAnswers.T1,
+      T2_transparency: svAnswers.T2,
+      T3_stability: svAnswers.T3,
+      T4_adoption_intention: svAnswers.T4
+    },
+
+    survey_part_f_cognitive_load: {
+      CL1_mental_demand: svAnswers.CL1,
+      CL2_effort: svAnswers.CL2,
+      CL3_frustration: svAnswers.CL3,
+      mean_cl: (svAnswers.CL1 > 0 && svAnswers.CL2 > 0 && svAnswers.CL3 > 0)
+        ? +((svAnswers.CL1 + svAnswers.CL2 + svAnswers.CL3) / 3).toFixed(2) : null
+    },
+
+    survey_part_g_open: {
+      OE1_elicitation_preference: svAnswers.OE1,
+      OE2_confusing_elements: (document.getElementById('qOE2') || {}).value || null,
+      OE3_improvement_suggestions: (document.getElementById('qOE3') || {}).value || null,
+      OE4_missing_context: (document.getElementById('qOE4') || {}).value || null
     }
   };
 }
 
 function validateRequired(){
-  // Q1, Q2, Q3, Q4 (all 3 domains), Q5, Q6, Q8, Q9, Q10 are required.
-  // Q7 (length opinion) and Q11 (open feedback) are optional.
-  const m=[];
-  if(qAnswers[1]<=0) m.push(['q1','Q1 — Demo was easy to understand (1–7)']);
-  if(qAnswers[2]<=0) m.push(['q2','Q2 — Smart noise makes sense (1–7)']);
-  if(qAnswers[3]<=0) m.push(['q3','Q3 — Picked setting feels right (1–7)']);
-  if(domEps.meter<0||domEps.id<0||domEps.ecg<0) m.push(['q4-meter','Q4 — Pick a privacy level for all three kinds of data']);
-  if(!qAnswers[5]) m.push(['q5','Q5 — Who should decide your privacy setting']);
-  if(qAnswers[6]<=0) m.push(['q6','Q6 — The 6 quick questions were easy to understand (1–7)']);
-  if(qAnswers[8]<=0) m.push(['q8u','Q8 — Would this tool be useful in your daily life (1–7)']);
-  if(qAnswers[9]<=0) m.push(['q9u','Q9 — How easy was this tool to use (1–7)']);
-  if(qAnswers[10]<=0) m.push(['q10u','Q10 — Was the language and design accessible (1–7)']);
+  // All Part A handled in tryGoToDemo, but we re-check here as a backstop.
+  // Required survey items: B1, B2, B3, B4 (all 3 domains), B5, C2, C3, C4, C5, C6,
+  // SUS1-10, T1-T4, CL1-CL3, OE1.
+  // Optional: OE2, OE3, OE4 (free text).
+  const m = [];
+  // Part A
+  if(preAnswers.A1 <= 0) m.push(['qA1','Part A — A1 (privacy concern)']);
+  if(preAnswers.A2 <= 0) m.push(['qA2','Part A — A2 (data awareness)']);
+  if(preAnswers.A3 <= 0) m.push(['qA3','Part A — A3 (prior comprehension)']);
+  if(!preAnswers.A4) m.push(['qA4','Part A — A4 (age range)']);
+  if(!preAnswers.A5) m.push(['qA5','Part A — A5 (technical background)']);
+  if(!preAnswers.A6) m.push(['qA6','Part A — A6 (privacy tool experience)']);
+  // Part B
+  if(svAnswers.B1 <= 0) m.push(['qB1','B1 — post-demo comprehension (1–7)']);
+  if(svAnswers.B2 <= 0) m.push(['qB2','B2 — demo clarity of trade-off (1–7)']);
+  if(svAnswers.B3 <= 0) m.push(['qB3','B3 — linkage-attack comprehension (1–7)']);
+  if(domEps.meter < 0 || domEps.id < 0 || domEps.ecg < 0) m.push(['q4-meter','B4 — pick a privacy setting for all three kinds of data']);
+  if(!svAnswers.B5) m.push(['qB5','B5 — self-identified privacy priorities']);
+  // Part C
+  if(!svAnswers.C2) m.push(['qC2','C2 — forced ε choice for your personal data']);
+  if(svAnswers.C3 <= 0) m.push(['qC3','C3 — how well the recommendation matches (1–7)']);
+  if(svAnswers.C4 <= 0) m.push(['qC4','C4 — explanation quality (1–7)']);
+  if(svAnswers.C5 <= 0) m.push(['qC5','C5 — perceived control (1–7)']);
+  if(!svAnswers.C6) m.push(['qC6','C6 — match between archetype and sliders']);
+  // SUS (5-point scale, all 10 items)
+  SUS_ITEMS.forEach(([qid]) => {
+    if(svAnswers[qid] <= 0) m.push(['q'+qid, qid + ' — System Usability Scale (1–5)']);
+  });
+  // Trust
+  if(svAnswers.T1 <= 0) m.push(['qT1','T1 — trust in recommendation (1–7)']);
+  if(svAnswers.T2 <= 0) m.push(['qT2','T2 — transparency (1–7)']);
+  if(svAnswers.T3 <= 0) m.push(['qT3','T3 — stability (1–7)']);
+  if(svAnswers.T4 <= 0) m.push(['qT4','T4 — adoption intention (1–7)']);
+  // Cognitive Load
+  if(svAnswers.CL1 <= 0) m.push(['qCL1','CL1 — mental demand (1–7)']);
+  if(svAnswers.CL2 <= 0) m.push(['qCL2','CL2 — effort (1–7)']);
+  if(svAnswers.CL3 <= 0) m.push(['qCL3','CL3 — frustration (1–7)']);
+  // OE1 forced choice
+  if(!svAnswers.OE1) m.push(['qOE1','OE1 — preferred way to choose privacy settings']);
   return m;
 }
 
